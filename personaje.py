@@ -42,9 +42,9 @@ class Personaje(pygame.sprite.Sprite):
     def __init__(self, path=path, TILE_ALTO=TILE_ALTO, TILE_ANCHO=TILE_ANCHO):
 
         # Tileset con la animación del personaje.
-        self.tileset = tiles.cortar_tileset(path, TILE_ALTO, TILE_ANCHO)
+        self.tileset = tiles.cortar_charset(path, TILE_ALTO, TILE_ANCHO)
 
-        # diccionario con {acción:(sprites)}
+        # diccionario con {acción:[sprites]}
         self.sprites_accion={}
         for n in range(0, len(self.tileset)):
             charsheet = []
@@ -68,6 +68,7 @@ class Personaje(pygame.sprite.Sprite):
         self.orientation = Personaje.SUR # orientación actual
         self.sprite = self.sprites_accion['camina_S'][self.cont] # sprite actual
         #self.rect = self.sprite.get_rect()
+        self.charrect = pygame.Rect(self.columna-17, self.fila-17, self.TILE_ANCHO-17, self.TILE_ALTO-17)
 
         
     def update(self, nuevaaccion):

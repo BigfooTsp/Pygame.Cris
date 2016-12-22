@@ -1,6 +1,7 @@
 import pygame
 import teclado
 import personaje
+import escenario
 from utils import tiles
 
 
@@ -13,14 +14,16 @@ class Game:
 
 	def initialize(self):
 		pygame.init()
-		Game.screen = pygame.display.set_mode((300, 400))
+		Game.screen = pygame.display.set_mode((800, 600))
 
 		Game.clock = pygame.time.Clock()
 
 
 	def load_content(self):
-		global Cris
-		Game.fondo = tiles.cargar_imagen('imagenes/pruebafondo.png', transparent=False)
+		global Cris, pantalla
+		pantalla = escenario.Mapa()
+		pantalla.CargarMapa('mapa1')
+
 
 		Cris = personaje.Personaje()
 		Game.personajes.append(Cris)
@@ -31,7 +34,7 @@ class Game:
 
 
 	def draw(self):
-		Game.screen.blit(Game.fondo, [0,0])
+		pantalla.dibujar_mapa(Game.screen, coordenadas=[10,10])
 		Cris.dibujar(Game.screen)
 		pygame.display.update()
 
@@ -39,12 +42,14 @@ class Game:
 
 def main():
 	game = Game()
+	
+	# Cris = personaje [.] Pendiente
 
 	game.initialize()
 	game.load_content()
 
 	while True:
-		time = game.clock.tick(40)
+		time = game.clock.tick(80)
 		game.updates()
 		game.draw()
 
