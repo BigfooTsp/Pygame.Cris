@@ -2,11 +2,12 @@ import pygame
 import sys
 import personaje
 import Juego
+import escenario
 
 
 # [.] cambiar cris por self de objeto.
 # [.] incorporar movimiento diagonal
-def teclado(Cris):
+def teclado(personaje, pantalla):
 	#event = pygame.event.wait()
 
 	teclado = pygame.key.get_pressed()
@@ -16,18 +17,29 @@ def teclado(Cris):
 		if event.type == pygame.QUIT:
 			sys.exit()
 
+		if event.type == pygame.MOUSEMOTION:
+	            # obtiene la posición del mouse
+	            x, y = pygame.mouse.get_pos()
+	            print ('mouse x-%i y-%i' %(x, y))
+
 
 	if teclado[pygame.K_UP]:
-		Cris.columna -= 1
-		Cris.update(nuevaaccion='camina_N')
+		if pantalla.espisable(personaje, (0, -1)) == True:
+			personaje.posY -= 1
+		personaje.mover('camina_N')
 	if teclado[pygame.K_DOWN]:
-	    Cris.columna += 1
-	    Cris.update(nuevaaccion='camina_S')
+	    if pantalla.espisable(personaje, (0, 1)) == True:
+	    	personaje.posY += 1
+	    personaje.mover('camina_S')
 	if teclado[pygame.K_RIGHT]:
-		Cris.fila += 1
-		Cris.update(nuevaaccion='camina_E')
+		if pantalla.espisable(personaje, (1, 0)) == True:
+			personaje.posX += 1
+		personaje.mover('camina_E')
 	if teclado[pygame.K_LEFT]:
-		Cris.fila -= 1
-		Cris.update(nuevaaccion='camina_O')
+		if pantalla.espisable(personaje, (-1, 0)) == True:
+			personaje.posX -= 1
+		personaje.mover('camina_O')
+
+	# pixeles del mouse
 
 	return

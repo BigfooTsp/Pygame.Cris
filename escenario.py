@@ -62,7 +62,7 @@ class Mapa:
 			elif item['type'] == "objectgroup": 
 				if item['name'] == 'nopisable': # para los rectángulos no pisables
 					self.nopisable(item) 
-				else: # para los objetos
+				else: # para los objetos [.] se pueden meter en un diccionario
 					self._objetos_escenario[item['name']] = objetoescena(item)
 				#for element in item['objects']:
 
@@ -169,9 +169,21 @@ class Mapa:
 			self._nopisable.append(pygame.Rect(x, y, width, height))
 
 
-	def espisable(self):
+	def espisable(self, personaje, avance):
 		''' devuelve True si el terreno es pisable '''
+		pos = personaje.rect.move(avance)
+		print ('avance', pos) # control
 
+		# comprobando colisiones:
+		idx = pos.collidelist(self._nopisable)
+
+		if  idx == -1: # si no las hay
+			personaje.rect = pos
+			return True
+		else:
+			print ('! colisión escenario', idx, self._nopisable[idx])
+			#pos = personaje.rect
+			return False
 
 
 class objetoescena():
@@ -186,34 +198,19 @@ class objetoescena():
 		self._objecttype = obj["type"]
 		self._visible = obj["visible"]
 		self._objectpos = (obj["x"], obj["y"])
-		self._objrect = pygame.Rect(self._objectpos[0], self._objectpos[1], self._objectW, self._objectH)
+		#[] solucionar problema al sumar negativos
+		self._objrect = pygame.Rect(
+			self._objectpos[0], self._objectpos[1], (
+				self._objectpos[0]+self._objectW), (self._objectpos[1]+self._objectH))
 
 
 # pruebas:
 if __name__ == '__main__':
 	pygame.init()
-	screen = pygame.display.set_mode((800, 600)) # necesario para evitar error 'no video mode has been set' al hacer .convert()
+	screen = pygame.display.set_mode((800, 600)) 
 	mapa = Mapa()
-	mapa.dibujar_mapa('mapa1', screen)
-
-	#print (mapa._mapatiles)
-	#print (len(mapa._mapaImagenes))
-	#print (mapa._mapaImagenes[1].get_abs_offset())
-	#print ((mapa._mapaImagenes))
-	#print (len(mapa._matrizMapa))
-	#print (mapa._matrizMapa[0]) # layer, fila, sprite
-	#print (mapa._matrizMapa)
-	#print (len(mapa._mapatiles))
-	#print (len(mapa._mapatiles[1]))
-	#print (len(mapa._mapatiles[1][1]))
-	#print (mapa._mapatiles)
-	#print (mapa._objetos_escenario)
-	#print (mapa._suelopisable)
-	#print (mapa._nopisable)
-	
-
-	#'''
+	mapa.CargarMapa('mapa1')
+	mapa.dibujar_mapa(screen)
 	while True:
 		pygame.display.update()
-	#'''
 
