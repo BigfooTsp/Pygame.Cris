@@ -1,7 +1,7 @@
 import json
 import pygame
 from pygame.locals import *
-from utils import tiles
+import utils
 
 '''
 Configuración de tiledmap:
@@ -11,76 +11,82 @@ Configuración de tiledmap:
 	-capa 'objetos'
 	-capa 'objetos_superpuestos'
 	-capa de objetos 'nopisable'
+	-añadir propiedades al mapa para ubicación inical del personaje.
+		-inicial_posX
+		-inicial_posY
 	-exportado en JSON
 	-Hacer una capa 'nopisable'
+
+	[.] desplazamiento del mapa
+		 En el json pongo una posición de inicio al personaje.
+		 esta posición debe de estar centrada en la pantalla (800x600)
+		 Los rectángulos de colisión y la pantalla deben de adaptarse a la posición
+		 del personaje.
+
+	[.] COnvertir la ruta de la imagen del json en relativo.
+
 '''
-# [.] trabajar con numpy
-# [.] utilizar codificación y compresión
-# [.] iteración de layers desde la llamada a la función
-# para la capa pisable solo necesito sacar las coordenadas, no las imagenes
 
 class Mapa:
-	''' Genera array con los datos de tiledmap.'''
+	
+	def __init__(self, nivel, screen):
 
-	_tileH = 0
-	_tileW = 0
-	_MapaW = 0
-	_MapaH = 0
+		self._tileH = 0 # tamaño de los tiles en pixeles
+		self._tileW = 0
+		self._mapaW = 0 # tamaño del mapa en tiles
+		self._mapaH = 0
+		self._mapa_size = 0 # tamaño del mapa en pixeles.
+		self._transparentcolor = -1
+		self._matrizMapa = [] # array multidimensional con referencias numéricas del tileset
+		self._mapaImagenes = [] # array unidimensional con las imágenes (subsurface) del mapa.
+		self._mapatiles = [] # array multidimensional con las imagenes (subsurfaces)
+		self._mapasurface = 0 # surface del mapa dibujado
+		self._objetos_escenario = {} # diccionario con objetos fijos del escenario.
+		self._nopisable = [] # lista de rectángulos de objetos no pisables.
+		self._char_posabs = [0,0] # posición del personaje en el mapa.
+		self._char_posrel = (0,0) # posición del personaje relativa a la cámara.
+		self._coordenadas = (0,0,0,0) # coordenadas del mapa que se imprimiran en pantalla.
 
-	_transparentcolor = -1
-
-	# array multidimensional, cada lista con las referencias 
-	# numéricas al tileset de la layer correspondiente del mapa 
-	_matrizMapa = []
-
-	# array unidimensional con las imágenes (subsurface) del mapa.
-	_mapaImagenes = []
-
-	# array multidimensional con las imagenes (subsurfaces) incorporadas
-	# y organizadas por layers y filas.
-	_mapatiles = []
-
-	# diccionario que guardará los objetos fijos del escenario.
-	_objetos_escenario = {}
-
-	# objetos no pisables
-	_nopisable = []
-
-
-
-	def CargarMapa(self, nivel):
-
-		# carga archivo JSON con DATA sin comprimir ni codificar (en CSV)
+		# Cargando archivo json
 		f = open("imagenes/"+nivel+".json", "r")
 		data = json.load(f)
 		f.close()
 
-		# distingue entre capas tilelayer, de objetos, pisable y las procesa.
+		# Configuración del mapa.
 		for item in data["layers"]:
-			if item['type'] == "tilelayer": # para mapas
+			if item['type'] == "tilelayer": # para capas del mapa
 				self._matrizMapa.append(self.layers(item))
 			elif item['type'] == "objectgroup": 
 				if item['name'] == 'nopisable': # para los rectángulos no pisables
-					self.nopisable(item) 
-				else: # para los objetos [.] se pueden meter en un diccionario
-					self._objetos_escenario[item['name']] = objetoescena(item)
-				#for element in item['objects']:
+					for element in item['objects']:
+						self._nopisable.append(self.func_nopisable(element))
+				else: # crea un objeto para cada objeto de escena
+					for element in item['objects']:
+						self._objetos_escenario[element['name']] = objetoescena(element)
 
 		# crear array _mapaImagenes con subsurfaces del tileset.
 		for item in data["tilesets"]:
-			self.tilesets(item)
+			self._mapaImagenes = self.tilesets(item)
 
 		# crear array _mapatiles con las subsurfaces del mapa
 		self.crear_mapa()
+
+		print ('Rectángulos no pisables', self._nopisable)
 
 		return
 
 
 	def layers(self, layer):
 
-		self._MapaW = layer["width"]
-		self._MapaH = layer["height"]
+		self._mapaW = layer["width"]
+		self._mapaH = layer["height"]
 		mapa = layer['data']
+
+		# configurando posición inicial del personaje.
+		if layer['name'] == 'suelo':
+			#personaje
+			self._char_posabs = [
+				layer['properties']["inicial_posX"], layer['properties']["inicial_posY"]]
 
 		# resto 1 a cada referencia de data porque desde el JSON viene con
 		# 1 de más y me dibuja el tile siguiente... (??)
@@ -91,8 +97,8 @@ class Mapa:
 
 		# convertir vector en matriz
 		layerTemp = []
-		for i in range(0, len(mapa), self._MapaW):
-			layerTemp.append(mapa[i:i + self._MapaW])
+		for i in range(0, len(mapa), self._mapaW):
+			layerTemp.append(mapa[i:i + self._mapaW])
 
 		return layerTemp
 
@@ -101,6 +107,8 @@ class Mapa:
 
 		self._tileW = tileset['tilewidth']
 		self._tileH = tileset['tileheight']
+		self._mapa_size = (self._tileW*self._mapaW, self._tileH*self._mapaH)
+
 
 		imgTemp = tileset['name']
 
@@ -118,18 +126,14 @@ class Mapa:
 
 		# Cortar tileset (array unidimensional) usando función tiles.utils
 		path = tileset['image']
-		self._mapaImagenes = tiles.cortar_tileset(path, self._tileW, self._tileH)
-
-		return
+		return utils.cortar_tileset(path, self._tileW, self._tileH)
 
 
 	def crear_mapa(self):
-		'''	Hay que crear la cámara( parte visible del mapa)
-		y dibujar la parte correspondiente. '''
 
+		# creando maptiles
 		l = 0
 		f = 0
-
 		for layer in self._matrizMapa:
 			self._mapatiles.append([])
 			for fila in layer:
@@ -140,65 +144,54 @@ class Mapa:
 			l += 1
 			f = 0
 
-		return
-
-
-	def dibujar_mapa(self, destino, coordenadas=[0,0]):
-		''' dibuja el mapa (se invoca el objeto tras instanciarlo desde aquí)'''
-		#self.CargarMapa(nivel, destino, coordenadas)
-		x=coordenadas[0]
-		y=coordenadas[1]
+		# creando surface del mapa
+		print (self._mapa_size[0])
+		self._mapasurface = pygame.Surface((self._mapa_size[0], self._mapa_size[1]))
+		x=0
+		y=0
 		for layer in self._mapatiles:
 			for fila in layer:
 				for tile in fila:
-					destino.blit(tile, (x,y))
+					self._mapasurface.blit(tile, (x,y))
 					x += self._tileW
 				y += self._tileH
-				x = coordenadas[0]
-			x = coordenadas[0]
-			y = coordenadas[1]
+				x = self._coordenadas[0]
+			x = 0
+			y = 0
 
 
-	def nopisable(self, layer):
+		return
+
+
+	def dibujar_mapa(self, destino):
+		''' dibuja el mapa (se invoca el objeto tras instanciarlo desde aquí)'''
+		camara = self._mapasurface.subsurface(self._coordenadas)
+		destino.blit(camara, (0,0))		
+
+
+	def func_nopisable(self, element):
 		''' configura listado de zonas no pisables '''
-		for element in layer['objects']:
-			x = element['x']
-			y = element['y']
-			width = element['width']
-			height = element['height']
-			self._nopisable.append(pygame.Rect(x, y, width, height))
+		x = element['x']
+		y = element['y']
+		width = element['width']
+		height = element['height']
+		return pygame.Rect(x, y, width, height)
 
 
-	def espisable(self, personaje, avance):
-		''' devuelve True si el terreno es pisable '''
-		pos = personaje.rect.move(avance)
-		print ('avance', pos) # control
-
-		# comprobando colisiones:
-		idx = pos.collidelist(self._nopisable)
-
-		if  idx == -1: # si no las hay
-			personaje.rect = pos
-			return True
-		else:
-			print ('! colisión escenario', idx, self._nopisable[idx])
-			#pos = personaje.rect
-			return False
 
 
 class objetoescena():
 	''' Extrae los objetos de escena desde tiledmaps '''
 
 	def __init__(self, obj):
-		''' obj es un diccionario que aporta las siguientes
-		características del objeto'''
+		''' atributos y características del objeto'''
 		self._nombre = obj["name"]
 		self._objectW = obj["width"]
 		self._objectH = obj["height"]
 		self._objecttype = obj["type"]
 		self._visible = obj["visible"]
 		self._objectpos = (obj["x"], obj["y"])
-		#[] solucionar problema al sumar negativos
+		#[.] solucionar problema al sumar negativos
 		self._objrect = pygame.Rect(
 			self._objectpos[0], self._objectpos[1], (
 				self._objectpos[0]+self._objectW), (self._objectpos[1]+self._objectH))

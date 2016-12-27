@@ -1,50 +1,70 @@
 import pygame
-import teclado
-import personaje
-import escenario
-from utils import tiles
+from pygame.locals import * # prescindible??
+import teclado, personaje, escenario, utils
 '''
 Tareas:
 	[.] Poner música.
-	[.] Actualizar en display solo el cuadrado cambiante.
+  -	[x] Actualizar en display solo el cuadrado cambiante.
+  -	[.] adaptar pantalla al tamaño del mapa.
+
+
 	[.] Interacción con objetos.
 	[.] incorporar juego mindmaster.
+	[.] utilizar codificación y compresión
+	[.] si el personaje está quieto se pone a bailar con música.
+
 '''
 
 
 class Game:
 
-	screen = 0
-	clock = 0
-	personajes = []
+	rect_update=[] # Zonas de la pantalla a actualizar
+	screenW = 800
+	screenH = 600
+	screen_center = (screenW/2, screenH/2)
 
 
 	def initialize(self):
+		global screen, clock
+
 		pygame.init()
-		Game.screen = pygame.display.set_mode((800, 600))
-		Game.clock = pygame.time.Clock()
+		screen = pygame.display.set_mode((self.screenW, self.screenH))
+		pygame.display.set_caption("Cris en El Collao")
+		clock = pygame.time.Clock()
 
 
 	def load_content(self):
 		global Cris, pantalla
-		pantalla = escenario.Mapa()
-		pantalla.CargarMapa('mapa1')
-		#[.] adaptar pantalla al tamaño del mapa.
-		#Game.screen = pygame.display.set_mode((pantalla._MapaW, pantalla._MapaH))
 
+		# cargando pantalla:
+		pantalla = escenario.Mapa('mapadesierto', screen)
+		#pantalla._screenrect = pygame.Rect(pantalla)
+
+		# cargando personajes.
 		Cris = personaje.Personaje('Cris')
-		Game.personajes.append(Cris)
+			# Su posición inicial.
 
 
 	def updates(self):
+
+		# Movimiento y colisiones de escenario.
+		utils.actualizar_camara(screen, Cris, pantalla)
 		teclado.teclado(Cris, pantalla)
+		# desplazamiento del mapa
 
 
 	def draw(self):
-		pantalla.dibujar_mapa(Game.screen, coordenadas=[0,0])
-		Cris.dibujar(Game.screen)
-		pygame.display.update()
+		# posiciones iniciales para pantalla y personajes.
 
+		# dibujar pantalla y personajes
+		pantalla.dibujar_mapa(screen)
+		Cris.dibujar_personaje(screen)
+
+		pygame.draw.rect(screen, (0,0,0), Cris.rect, 1)
+		pygame.draw.rect(screen, (0,0,0) ,Cris.rectcolision, 1)
+
+		# actualizar pantalla
+		pygame.display.update()
 
 
 def main():
@@ -53,7 +73,7 @@ def main():
 	game.load_content()
 
 	while True:
-		time = game.clock.tick(80)
+		time = clock.tick(80)
 		game.updates()
 		game.draw()
 

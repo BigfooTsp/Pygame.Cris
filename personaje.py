@@ -6,9 +6,7 @@ http://aventurapygame.blogspot.com.es/2011/10/el-personaje.html
 
 from pygame.locals import *
 import pygame
-from utils import tiles
-import Juego
-import escenario
+import Juego, escenario, utils
 
 
 # listado de personajes:
@@ -30,8 +28,7 @@ _spritesinfo = {
 
 
 class Personaje(pygame.sprite.Sprite):
-
-    
+  
 
     def __init__(self, personaje):
         spriteinfo = _spritesinfo[personaje]
@@ -40,8 +37,9 @@ class Personaje(pygame.sprite.Sprite):
         self.path = spriteinfo['path']
         self.tileW = spriteinfo['tileW']
         self.tileH = spriteinfo['tileH']
-        self.tileset = tiles.cortar_charset(self.path, self.tileW, self.tileH)
-
+        self.tileset = utils.cortar_charset(self.path, self.tileW, self.tileH)
+        self.posX = 0
+        self.posY = 0
         # diccionario con {acción:[sprites]}
         self.sprites_accion={}
         for n in range(0, len(self.tileset)):
@@ -54,9 +52,8 @@ class Personaje(pygame.sprite.Sprite):
         # Para cuadrar el personaje en el bloque.
         self.offset = (0,0)
         
-        # Posición actual del personaje en el mapa.
-        self.posY = 50
-        self.posX = 50 
+        # Posición inicial del personaje en el mapa.
+        # desde archivo escenario.py
 
         # contador de posición de sprite.
         self.cont = 0
@@ -65,9 +62,10 @@ class Personaje(pygame.sprite.Sprite):
         self.action = 'camina_S' # acción actual
         self.image = self.sprites_accion['camina_S'][self.cont] # sprite actual
 
-        # rectángulo de colisión del personaje.
+        # rectángulo del personaje.
         self.rectval = spriteinfo['rectval']
-        self.rect = pygame.Rect(
+        self.rect = pygame.Rect(self.posX, self.posY, self.tileW, self.tileH)
+        self.rectcolision= pygame.Rect(
             self.posX+self.rectval[0], self.posY+self.rectval[1], 
             self.tileW+self.rectval[2], self.tileH+self.rectval[3])
 
@@ -84,17 +82,20 @@ class Personaje(pygame.sprite.Sprite):
 
         self.image = self.sprites_accion[nuevaaccion][self.cont]
         self.cont += 1
-        self.rect = pygame.Rect(
+        # actualizar resctángulos del personaje
+        self.rectcolision= pygame.Rect(
             self.posX+self.rectval[0], self.posY+self.rectval[1], 
             self.tileW+self.rectval[2], self.tileH+self.rectval[3])
+        self.rect = pygame.Rect(self.posX, self.posY, self.tileW, self.tileH)
+
 
         # control
         print ('\nsprite image: ',self.cont)
         print ('sprite.rect', self.rect)
         print (self.action)
-        print ('Pos: x-%i y-%i' %(self.posX, self.posY))
+        print ('Pos: x %i y %i' %(self.posX, self.posY))
 
-    def dibujar(self, destino):
+    def dibujar_personaje(self, destino):
         # Dibujamos el tile correspondiente de Cris.
         destino.blit(self.image, (self.posX - self.offset[0], self.posY - self.offset[1]))
         
