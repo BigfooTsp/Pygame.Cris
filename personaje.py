@@ -1,7 +1,3 @@
-'''
-http://aventurapygame.blogspot.com.es/2011/10/el-personaje.html
-'''
-
 # -*- coding: utf-8 -*-
 
 from pygame.locals import *
@@ -31,45 +27,33 @@ class Personaje(pygame.sprite.Sprite):
   
 
     def __init__(self, personaje):
+        global spriteinfo
         spriteinfo = _spritesinfo[personaje]
 
         # Tileset con la animación del personaje.
-        self.path = spriteinfo['path']
         self.tileW = spriteinfo['tileW']
         self.tileH = spriteinfo['tileH']
-        self.tileset = utils.cortar_charset(self.path, self.tileW, self.tileH)
+        self.tileset = utils.cortar_charset(spriteinfo['path'], self.tileW, self.tileH)
         self.posX = 0
         self.posY = 0
-        # diccionario con {acción:[sprites]}
-        self.sprites_accion={}
+        self.offset = (spriteinfo['rectval'][0], spriteinfo['rectval'][1])
+        self.sprites_accion={} # diccionario con {acción:[sprites]}
         for n in range(0, len(self.tileset)):
             charsheet = []
             for l in range(0, (spriteinfo['nsprites'][n])): 
                 charsheet.append(self.tileset[n][l])        
             self.sprites_accion[spriteinfo['actionlist'][n]] = charsheet
-
-
-        # Para cuadrar el personaje en el bloque.
-        self.offset = (0,0)
         
-        # Posición inicial del personaje en el mapa.
-        # desde archivo escenario.py
-
-        # contador de posición de sprite.
-        self.cont = 0
-
-        # charsheet a representar
+        self.cont = 0 # contador de posición de sprite.
         self.action = 'camina_S' # acción actual
         self.image = self.sprites_accion['camina_S'][self.cont] # sprite actual
 
-        # rectángulo del personaje.
-        self.rectval = spriteinfo['rectval']
-        self.rect = pygame.Rect(self.posX, self.posY, self.tileW, self.tileH)
-        self.rectcolision= pygame.Rect(
-            self.posX+self.rectval[0], self.posY+self.rectval[1], 
-            self.tileW+self.rectval[2], self.tileH+self.rectval[3])
-
-        
+        # rectángulo del personaje  (posición relativa, cámara).
+        self.rect = pygame.Rect(
+            self.posX+spriteinfo['rectval'][0], self.posY+spriteinfo['rectval'][1], 
+            self.tileW+spriteinfo['rectval'][2], self.tileH+spriteinfo['rectval'][3])
+     
+   
     def mover(self, nuevaaccion):
 
         # Actualiza sprite con la dirección adecuada
@@ -82,21 +66,17 @@ class Personaje(pygame.sprite.Sprite):
 
         self.image = self.sprites_accion[nuevaaccion][self.cont]
         self.cont += 1
-        # actualizar resctángulos del personaje
-        self.rectcolision= pygame.Rect(
-            self.posX+self.rectval[0], self.posY+self.rectval[1], 
-            self.tileW+self.rectval[2], self.tileH+self.rectval[3])
-        self.rect = pygame.Rect(self.posX, self.posY, self.tileW, self.tileH)
-
-
+        
+        # actualizar rectángulo del personaje
+        self.rect.topleft = (self.posX, self.posY)
+        
         # control
         print ('\nsprite image: ',self.cont)
-        print ('sprite.rect', self.rect)
         print (self.action)
         print ('Pos: x %i y %i' %(self.posX, self.posY))
 
     def dibujar_personaje(self, destino):
         # Dibujamos el tile correspondiente de Cris.
-        destino.blit(self.image, (self.posX - self.offset[0], self.posY - self.offset[1]))
-        
+        destino.blit(self.image, (self.posX-self.offset[0], self.posY-self.offset[1]))
+
 

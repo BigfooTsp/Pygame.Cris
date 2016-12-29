@@ -93,23 +93,24 @@ def actualizar_camara(screen, personaje, mapa):
 	mapa._coordenadas = (coordenadas[0], coordenadas[1], camarasizeX, camarasizeY )
 	personaje.posX, personaje.posY = (posrelX, posrelY)
 
+	mapa._charrect = pygame.Rect(
+		mapa._char_posabs[0], mapa._char_posabs[1], personaje.rect.w, personaje.rect.h) 
 
 def espisable(personaje, avance, mapa):
 	''' devuelve True si el terreno es pisable '''
-	personaje.rectcolision = pygame.Rect(
-		mapa._char_posabs[0]+personaje.rectval[0], mapa._char_posabs[1]+personaje.rectval[1], 
-		personaje.tileW+personaje.rectval[2], personaje.tileH+personaje.rectval[3])
+	#[.] poner limites del mapa o rectángulo de límite.
+			
+	pos = mapa._charrect.move(avance)
+	print ('avance pos', pos) # control
 
 
-	pos = personaje.rectcolision.move(avance)
-	print ('avance pos. absoluta', pos) # control
-
+	# si hay colisión
 	idx = pos.collidelist(mapa._nopisable)
 
-	if  idx == -1: # si no hay colisión
+	if idx == -1:
 		print ('avanzando')
 		return True
 
-	else: # Si hay colisión
+	else: # Si hay colisión no se mueve
 		print ('! colisión escenario', idx, mapa._nopisable[idx])
 		return False

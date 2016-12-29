@@ -2,7 +2,7 @@ import json
 import pygame
 from pygame.locals import *
 import utils
-
+# [.] Actualizar json con datos correctos.
 '''
 Configuración de tiledmap:
 	-sin compresión ni codificación
@@ -24,6 +24,7 @@ Configuración de tiledmap:
 		 del personaje.
 
 	[.] COnvertir la ruta de la imagen del json en relativo.
+	[.] Optimizar los rectángulos del mapa de colisión.
 
 '''
 
@@ -33,8 +34,8 @@ class Mapa:
 
 		self._tileH = 0 # tamaño de los tiles en pixeles
 		self._tileW = 0
-		self._mapaW = 0 # tamaño del mapa en tiles
-		self._mapaH = 0
+		#self._mapaW = 0 # tamaño del mapa en tiles
+		#self._mapaH = 0
 		self._mapa_size = 0 # tamaño del mapa en pixeles.
 		self._transparentcolor = -1
 		self._matrizMapa = [] # array multidimensional con referencias numéricas del tileset
@@ -46,6 +47,8 @@ class Mapa:
 		self._char_posabs = [0,0] # posición del personaje en el mapa.
 		self._char_posrel = (0,0) # posición del personaje relativa a la cámara.
 		self._coordenadas = (0,0,0,0) # coordenadas del mapa que se imprimiran en pantalla.
+		# rectámgulo de colisión del personaje
+		self._charrect = (self._char_posabs[0], self._char_posabs[1],22,22)
 
 		# Cargando archivo json
 		f = open("imagenes/"+nivel+".json", "r")
@@ -71,8 +74,6 @@ class Mapa:
 		# crear array _mapatiles con las subsurfaces del mapa
 		self.crear_mapa()
 
-		print ('Rectángulos no pisables', self._nopisable)
-
 		return
 
 
@@ -80,6 +81,7 @@ class Mapa:
 
 		self._mapaW = layer["width"]
 		self._mapaH = layer["height"]
+
 		mapa = layer['data']
 
 		# configurando posición inicial del personaje.
@@ -145,7 +147,6 @@ class Mapa:
 			f = 0
 
 		# creando surface del mapa
-		print (self._mapa_size[0])
 		self._mapasurface = pygame.Surface((self._mapa_size[0], self._mapa_size[1]))
 		x=0
 		y=0
@@ -165,19 +166,22 @@ class Mapa:
 
 	def dibujar_mapa(self, destino):
 		''' dibuja el mapa (se invoca el objeto tras instanciarlo desde aquí)'''
+
+		 # control
+		for element in self._nopisable:
+			pygame.draw.rect(self._mapasurface, (255,0,0), element, 1)
+
 		camara = self._mapasurface.subsurface(self._coordenadas)
 		destino.blit(camara, (0,0))		
 
 
 	def func_nopisable(self, element):
-		''' configura listado de zonas no pisables '''
+		''' configura elemento para listado de zonas no pisables '''
 		x = element['x']
 		y = element['y']
 		width = element['width']
 		height = element['height']
 		return pygame.Rect(x, y, width, height)
-
-
 
 
 class objetoescena():
@@ -195,15 +199,3 @@ class objetoescena():
 		self._objrect = pygame.Rect(
 			self._objectpos[0], self._objectpos[1], (
 				self._objectpos[0]+self._objectW), (self._objectpos[1]+self._objectH))
-
-
-# pruebas:
-if __name__ == '__main__':
-	pygame.init()
-	screen = pygame.display.set_mode((800, 600)) 
-	mapa = Mapa()
-	mapa.CargarMapa('mapa1')
-	mapa.dibujar_mapa(screen)
-	while True:
-		pygame.display.update()
-
