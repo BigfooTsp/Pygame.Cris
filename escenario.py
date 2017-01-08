@@ -1,7 +1,7 @@
 import json
 import pygame
 from pygame.locals import *
-import utils
+from utilidades import utils
 # [.] Actualizar json con datos correctos.
 '''
 Configuración de tiledmap:
@@ -31,27 +31,27 @@ Configuración de tiledmap:
 class Mapa:
 	
 	def __init__(self, nivel, screen):
-
+		print ("Creando Escenario " + nivel + '...')
 		self._tileH = 0 # tamaño de los tiles en pixeles
 		self._tileW = 0
 		#self._mapaW = 0 # tamaño del mapa en tiles
 		#self._mapaH = 0
 		self._mapa_size = 0 # tamaño del mapa en pixeles.
+		self._camara_size = (screen.get_size())
 		self._transparentcolor = -1
 		self._matrizMapa = [] # array multidimensional con referencias numéricas del tileset
 		self._mapaImagenes = [] # array unidimensional con las imágenes (subsurface) del mapa.
 		self._mapatiles = [] # array multidimensional con las imagenes (subsurfaces)
-		self._mapasurface = 0 # surface del mapa dibujado
+		self._mapasurface = 0 # surface del mapa completo dibujado
 		self._objetos_escenario = {} # diccionario con objetos fijos del escenario.
 		self._nopisable = [] # lista de rectángulos de objetos no pisables.
-		self._char_posabs = [0,0] # posición del personaje en el mapa.
+		self._char_posabs = [0,0] # posición inicial del personaje en el mapa.
 		self._char_posrel = (0,0) # posición del personaje relativa a la cámara.
-		self._coordenadas = (0,0,0,0) # coordenadas del mapa que se imprimiran en pantalla.
-		# rectámgulo de colisión del personaje
-		self._charrect = (self._char_posabs[0], self._char_posabs[1],22,22)
+		self._coordenadas = (0, 0, 0, 0) # coordenadas del mapa que se imprimiran en pantalla.
+		# rectángulo de colisión del personaje
 
 		# Cargando archivo json
-		f = open("imagenes/"+nivel+".json", "r")
+		f = open("utilidades/imagenes/"+nivel+".json", "r")
 		data = json.load(f)
 		f.close()
 
@@ -116,7 +116,7 @@ class Mapa:
 
 		self._transparentcolor = tileset['transparentcolor']
 
-		img = pygame.image.load('imagenes/' + imgTemp + '.png')
+		img = pygame.image.load('utilidades/imagenes/' + imgTemp + '.png')
 		img = img.convert()
 
 		# convierte valor alpha (#ffffff) a decimal (255,255,255)
@@ -164,15 +164,16 @@ class Mapa:
 		return
 
 
-	def dibujar_mapa(self, destino):
+	def dibujar(self, destino):
 		''' dibuja el mapa (se invoca el objeto tras instanciarlo desde aquí)'''
 
-		 # control
 		for element in self._nopisable:
 			pygame.draw.rect(self._mapasurface, (255,0,0), element, 1)
 
 		camara = self._mapasurface.subsurface(self._coordenadas)
-		destino.blit(camara, (0,0))		
+		destino.blit(camara, (0,0))	
+
+		return	
 
 
 	def func_nopisable(self, element):
@@ -199,3 +200,15 @@ class objetoescena():
 		self._objrect = pygame.Rect(
 			self._objectpos[0], self._objectpos[1], (
 				self._objectpos[0]+self._objectW), (self._objectpos[1]+self._objectH))
+
+# Pruebas:
+if __name__ == '__main__':
+	pygame.init()
+	display = pygame.display.set_mode((800, 600))
+	pantalla = Mapa('mapadesierto', display)
+	pantalla._coordenadas = (0,0,800,600)
+	pantalla.dibujar(display)
+
+	while True:
+		pygame.display.update()
+

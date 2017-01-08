@@ -2,7 +2,7 @@
 
 from pygame.locals import *
 import pygame
-import Juego, escenario, utils
+from utilidades import utils
 
 
 # listado de personajes:
@@ -14,19 +14,22 @@ _spritesinfo = {
                 'mov4_N', 'mov4_O', 'mov4_S', 'mov4_E',
                 'muere'],
             'nsprites':[7,7,7,7,8,8,8,8,9,9,9,9,6,6,6,6,13,13, 13, 13, 6], # sprites por linea del tileset.
-            'rectval':[+22, +20, -42, -23], # cuadrado de srpite válido para colisiones
+            'rectval':[+22, +20, -42, -23], # cuadrado de sprite válido para colisiones
             'tileH':64, 
             'tileW':64, 
-            'path':'imagenes\CrisSheet.png'},
+            'path':'utilidades\imagenes\CrisSheet.png'},
     'Otro':{},
     'Otro2':{}
     }
 
 
 class Personaje(pygame.sprite.Sprite):
+
+    orientacion = {'N':(0, -1), 'S':(0, 1), 'E':(1, 0), 'O':(-1, 0)}
   
 
     def __init__(self, personaje):
+        print ("Creando personaje " + personaje + '...')
         global spriteinfo
         spriteinfo = _spritesinfo[personaje]
 
@@ -34,8 +37,7 @@ class Personaje(pygame.sprite.Sprite):
         self.tileW = spriteinfo['tileW']
         self.tileH = spriteinfo['tileH']
         self.tileset = utils.cortar_charset(spriteinfo['path'], self.tileW, self.tileH)
-        self.posX = 0
-        self.posY = 0
+        self.pos = [0, 0]
         self.offset = (spriteinfo['rectval'][0], spriteinfo['rectval'][1])
         self.sprites_accion={} # diccionario con {acción:[sprites]}
         for n in range(0, len(self.tileset)):
@@ -50,13 +52,12 @@ class Personaje(pygame.sprite.Sprite):
 
         # rectángulo del personaje  (posición relativa, cámara).
         self.rect = pygame.Rect(
-            self.posX+spriteinfo['rectval'][0], self.posY+spriteinfo['rectval'][1], 
+            self.pos[0]+spriteinfo['rectval'][0], self.pos[1]+spriteinfo['rectval'][1], 
             self.tileW+spriteinfo['rectval'][2], self.tileH+spriteinfo['rectval'][3])
      
    
     def mover(self, nuevaaccion):
-
-        # Actualiza sprite con la dirección adecuada
+        # Actualiza el sprite adecuado según la orientación.
         if self.cont > (len(self.sprites_accion[nuevaaccion])-1):
             self.cont = 0
 
@@ -68,15 +69,17 @@ class Personaje(pygame.sprite.Sprite):
         self.cont += 1
         
         # actualizar rectángulo del personaje
-        self.rect.topleft = (self.posX, self.posY)
+        self.rect.topleft = (self.pos[0], self.pos[1])
         
         # control
         print ('\nsprite image: ',self.cont)
         print (self.action)
-        print ('Pos: x %i y %i' %(self.posX, self.posY))
+        print ('Pos: x %i y %i' %(self.pos[0], self.pos[1]))
 
-    def dibujar_personaje(self, destino):
+        return
+
+    def dibujar(self, destino):
         # Dibujamos el tile correspondiente de Cris.
-        destino.blit(self.image, (self.posX-self.offset[0], self.posY-self.offset[1]))
+        destino.blit(self.image, (self.pos[0]-self.offset[0], self.pos[1]-self.offset[1]))
 
-
+        return
