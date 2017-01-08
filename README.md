@@ -10,6 +10,6 @@ En esta última versión añado un "Game Manager" con la siguiente estructura:
 ![Game Director](https://raw.githubusercontent.com/BigfooTsp/Pygame.Cris/debc203e9bd529a3a9aa9d6672db66ba3ff35673/director%20game2.gif)
 
 ### Fuentes:
-[Traducción documentación Pygame 1.8](www.losersjuegos.com.ar/traducciones/pygame)
-[Razón Artificial](razonartificial.com/programar-videojuegos/)
+[Traducción documentación Pygame 1.8](www.losersjuegos.com.ar/traducciones/pygame)  
+[Razón Artificial](razonartificial.com/programar-videojuegos/)  
 [Aventura Pygame](aventurapygame.blogspot.com.es)
