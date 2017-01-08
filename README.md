@@ -1,8 +1,8 @@
 # Pygame.Cris
 
 Juego que estoy desarrollando como práctica de aprendizaje autodidacta de Pygame y python.
-El juego es de tipo RPG y el tema está basado en la vida de una amiga, sin guión específico concreto. A medida que avanzo iré añadiendo funcioes:
-* Intenligencia artificial.
+El juego es de tipo RPG y el tema está basado en la vida de una amiga, sin guión específico concreto. A medida que avanzo iré añadiendo funciones:
+* Inteligencia artificial.
 * incorporación de multimedia
 * etc...
 
