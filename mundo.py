@@ -24,6 +24,10 @@ class Mundo:
         self._jugadorRect = (self._jugadorPosAbs[0], self._jugadorPosAbs[1],
                             self._jugador.rect.w, self._jugador.rect.h)
 
+        #Sonidos
+        self.paso = pygame.mixer.Sound('utilidades/sonido/step.ogg')
+        self.channel1 = pygame.mixer.Channel(1)
+        self.channel1.set_volume(1)
 
     def mover_jugador(self, orientacion):
         ''' movimiento del jugador si es posible.'''
@@ -40,6 +44,8 @@ class Mundo:
                                  self._jugador.pos[1] + self._jugador.orientacion[orientacion][1])
 
         self.actualizar_posicion(orientacion)
+        if self.channel1.get_busy() == False:
+            self.channel1.play(self.paso)
 
         return
 
@@ -114,8 +120,6 @@ class Mundo:
             self._jugadorPosAbs[0], self._jugadorPosAbs[1], 
             self._jugador.rect.w, self._jugador.rect.h) 
 
-        return
-
 
     def actualizar_posicion(self, orientacion):
         ''' muve personajes y elementos'''
@@ -125,8 +129,7 @@ class Mundo:
         veremos conforme vaya desarrollando el juego.'''
 
         self._jugador.mover('camina_%s'%(orientacion))
-
-        return
+        pygame.mixer
 
 
     def update(self):
@@ -139,12 +142,10 @@ class Mundo:
             None
         self.actualizar_camara()
 
-        return
     
     def dibujar(self, surface):
         self._mapa.dibujar(surface)
         
         for personaje in self.personajes:
             personaje.dibujar(surface)
-        return
 

@@ -54,3 +54,15 @@ def cortar_charset(path, TILE_ANCHO, TILE_ALTO):
 	return sprite
 
 
+def texto(texto, posx, posy, tamaño, color=(255,255,255), fuente=0,):
+	''' Control de impresión de texto, las fuentes en una lista
+	http://razonartificial.com/2010/02/pygame-10-fuentes-tipograficas/'''
+	fuentes = ['Christmas.ttf']
+	path = 'utilidades\imagenes\%s'%(fuentes[fuente])
+	font = pygame.font.Font(path, tamaño)
+	salida = pygame.font.Font.render(font, texto, 1, color) # 1 es antialias (True o False)
+	salida_rect = salida.get_rect()
+	salida_rect.centerx = posx
+	salida_rect.centery = posy
+
+	return salida, salida_rect

@@ -23,7 +23,7 @@ class GameManager():
 		# pygame.display.setimage
 		self.background = pygame.Surface(self.screen.get_size())
 		self.background = self.background.convert()
-		self.background.fill((0,0,0))
+		self.background.fill((209, 151, 191))
 		
 		# instancia de personaje principal
 		self.jugador = personaje.Personaje('Cris')

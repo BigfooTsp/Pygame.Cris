@@ -25,7 +25,7 @@ _spritesinfo = {
 
 class Personaje(pygame.sprite.Sprite):
 
-    orientacion = {'N':(0, -1), 'S':(0, 1), 'E':(1, 0), 'O':(-1, 0)}
+    orientacion = {'N':(0, -2), 'S':(0, 2), 'E':(2, 0), 'O':(-2, 0)}
   
 
     def __init__(self, personaje):
@@ -76,10 +76,7 @@ class Personaje(pygame.sprite.Sprite):
         print (self.action)
         print ('Pos: x %i y %i' %(self.pos[0], self.pos[1]))
 
-        return
 
     def dibujar(self, destino):
         # Dibujamos el tile correspondiente de Cris.
         destino.blit(self.image, (self.pos[0]-self.offset[0], self.pos[1]-self.offset[1]))
-
-        return

@@ -22,6 +22,10 @@ class CollaoState(gamestate.GameState):
 		self._mundo = mundo.Mundo(self._mapa, self._personajes)
 		self._mundo.actualizar_posicion('S')
 
+		# Sonidos
+		fondo = pygame.mixer.music.load('utilidades/sonido/forest.ogg')
+		pygame.mixer.music.play(loops=-1)
+
 
 	def start(self):
 		print('GameState CollaoState started')
@@ -53,11 +57,11 @@ class CollaoState(gamestate.GameState):
 			self._mundo.mover_jugador('O')
 
 		# añadir otros eventos
+		'''
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_ESCAPE:
-				self.parent.popState()
-
-		return
+				self.parent.popstate(menustate.MenuState(self.parent))
+		'''
 
 
 	def update(self):
@@ -66,9 +70,7 @@ class CollaoState(gamestate.GameState):
 		# añadir cambio de pantalla.
 		# parent.changeState(state)
 		'''
-		return
 
 	def draw(self):
 		self.parent.screen.blit(self.parent.background, (0,0))
 		self._mundo.dibujar(self.parent.screen)
-		return
