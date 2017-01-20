@@ -1,34 +1,65 @@
 import pygame
 from pygame.locals import *
 from gamemanager.states import gamestate
-from utilidades import utils
+from utilidades import utils, scrolling
 import escenario, personaje, mundo
 
 class CollaoState(gamestate.GameState):
+	'''
+	Añadiendo personajes a la pantalla.
+	Debo de modificar la lista de personajes para que incluya su posición absoluta del mapa
+	después modificaré 'mundo' para que los ubique bien en el mundo.
+	[.] prescindir de la posicion inicial de JSON
+	'''
 
 	def __init__(self, parent):
-		print ('instanciando pantalla CollaoState...')
+		print ('....instanciando pantalla CollaoState...')
 		
 		self.parent = parent # parent es el gameManager
-		self._mapa = escenario.Mapa('mapadesierto', parent.screen)
+		self._mapa = escenario.Mapa('mapadesierto')
 
-		# personajes:
-	   		# instanciar personajes del state.
+		############### PERSONAJES ######################
+		# Creando personajes.
 
-			# añadir principal y resto de personajes después.
-		self._personajes = [self.parent.jugador] #, ..., ...]
+		# Cris (Principal)
+		Cris = self.parent.jugador 		# Posición de personaje relativa scroll
+		Cris_posabs = (5,750)			# coordenadas para rectángulo en mapa.
+		Cris_rectabs = pygame.Rect(Cris_posabs[0], Cris_posabs[1],
+                        Cris.rect.w, Cris.rect.h)
 
-		# envio a objeto 'mundo' el mapa y los personajes.
-		self._mundo = mundo.Mundo(self._mapa, self._personajes)
-		self._mundo.actualizar_posicion('S')
+		# Piti (personaje secundario)
+		Piti = personaje.Personaje('Piti')
+		Piti_posabs = [16*32, 21*32] 	# coordenadas de celda.
+		Piti_rectabs = pygame.Rect(Piti_posabs[0], Piti_posabs[1],
+                        Piti.rect.w, Piti.rect.h)
+
+		# Agregando a listado de personajes (Primero el principal)
+		self._personajes = [[Cris, Cris_posabs, Cris_rectabs],
+							[Piti, Piti_posabs, Piti_rectabs]
+							]
+
+		##################################################
+
+		# Creo objeto 'mundo' y envío el mapa y los personajes.
+		self._mundo = mundo.Mundo(self.parent.screen, self._mapa, self._personajes)
+
+        # configurando cámara
+		self.scroll = scrolling.Camara(self.parent.screen, self._mapa, self._personajes)
 
 		# Sonidos
 		fondo = pygame.mixer.music.load('utilidades/sonido/forest.ogg')
 		pygame.mixer.music.play(loops=-1)
 
+		# mensajes para modo test.
+		self.test = [[]]
+
+
+	########################################################
+	########## GESTIÓN DE ESTADO DE LA PANTALLA ############
+	########################################################
 
 	def start(self):
-		print('GameState CollaoState started')
+		print('........GameState CollaoState started')
 		pass
 
 	def cleanup(self):
@@ -41,6 +72,11 @@ class CollaoState(gamestate.GameState):
 
 	def resume(self):
 		print("GameState CollaoState Resumed")
+
+
+	########################################################
+	################ BUCLE DE LA  PANTALLA #################
+	########################################################
 
 	def handleEvents(self, event, teclado):
 		''' gestión de eventos de teclado '''
@@ -56,21 +92,57 @@ class CollaoState(gamestate.GameState):
 		if teclado[pygame.K_LEFT]:
 			self._mundo.mover_jugador('O')
 
-		# añadir otros eventos
+		# añadir pausa
 		'''
 		if event.type == pygame.KEYDOWN:
-			if event.key == pygame.K_ESCAPE:
+			if event.key == pygame.P_ESCAPE:
 				self.parent.popstate(menustate.MenuState(self.parent))
 		'''
 
 
 	def update(self):
-		self._mundo.update()
-		'''
-		# añadir cambio de pantalla.
-		# parent.changeState(state)
-		'''
+		''' Comportamiento de los elementos de pantalla.'''
+
+		# - Pendiente mover un personaje secundario por aquí.
+
+		# Gestiona colisiones.
+		colisiones = self._mundo._hay_colision()
+		if colisiones:
+			self.colisiones(colisiones)
+		else:
+			self.test[0]=[]
+
+		# Actualiza mundo y scroll
+		self._personajes = self._mundo.update(self._personajes)
+		self.scroll.actualizar_scroll(self._personajes)  
+
 
 	def draw(self):
+		''' Dibuja el juego '''
+
 		self.parent.screen.blit(self.parent.background, (0,0))
-		self._mundo.dibujar(self.parent.screen)
+		self.scroll.dibujar_scroll(self.parent.screen)
+
+
+	########################################################
+	#### GESTIÓN DE COLISIONES Y EVENTOS DE LA PANTALLA ####
+	########################################################
+
+	def colisiones(self, colisiones):
+		''' Gestiona las colsiones que tienen evento. '''
+
+		# {'colj':jug con pers, 'coljo':jug con objs, 
+		#  'colp':pers con pers, 'colpo':pers con objs}
+
+		# para modo test
+		col = []
+		for c,v in colisiones.items():
+			if len(v) > 0:
+				contacto = '%s, %s'%(c,str(v))
+				col.append(contacto)
+		col.append('Colsiones:')
+		self.test[0] = col
+
+		return
+
+	# Definir las actuaciones de personajes. es posible que desde update y con un reloj

@@ -1,8 +1,6 @@
 import pygame
 from pygame.locals import *
-
-import escenario
-import personaje
+import escenario, personaje
 
 
 class Mundo:
@@ -14,138 +12,162 @@ class Mundo:
         como hacerlo.
     '''
 
-    def __init__(self, mapa, personajes):
+    # [.] Modificar selfs por las variables globales correspondientes en el __init__
+
+    def __init__(self, surface, mapa, personajes):
         print ("Instanciando Mundo...")
 
+        # Cargando mapa y personajes.
         self._mapa = mapa
         self.personajes = personajes # array con los personajes
-        self._jugador = personajes[0]
-        self._jugadorPosAbs =  mapa._char_posabs
-        self._jugadorRect = (self._jugadorPosAbs[0], self._jugadorPosAbs[1],
-                            self._jugador.rect.w, self._jugador.rect.h)
+        '''               [0][0]                 [0][1]                    [0][2]
+        personajes = [[personajePrincipal, personaje_posabs=(x, y), personaje_rectabs=Rect]
+                      [personaje2,         personaje_posabs=(x, y), personaje_rectabs=Rect]
+                      [...]]'''
+
+        # lista con cuadros de personajes con los que se puede colisionar.
+        self.personajesnpisables = []
+            # a estas listas les reduzco dos pixeles para que me detecte colisiones
+            # antes de que no me deje avanzar por no ser pisable.
+        self.personajesnpisables0 = []
+        self.objetosnpisables0 = []
 
         #Sonidos
-        self.paso = pygame.mixer.Sound('utilidades/sonido/step.ogg')
         self.channel1 = pygame.mixer.Channel(1)
         self.channel1.set_volume(1)
+            # Paso
+        self.paso = pygame.mixer.Sound('utilidades/sonido/step.ogg')
+
+        # lista con los mensajes para el modo test:
+        self.test = ['']
+
 
     def mover_jugador(self, orientacion):
         ''' movimiento del jugador si es posible.'''
 
-        avance = self._jugador.orientacion[orientacion]
-        direccion = (self._jugadorPosAbs[0] + self._jugador.orientacion[orientacion][0], 
-                     self._jugadorPosAbs[1] + self._jugador.orientacion[orientacion][1])
+        jugador = self.personajes[0][0]
+        jugadorposAbs = self.personajes[0][1]
 
-        print ('moviendo personaje hacia el %s a posición %s' %(orientacion, direccion))
+        avance = jugador.orientacion[orientacion]
+        direccion = (jugadorposAbs[0] + jugador.orientacion[orientacion][0], 
+                     jugadorposAbs[1] + jugador.orientacion[orientacion][1])
 
-        if self.espisable(avance):
-            self._jugadorPosAbs = direccion
-            self._jugador.pos = (self._jugador.pos[0] + self._jugador.orientacion[orientacion][0], 
-                                 self._jugador.pos[1] + self._jugador.orientacion[orientacion][1])
+        # Actualizando posición del personaje.
+        if self.espisable(self.personajes[0], direccion):
+            #actualizando posabs.
+            self.personajes[0][1] = direccion
+            # actualiza rect_abs
+            self.personajes[0][2] = pygame.Rect(direccion[0], direccion[1], 
+                self.personajes[0][0].rect.w, self.personajes[0][0].rect.h )
 
-        self.actualizar_posicion(orientacion)
+        # actualiza sprite del jugador con sonido.
         if self.channel1.get_busy() == False:
             self.channel1.play(self.paso)
+        jugador.actualizar_sprite('camina_%s'%(orientacion))
 
         return
 
 
-    def espisable(self, avance):
+    def mover_personajes(self):
+        ''' Mueve los personajes secundarios '''
+        None
+
+
+
+    def espisable(self, personaje, direccion):
         ''' devuelve True si el terreno es pisable '''
-        #[.] poner limites del mapa o rectángulo de límite.
+
+        ''' Nota: Si no reduzco el tamaño de los rectángulos de objetos
+             y personajes para comrobar si es pisabel, no me dejará luego
+             tener contanto con ellos. '''
+
+        # [.] Habrá que adaptarlo para comprobar los personajes entre ellos.
+
 
         # mueve tantas posiciones como se indica en 'direccion'.
-        pos = self._jugadorRect.move(avance)
+        pos = pygame.Rect(direccion[0], direccion[1] , 
+            personaje[0].rect.w, personaje[0].rect.h )
 
-        # si hay colisión
+        # Comprueba si el avance es pisable.
+            # otros personajes
+        idp = pos.collidelist(self.personajesnpisables0)
+            # límites de escenario
         idx = pos.collidelist(self._mapa._nopisable)
-        if idx == -1:
-            print ('avanzando')
+            # objetos
+        ido = pos.collidelist(self.objetosnpisables0)
+
+        if idx == -1 and idp == -1 and ido == -1:
+            self.test[0]=str(' - Es pisable, avanzando')
             return True
-        else: # Si hay colisión no se mueve
-            print ('! colisión escenario', idx, self._mapa._nopisable[idx])
+        else:
+            self.test[0]=str(' ! no pisable')
             return False
 
 
-    def _hay_colisión(self):
-        ''' gestion de colisión con elementos de escenario y otros personajes.'''
-
-    	# colisiones escenario
-    	# otros personajes
+    def _hay_colision(self):
         ''' según la posición de los elementos del escenario comprueba colisiones
-        y sus resultados en la escena '''
+        y sus resultados en la escena, devolverá tipo de colisión que se 
+        gestionará en el update del state '''
 
-        return False
+        colj = []       # Colisiones de jugador con personajes.
+        coljo = []      # Colisiones de jugador con objetos.
+        colp = []       # Colisiones de personajes con personajes. 
+        colpo = []      # Colisiones de personajes con objetos
 
+        # Colisión entre personajes [.] Hay que mejorarla
+        if len(self.personajesnpisables) > 1:
+            p=0
+            for personaje in self.personajesnpisables:
+                otrospersonajes = self.personajesnpisables
+                otrospersonajes.pop(p)
+                colp = self.personajes[p][2].collidelistall(otrospersonajes)
+                p += 1
+        # Colisión de personajes con objetos
+        if len(self.personajesnpisables) > 0:
+            if len(self._mapa._objetos_escenario) > 0:
+                colpo.append(self.personajes[0][2].collidedict(self._mapa._objetos_escenario))
+        # Colisión entre el jugador y otros personajes.
+        if len(self.personajesnpisables) > 0:
+            colj = self.personajes[0][2].collidelistall(self.personajesnpisables)
+    	# colisiones de jugador con objetos de escenario
+        if len(self._mapa._objetos_escenario) > 0:
+            coljo.append(self.personajes[0][2].collidedict(self._mapa._objetos_escenario))
 
-    def actualizar_camara(self):
-        ''' Cámara y desplazamiento del mapa con el personaje principal.
-            actualiza coordenadas absolutas y relativas.'''
+        colisiones = {'colj':colj, 'coljo':coljo, 'colp':colp, 'colpo':colpo}
 
-        coordenadas = [0,0]
-        posabsX = self._jugadorPosAbs[0]
-        posabsY = self._jugadorPosAbs[1]
-        posrelX = self._jugador.pos[0]
-        posrelY = self._jugador.pos[1]
-        mapasizeX = self._mapa._mapa_size[0]
-        mapasizeY = self._mapa._mapa_size[1]
-        camarasizeX = self._mapa._camara_size[0]
-        camarasizeY = self._mapa._camara_size[1]
+        if len(colj) == 0 and len(coljo) == 0 and len(colp) == 0 and len(colpo) == 0:
+            return False
 
-        # colocar posición inicial de personaje y coordenadas.
-        if (posabsX > camarasizeX/2) or (posabsX < mapasizeX-camarasizeX/2) :
-            posrelX = camarasizeX/2
-            coordenadas[0] = (posabsX - camarasizeX/2)
-        if (posabsY > camarasizeY/2) or (posabsY < mapasizeY-camarasizeY/2) :
-            posrelY = camarasizeY/2
-            coordenadas[1] = (posabsY - camarasizeY/2)
-
-        if posabsX < camarasizeX/2:
-            posrelX = posabsX
-            coordenadas[0] = 0
-        if posabsX > mapasizeX-camarasizeX/2:
-            posrelX = camarasizeX - (mapasizeX - posabsX)
-            coordenadas[0] = mapasizeX - camarasizeX
-        if posabsY < camarasizeY/2:
-            posrelY = posabsY
-            coordenadas[1] = 0
-        if posabsY > mapasizeY-camarasizeY/2:
-            posrelY = camarasizeY - (mapasizeY - posabsY)
-            coordenadas[1] = mapasizeY - camarasizeY
-
-        self._mapa._coordenadas = (coordenadas[0], coordenadas[1], camarasizeX, camarasizeY )
-        self._jugador.pos = (posrelX, posrelY)
-
-        self._jugadorRect = pygame.Rect(
-            self._jugadorPosAbs[0], self._jugadorPosAbs[1], 
-            self._jugador.rect.w, self._jugador.rect.h) 
+        else:
+            return colisiones
 
 
-    def actualizar_posicion(self, orientacion):
-        ''' muve personajes y elementos'''
-        ''' [.] Tal vez sea redundante con update().
-        aunque en este momento solo utilizo al jugador, puede que
-        esta función sea útil para controlar a todos los personajes...
-        veremos conforme vaya desarrollando el juego.'''
+    def actualizar_posicion(self):
+        ''' Mueve personajes secundarios y elementos en relación al personaje principal (scroll)'''
+        # La posición del personaje en el mapa y en cámara la indica el módulo 'scrolling'
 
-        self._jugador.mover('camina_%s'%(orientacion))
-        pygame.mixer
+        # actualiza rectángulo de posición de los secundarios.
+        for n in range(1, len(self.personajes)):
+            destino = pygame.Rect(self.personajes[n][1][0], self.personajes[n][1][1], 
+                self.personajes[n][0].rect.w, self.personajes[n][0].rect.h)
+
+        # actualiza cuadrados no pisables de objetos y personajes.
+        p=1
+        for personaje in range(1, len(self.personajes)):
+            self.personajesnpisables.append(self.personajes[p][2])
+            self.personajesnpisables0.append(self.personajes[p][2].inflate(-2,-2))
+            p += 1
+
+        for objeto in self._mapa._objetos_escenario:
+            self.objetosnpisables0.append(objeto.value().inflate(-2,-2))
 
 
-    def update(self):
+    def update(self, personajes):
         ''' mueve y actualiza las posiciones de los personajes '''
 
-        # comprueba acciones
-        # colisiones
+        # recibe modificación de los personajes en el state.
+        self.personajes = personajes
+        self.actualizar_posicion()          # Mueve personajes secundarios y objetos.
+        self.mover_personajes()             # Mueve a los personajes.
 
-        if self._hay_colisión():
-            None
-        self.actualizar_camara()
-
-    
-    def dibujar(self, surface):
-        self._mapa.dibujar(surface)
-        
-        for personaje in self.personajes:
-            personaje.dibujar(surface)
-
+        return self.personajes

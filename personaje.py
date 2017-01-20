@@ -18,7 +18,17 @@ _spritesinfo = {
             'tileH':64, 
             'tileW':64, 
             'path':'utilidades\imagenes\CrisSheet.png'},
-    'Otro':{},
+    'Piti':{'actionlist':['mov1_N', 'mov1_O', 'mov1_S', 'mov1_E', 
+                'mov2_N', 'mov2_O', 'mov2_S', 'mov2_E',
+                'camina_N', 'camina_O', 'camina_S', 'camina_E', 
+                'mov3_N', 'mov3_O', 'mov3_S', 'mov3_E',
+                'mov4_N', 'mov4_O', 'mov4_S', 'mov4_E',
+                'muere'],
+            'nsprites':[7,7,7,7,8,8,8,8,9,9,9,9,6,6,6,6,13,13, 13, 13, 6], # sprites por linea del tileset.
+            'rectval':[+22, +20, -42, -23], # cuadrado de sprite válido para colisiones
+            'tileH':64, 
+            'tileW':64, 
+            'path':'utilidades\imagenes\PitiSheet.png'},
     'Otro2':{}
     }
 
@@ -29,7 +39,7 @@ class Personaje(pygame.sprite.Sprite):
   
 
     def __init__(self, personaje):
-        print ("Creando personaje " + personaje + '...')
+        print ("....Creando personaje " + personaje + '...')
         global spriteinfo
         spriteinfo = _spritesinfo[personaje]
 
@@ -54,10 +64,13 @@ class Personaje(pygame.sprite.Sprite):
         self.rect = pygame.Rect(
             self.pos[0]+spriteinfo['rectval'][0], self.pos[1]+spriteinfo['rectval'][1], 
             self.tileW+spriteinfo['rectval'][2], self.tileH+spriteinfo['rectval'][3])
-     
-   
-    def mover(self, nuevaaccion):
-        # Actualiza el sprite adecuado según la orientación.
+      
+        # lista con los mensajes para el modo test:
+        self.test = ['']
+
+    def actualizar_sprite(self, nuevaaccion):
+        ''' Actualiza el sprite adecuado según la orientación. '''
+
         if self.cont > (len(self.sprites_accion[nuevaaccion])-1):
             self.cont = 0
 
@@ -72,11 +85,16 @@ class Personaje(pygame.sprite.Sprite):
         self.rect.topleft = (self.pos[0], self.pos[1])
         
         # control
-        print ('\nsprite image: ',self.cont)
-        print (self.action)
-        print ('Pos: x %i y %i' %(self.pos[0], self.pos[1]))
+        self.test[0]=str(' - Acción: ' + self.action)
 
 
-    def dibujar(self, destino):
+    def dice(self, texto, icono=False):
+        ''' Bocadillo sobre el sprite que dice algo '''
+        None
+
+
+    def dibujar_personaje(self, surface):
         # Dibujamos el tile correspondiente de Cris.
-        destino.blit(self.image, (self.pos[0]-self.offset[0], self.pos[1]-self.offset[1]))
+        posicion = (self.pos[0]-self.offset[0], self.pos[1]-self.offset[1])
+
+        surface.blit(self.image, posicion)

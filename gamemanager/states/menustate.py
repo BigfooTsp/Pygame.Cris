@@ -7,7 +7,7 @@ import escenario, personaje, mundo
 class MenuState(gamestate.GameState):
 
 	def __init__(self, parent):
-		print ('instanciando pantalla menustate...')
+		print ('....instanciando pantalla menustate...')
 		
 		self.parent = parent # parent es el gameManager
 		self.screen_rect = parent.screen.get_rect()
@@ -31,7 +31,7 @@ class MenuState(gamestate.GameState):
 
 
 	def start(self):
-		print('GameState menustate started')
+		print('........GameState menustate started')
 		pass
 
 
