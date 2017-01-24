@@ -24,37 +24,37 @@ class Camara:
     de tiles debe de dibujar según la posición del personaje y el tamaño
     de la pantalla. También dibuja los objetos y personajes.'''
 
+    #[.] Añadir variables mapa, personajes y screen como globales
 
     def __init__(self, screen, mapa, personajes):
+        global screen_w, screen_h, mapa_sizex, mapa_sizey
         print ('....Creando objeto camara para scroll.')
         self.personajes = personajes
+
+        # Mapa
         self.mapa = mapa
+        mapa_sizex = self.mapa._mapa_size[0]
+        mapa_sizey = self.mapa._mapa_size[1]
+        mapa_size = (mapa_sizex, mapa_sizey)
+        
+        # Pantalla
         self.screen = screen
+        screen_size = self.screen.get_size()
+        screen_w = screen_size[0]
+        screen_h = screen_size[1]
+
         # lista con los mensajes para el modo test:
         self.test = []
+        self.scrollx = 0
+        self.scrolly = 0
+        self.scrollpos = [0,0] # Posición en cámara para personaje principal
 
     def actualizar_scroll(self, personajes):
         ''' Define el rango de tiles de mapa a imprimir y 
             la posición del personaje'''
 
-        global screen_w, screen_h, mapa_sizex, mapa_sizey
-
         self.personajes = personajes
-
-        self.jugador = self.personajes[0][0]
-        self.pos_abs = self.personajes[0][1]
-        self.rect_abs = self.personajes[0][2]
-        mapa = self.mapa
-        rect_abs = self.rect_abs
-        screen = self.screen
-        # Mapa
-        mapa_sizex = self.mapa._mapa_size[0]
-        mapa_sizey = self.mapa._mapa_size[1]
-        mapa_size = (mapa_sizex, mapa_sizey)
-        # Pantalla
-        screen_size = self.screen.get_size()
-        screen_w = screen_size[0]
-        screen_h = screen_size[1]
+        posabs = self.personajes['Cris'].posabs # [.] cambiar para afectar a personaje.focus
 
         #########################################################
         # - Definiendo scroll                                   #
@@ -62,45 +62,34 @@ class Camara:
         # - Creando posición relativa a cámara del personaje    #
         #########################################################
 
-        self.scrollx = int(self.pos_abs[0] - screen_w/2)
-        self.scrolly = int(self.pos_abs[1] - screen_h/2)
+        self.scrollx = int(posabs[0] - screen_w/2)
+        self.scrolly = int(posabs[1] - screen_h/2)
 
         # si cámara está entre medias del mapa:
             # x
         if self.scrollx > 0 and self.scrollx < mapa_sizex-screen_w:
-            self.jugador.pos[0] = int(screen_h/2)
+            self.scrollpos[0] = int(screen_w/2)
             # y
         if self.scrolly > 0 and self.scrolly < mapa_sizey-screen_h:
-            self.jugador.pos[1] = int(screen_w/2)
+            self.scrollpos[1] = int(screen_h/2)
 
         # si cámara está en extremos del mapa:
             # a la izquierda
         if self.scrollx < 0:
             self.scrollx = 0
-            self.jugador.pos[0] = self.pos_abs[0]
+            self.scrollpos[0] = posabs[0]
             # a la derecha
         if self.scrollx > mapa_sizex - screen_w:
             self.scrollx = mapa_sizex - screen_w
-            self.jugador.pos[0] = self.pos_abs[0] - self.scrollx
+            self.scrollpos[0] = posabs[0] - self.scrollx
             # arriba
         if self.scrolly < 0:
             self.scrolly = 0
-            self.jugador.pos[1] = self.pos_abs[1] 
+            self.scrollpos[1] = posabs[1] 
             # abajo
         if self.scrolly > mapa_sizey - screen_h:
             self.scrolly = mapa_sizey - screen_h
-            self.jugador.pos[1] = self.pos_abs[1] - self.scrolly
-
-        # Actualizar posición de los personajes secundarios.
-        def actualizar_secundarios(personaje):
-            ''' Actualiza la posición relativa a cámara de pers. secundarios.'''
-            x = personaje[1][0] - self.scrollx
-            y = personaje[1][1] - self.scrolly
-            personaje[0].pos = [x, y]    
-
-        if len(self.personajes) > 0:
-            for n in range(len(self.personajes)): # menos el 0
-                actualizar_secundarios(self.personajes[n])
+            self.scrollpos[1] = posabs[1] - self.scrolly
 
         #########################################################
         # - Configurando rango de tiles del mapa a imprimir.    #
@@ -117,6 +106,11 @@ class Camara:
         if self.lim_bottom[0] >= mapa_sizey:
         	self.lim_bottom[0] -= 1
 
+        self.scroll = [self.scrollx, self.scrolly]
+
+
+        return self.scroll, self.scrollpos
+
 
     def plot(self, f, c):
         ''' devuelve las coordenadas de un tile referente a cámara'''
@@ -132,9 +126,11 @@ class Camara:
         return (f, c)
 
 
-    def dibujar_scroll(self, surface):
+    def dibujar_scroll(self, surface, personajes):
         ''' Versión que dibuja en la pantalla la porción del mapa correspondiente '''
         # dibujando layers principales:
+        self.personajes = personajes
+
         l=0
         for layer in self.mapa._mapatiles:
             for f in range(self.inicial[0], self.lim_bottom[0]+1):			# tiles x
@@ -146,10 +142,11 @@ class Camara:
 
 
     def dibujar_personajes(self, surface):
-        # Dibujando a personajes secundarios:
-        for n in range(1, len(self.personajes)): # menos el 0
-            self.personajes[n][0].dibujar_personaje(surface)
 
-        # Dibujando personaje principal.
-        self.personajes[0][0].dibujar_personaje(surface)
+        # Dibujando a personajes secundarios:
+        for criatura in self.personajes.values():
+            criatura.personaje.dibujar_personaje(surface)
+
+        # [.] Añadir junto a las layerts teniuendo en cuenta su altura
+
 

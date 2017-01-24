@@ -19,7 +19,7 @@ class GameManager():
 		# Load content:
 		pygame.init()
 		pygame.key.set_repeat(25, 25) # Activa repetición de teclas pulsadas.(delay, interval)
-		self.screen = pygame.display.set_mode (size)
+		self.screen = pygame.display.set_mode (size, 0, 32)
 		pygame.display.set_caption('Cris en El Collao')
 		# pygame.display.setimage
 		self.background = pygame.Surface(self.screen.get_size())
@@ -27,7 +27,7 @@ class GameManager():
 		self.background.fill((209, 151, 191))
 		
 		# instancia de personaje principal
-		self.jugador = personaje.Personaje('Cris')
+		self.jugador = personaje.Personaje('Cris') # El personaje se copia en el State. Habría que actualizarlo al cambiar esta.
 		self.clock = pygame.time.Clock()
 
 		# Estableciendo variable para modo test.
@@ -134,33 +134,57 @@ class GameManager():
 		self.screen.blit(textofps[0], (textofps[1].topleft))
 
 		# posición del mouse:
-		mouse = ('Mouse: '+str(self.mouse_pos))
-		x=650
+		mousepos 	= ('Mouse(pos):      '+str(self.mouse_pos))
+		x=635
 		y=30
-		textomouse = utils.texto(mouse, x, y, 17, color=(242,12,146), fuente = None) # obtiene (objeto texto, rect.)
+		textomouse = utils.texto(mousepos, x, y, 17, color=(242,12,146), fuente = None) # obtiene (objeto texto, rect.)
 		self.screen.blit(textomouse[0], (x, y))
 
+		v_mouseposabs = (self.mouse_pos[0]+self.states[-1].scroll[0], self.mouse_pos[1]+self.states[-1].scroll[1])
+		mouseposabs = ('Mouse(posabs):'+str(v_mouseposabs))
+
+		x2= 635
+		y2= 45
+		textomouse2 = utils.texto(mouseposabs, x2, y2, 17, color=(242,12,146), fuente = None) # obtiene (objeto texto, rect.)
+		self.screen.blit(textomouse2[0], (x2, y2))
+
 		# Posición del scroll:
-		scroll = ('Scroll: x %i, Y %i'%(self.states[-1].scroll.scrollx, self.states[-1].scroll.scrolly ))
-		x=650
-		y=45
-		textoscroll = utils.texto(scroll, x, y, 17, color=(242,12,146), fuente = None) # obtiene (objeto texto, rect.)
+		scroll = (self.states[-1].scroll[0], self.states[-1].scroll[1])
+		scrolltext = ('Scroll: x %i, Y %i'%(scroll[0], scroll[1]))
+		x=635
+		y=60
+		textoscroll = utils.texto(scrolltext, x, y, 17, color=(242,12,146), fuente = None) # obtiene (objeto texto, rect.)
 		self.screen.blit(textoscroll[0], (x, y))
 
 		# Posición del personaje:
-		pos = ('Personaje en: x %i, Y %i'%(self.states[-1]._personajes[0][1][0], self.states[-1]._personajes[0][1][1]))
-		x=650
-		y=60
+		pos = ('Personaje en: x %i, Y %i'%(self.states[-1]._personajes['Cris'].posabs))
+		x=635
+		y=75
 		textopos = utils.texto(pos, x, y, 17, color=(242,12,146), fuente = None) # obtiene (objeto texto, rect.)
 		self.screen.blit(textopos[0], (x, y))
+
+		# Cuadros de colisiones en escenario:
+		screen_surface 	= pygame.display.get_surface()
+		screen_rect 	= screen_surface.get_rect(topleft = scroll)
+		for rect in self.states[-1]._mapa._nopisable:
+			if screen_rect.colliderect(rect):
+				rectscroll = rect.move(rect.left-(rect.left+scroll[0]), rect.top-(rect.top+scroll[1]))
+				pygame.draw.rect(self.screen, (255,0,0), rectscroll, 1)
+
+		# Cuadros de colisión de personajes y objetos
+		for k,v in self.states[-1]._mundo.rectcols:
+			rect = self.states[-1]._mundo.rectcols[k]
+			if screen_rect.colliderect(rect):
+				print ('############rect', k, rect)
+				rectscroll = rect.move(rect.left-(rect.left+scroll[0]), rect.top-(rect.top+scroll[1]))
+				pygame.draw.rect(self.screen, (100,13,255), rectscroll, 1)
 
 		# desde los diferentes módulos:
 		test = []
 		test.extend(self.states[-1]._mundo.test)
-		for personaje in self.states[-1]._personajes:
-			test.extend(personaje[0].test)
+		for criatura in self.states[-1]._personajes.values():
+			test.extend(criatura.personaje.test)
 		test.extend(self.states[-1].test[0]) # colisiones)
-		test.extend(self.states[-1].scroll.test)
 		
 		y = 580
 		x = 600

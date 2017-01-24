@@ -34,6 +34,7 @@ _spritesinfo = {
 
 
 class Personaje(pygame.sprite.Sprite):
+    ''' Clase padre de personajes '''
 
     orientacion = {'N':(0, -2), 'S':(0, 2), 'E':(2, 0), 'O':(-2, 0)}
   
@@ -47,7 +48,7 @@ class Personaje(pygame.sprite.Sprite):
         self.tileW = spriteinfo['tileW']
         self.tileH = spriteinfo['tileH']
         self.tileset = utils.cortar_charset(spriteinfo['path'], self.tileW, self.tileH)
-        self.pos = [0, 0]
+        self.pos = [0, 0] # posición del personaje en la pantalla.
         self.offset = (spriteinfo['rectval'][0], spriteinfo['rectval'][1])
         self.sprites_accion={} # diccionario con {acción:[sprites]}
         for n in range(0, len(self.tileset)):
@@ -68,8 +69,12 @@ class Personaje(pygame.sprite.Sprite):
         # lista con los mensajes para el modo test:
         self.test = ['']
 
+        #########################################################
+        ################ - Control del sprite - #################
+        #########################################################
+
     def actualizar_sprite(self, nuevaaccion):
-        ''' Actualiza el sprite adecuado según la orientación. '''
+        ''' Actualiza el sprite adecuado según la acción. '''
 
         if self.cont > (len(self.sprites_accion[nuevaaccion])-1):
             self.cont = 0
@@ -88,13 +93,22 @@ class Personaje(pygame.sprite.Sprite):
         self.test[0]=str(' - Acción: ' + self.action)
 
 
-    def dice(self, texto, icono=False):
+    def dibujar_personaje(self, surface):
+        # Dibujamos el tile correspondiente de Cris.
+        print (self.pos) ###
+        posicion = (self.pos[0]-self.offset[0], self.pos[1]-self.offset[1])
+        surface.blit(self.image, posicion)
+
+        # añadir expresión
+
+
+        #########################################################
+        ############# - Acciones del personaje.  ################
+        #########################################################
+
+    def expresa(self, texto, icono=False):
         ''' Bocadillo sobre el sprite que dice algo '''
         None
 
 
-    def dibujar_personaje(self, surface):
-        # Dibujamos el tile correspondiente de Cris.
-        posicion = (self.pos[0]-self.offset[0], self.pos[1]-self.offset[1])
 
-        surface.blit(self.image, posicion)

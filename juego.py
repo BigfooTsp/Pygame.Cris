@@ -26,14 +26,15 @@ if __name__ == '__main__':
 
 '''
 Actual:
-[-] Moviendo instancia de scroll a State
-
+[-] cambiando mundo por objetos de personajes y objetos gestionados desde state
+[-] Dibujado desde state no desde scroll
+[-] Hay que arreglar el error de dibujado de layers hacia abajo.
 
 [.] Configuración del test. (en Juego)
-	[-] Añadir rectángulos de colisión
+	[-] Añadir rectángulos de colisiónobjetosnpisablesself.personajes[key]self.personajes[key]
 	[-] añadir modo de configuracion dibujar scroll 1 o 2
 
-[.] Cambiar listas de personajes por diccionarios.
+[-] Cambiar listas de personajes por diccionarios.
 
 ToDo:
 [.] Añadir sistema de prioridades al mapa para representar suelo y alturas
@@ -47,4 +48,10 @@ ToDo:
 [.] rebaño en el collao
 [.] tumba con susto
 [.] disparar corazones.
+
+
+NOTAS:
+- Aunque el módulo Pygame dispone de varias clases para gestionar sprites y layers
+	voy a crear los míos propios ya que esto no deja de ser una práctica de aprendizaje
+	y además amplio la compatibilidad con otras versiones de Pygame.
 '''
