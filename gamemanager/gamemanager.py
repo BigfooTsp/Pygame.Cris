@@ -23,10 +23,12 @@ class GameManager():
 		pygame.display.set_caption('Cris en El Collao')
 		self.test_mode 	= test_mode 			# Estableciendo variable para modo test.
 		self.mouse_pos 	= (0,0)
+
 		# pygame.display.setimage
 		self.background = pygame.Surface(self.screen.get_size())
 		self.background = self.background.convert()
 		self.background.fill((209, 151, 191))
+		self._pausa = 0 # Se completa con un objeto pauseState instanciado en 'juego.py'
 		# instancia de personaje principal
 		self.player 	= elementos.Elemento('Cris', 'personaje_principal', (5,750), focus=True)
 		
@@ -57,27 +59,22 @@ class GameManager():
 		self.states[-1].start()
 
 	def pushState(self, gameState):
-		'''Inicia un state manteniendo la actual en pausa'''
-		print("iniciar state")
+		''' Pausa del juego'''
+		# El gameState debería de ser la pantalla de pausa.
 
 		if len(self.states) > 0:
-			state = self.states.pop()
-			state.pause()
+			self.states[-1].pause()
 
 		self.states.append(gameState)
 		self.states[-1].start()
 
-	def popstate(self, gameState):
+	def popState(self):
 		'''Retoma un state pausado anteriormente'''
 		print("retomando state")
 
 		if len(self.states) > 0:
-			state = self.states.pop()
-			state.cleanUp()
-
-		self.states.append(gameState)
+			self.states.pop()
 		self.states[-1].resume()
-
 
 	def quit(self):
 		'''Cierra el juego'''
@@ -93,16 +90,14 @@ class GameManager():
 	def handleEvents(self, events):
 		''' Gestión de eventos manuales'''
 		teclado  = pygame.key.get_pressed()
-
-		for event in events:
+		
+		for event in events: 									# Control del personaje
 			if event.type == pygame.QUIT:
 				self.quit()
-
-			if event.type == pygame.MOUSEMOTION:
-		            # imprime la posición del mouse
+			if event.type == pygame.MOUSEMOTION:				# imprime la posición del mouse
 		            self.mouse_pos = (pygame.mouse.get_pos())
 			else:
-				self.states[-1].handleEvents(event, teclado)
+				self.states[-1].handleEvents(event, teclado) 	# Control desde el State.
 
 		# Hacer pausa
 		#pygame.time.delay(milliseconds) -> int

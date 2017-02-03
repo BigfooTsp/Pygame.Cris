@@ -26,7 +26,6 @@ class CollaoState(gamestate.GameState):
 		self.grupoelementos 	= grupo_state.GrupoState()			# grupo de objetos y personajes.
 		self.crear_elementos()	# configura self.grupoelementos con personajes y objetos del mapa
 		self.sonidos()
-		self.pause = False
 		self.test 		= [[]]	# listado de mensajes para modo test.
 
 
@@ -82,13 +81,11 @@ class CollaoState(gamestate.GameState):
 
 	def pause(self):
 		print("GameState CollaoState Paused")
-		self.parent.pushState(PauseState)
+		pass
 
 	def resume(self):
 		print("GameState CollaoState Resumed")
-		if self.pause:
-			self.pause = False
-
+		pass
 
 	########################################################
 	################ BUCLE DE LA  PANTALLA #################
@@ -148,6 +145,11 @@ class CollaoState(gamestate.GameState):
 		if teclado[pygame.K_LEFT]:
 			self.grupoelementos.elements[personaje].calc_nextaction('camina_O')
 			self.sonido_start('paso')
+
+		# Pausa
+		if teclado[pygame.K_p]:
+			self.parent.pushState(self.parent._pausa)
+
 
 		# añadir pausa
 			'''

@@ -1,2 +1,2 @@
-__all__ = ["gamestate", "menustate", "CollaoState", "InternadoState", "LaTorreState"]
+__all__ = ["gamestate", "menustate", "CollaoState", "InternadoState", "LaTorreState", "pausastate"]
 

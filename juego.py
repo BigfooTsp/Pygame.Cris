@@ -2,15 +2,16 @@ import pygame
 from pygame.locals import *
 
 from gamemanager.gamemanager import GameManager
-from gamemanager.states import CollaoState, menustate
+from gamemanager.states import CollaoState, menustate, pausastate
 
 # Activar o descativar modo test.
-test_mode = True
+test_mode = False
 
 if __name__ == '__main__':
 
 	#[-] añadir modotest como parámetro pero seguir gestionándolo desde allí.
 	game = GameManager(test_mode) #modo test como parámetro
+	game._pausa = pausastate.PausaState(game)		
 	game.changeState(CollaoState.CollaoState(game))
 
 
