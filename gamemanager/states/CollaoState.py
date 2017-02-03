@@ -2,40 +2,70 @@ import pygame
 from pygame.locals import *
 from gamemanager.states import gamestate
 from utilidades import utils, scrolling
-import escenario, personaje, mundo
+import escenario, elementos, grupo_state
 
 class CollaoState(gamestate.GameState):
-	'''
-	Añadiendo personajes a la pantalla.
-	Debo de modificar la lista de personajes para que incluya su posición absoluta del mapa
-	después modificaré 'mundo' para que los ubique bien en el mundo.
-	[.] prescindir de la posicion inicial de JSON
-	[.] eliminando mundo
-	[.] Añadir spriteinfo como archivo separado enviado a instancia de personaje
-	[.] Uniendo personajeState y personaje
-	'''
+	''' Clase básica de State de la que heredarán el resto de pantallas
+	y que dirige una fase del juego '''
+
+
+	#----------------------------------------------------
+	# Tareas:
+		# [x] Añadir mapa y personajes.
+		# [x] Configurando handle events para cambiar nextaction del personaje.
+		# configurar colisiones.
+		# configurar eventos.
+	#----------------------------------------------------
 
 	def __init__(self, parent):
 		print ('....instanciando pantalla CollaoState...')
 		
-		self.parent = parent # parent es el gameManager
-		# Creando mapa.
-		self._mapa = escenario.Mapa('mapadesierto')
-		# Creando personajes.         obj:        nombre   posabs      personaje(si ya existe)
-		self._personajes = {'Cris':PersonajeState('Cris', (5,750), principal=True, actor=self.parent.jugador, focus = True),
-							'Piti':PersonajeState('Piti', [16*32, 21*32])
-							}
+		self.parent 	= parent 							# parent es el gameManager
+		self._mapa 		= escenario.Mapa('mapadesierto') 			# Creando mapa.
+		self.camara 	= scrolling.Camara(self.parent.screen, self._mapa)
+		self.grupoelementos 	= grupo_state.GrupoState()			# grupo de objetos y personajes.
+		self.crear_elementos()	# configura self.grupoelementos con personajes y objetos del mapa
+		self.sonidos()
+		self.pause = False
+		self.test 		= [[]]	# listado de mensajes para modo test.
 
-		# Creo objeto 'mundo' y envío el mapa y los personajes.
-		self._mundo = mundo.Mundo(self.parent.screen, self._mapa, self._personajes)
-        # configurando cámara
-		self.scrolling = scrolling.Camara(self.parent.screen, self._mapa, self._personajes)
-		self.scrollpos = self.scrolling.scrollpos
-		# Sonidos
-		fondo = pygame.mixer.music.load('utilidades/sonido/forest.ogg')
+
+	def crear_elementos(self):
+		''' Creación inicial del grupo de personajes y objetos '''
+
+		# Mapa
+		self.grupoelementos.mapanopisable = self._mapa._nopisable 	# enviando a 'elementos' rectángulos nopisables del mapa.
+		# Personajes: nombre, tipo, map_pos=[0,0], focus=False
+		self.grupoelementos.add(self.parent.player) 					# Cris, personaje principal
+		self.grupoelementos.add(elementos.Elemento('Piti', 'personaje_secundario',  [16*32, 21*32],))
+		# Objetos: {nombre:rect, ...}
+		for k,v in self._mapa._objetos_escenario.items(): 				
+			map_pos = v.topleft
+			self.grupoelementos.add('k', 'objeto_escenario', map_pos, rect=v) # objeto sin sprite.
+			# Configurar características individuales de objetos si se requiere.
+			# Nota: Es posible que se puedan añadir atributos en tiledmaps
+			# 		y procesarlos aquí luego automáticamente.
+			# Nota2: Para cambiar la velocidad cambiar su variable orientacion.
+			# Nota: Para añadir una conducta, siempre utilizar el metodo add() de elementos.Conducta.
+		# añadir rectángulos de colisión del mapa:
+		self.grupoelementos.mapanopisable = self._mapa._nopisable
+
+
+	def sonidos(self):
+		# Sonido de fondo
+		fondo = pygame.mixer.music.load('utilidades/sonido/forest.ogg') # música de fondo.
 		pygame.mixer.music.play(loops=-1)
-		# listado de mensajes para modo test.
-		self.test = [[]]
+
+		# sonido de pasos
+		self.s_paso = pygame.mixer.Sound('utilidades/sonido/step.ogg')    # Paso
+
+	def sonido_start(self, sonido, canal=1, volumen = 1):
+		canal = pygame.mixer.Channel(canal) 
+		canal.set_volume(volumen)
+	        
+		if canal.get_busy() == False:
+			if sonido == 'paso':
+				canal.play(self.s_paso)
 
 
 	########################################################
@@ -52,93 +82,114 @@ class CollaoState(gamestate.GameState):
 
 	def pause(self):
 		print("GameState CollaoState Paused")
-		pass
+		self.parent.pushState(PauseState)
 
 	def resume(self):
 		print("GameState CollaoState Resumed")
+		if self.pause:
+			self.pause = False
 
 
 	########################################################
 	################ BUCLE DE LA  PANTALLA #################
 	########################################################
 
-	def handleEvents(self, event, teclado):
-		''' gestión de eventos de teclado '''
-
-		# [.] Hay que optimizar el control del personaje.
-
-		# movimiento
-		if teclado[pygame.K_UP]:
-			self._mundo.mover_jugador('N')
-		if teclado[pygame.K_DOWN]:
-			self._mundo.mover_jugador('S')
-		if teclado[pygame.K_RIGHT]:
-			self._mundo.mover_jugador('E')
-		if teclado[pygame.K_LEFT]:
-			self._mundo.mover_jugador('O')
-
-		# añadir pausa
-		'''
-		if event.type == pygame.KEYDOWN:
-			if event.key == pygame.P_ESCAPE:
-				self.parent.popstate(menustate.MenuState(self.parent))
-		'''
-
-	def espisable():
-		''' Comprueba si es pisable '''
-
-
-	def hay_colision():
-		''' Comprueba si hay colisión '''
-
-
-	def colisiones(self, colisiones):
-		''' Gestiona las colsiones que tienen evento. '''
-
-		#colisiones = {pers:[(k,v), (k,v)], ...}
-
-		# para modo test
-		col = []
-		for k,v in colisiones.items():
-			if len(v) > 0:
-				for element in v:
-					contacto = '%s, %s'%(k,str(v))
-					col.append(contacto)
-		col.append('Colsiones:')
-		self.test[0] = col
-
 
 	def update(self):
 		''' Actualiza el juego en función de los eventos.'''
+        #------------------------------------------------
+		# -0- Si no está en pausa:
+		# -1- Detecta colisiones y las manda gestionar si las hay
+		# 		- paralelo a handleEvents. (x.nextaction, x.nextpos)
+		# 		- Gestiona nuevo evento por colisión, si se requiere, que deriva en 
+		#			nueva acción (nexaction) o en una lista de acciones (conducta_programada)
+		# -2- Actualizar elementos
+		# 		+ Comprueba si las nuevas posiciones son pisables.
+		# 		+ selecciona elementos con siguientes acciones.
+		#			+ cambia el sprite.
+		#			+  Emite sonidos de movimiento
+		# 			+ borra nextpos si no es pisable.
+		#		+ Actualiza las posiciones actuales por nextpos y nextaction
+		# 		+ Actualiza sus rectángulos
+		#		+ Actualiza siguientes acciones futuras si hay conducta programada. (element.update())
+		# -3- Actualiza scroll (posiciones antes de dibujar)
+		# 		+ obtiene scroll y scrollpos
+		# 		+ Actualiza la variable 'scroll_pos' de los elementos (que indicará su pos en pantalla).
+		# -5- Dibuja la pantalla
+		#		+- Layers con sprites teniendo en cuenta alturas y preferencias.
+
+		# -7- [.]?? Cuando finalice la pantalla se actualizará parent.player
+        #------------------------------------------------
+
+		self.colisiones(self.grupoelementos.intercolision())
+		self.grupoelementos.update()	
+		focus = self.grupoelementos.focus()
+		focus_map_pos = self.grupoelementos.elements[focus].map_pos
+		self.scroll, self.scrollpos = self.camara.update_scroll(focus_map_pos)
+		self.grupoelementos.update_scrollpos(self.scroll, self.scrollpos)
 
 
-		# Actualiza mundo y personajes.
-		''' Se envía personajes a mundo para que gestione sus movimientos y detecte
-			colisiones. Al recuperarlos se procesarán en el state.'''
-		self._personajes, colisiones = self._mundo.update(self._personajes)
+	def handleEvents(self, event, teclado):
+		''' gestión de eventos de teclado '''
 
-		# Gestiona colisiones.
+		personaje = self.grupoelementos.focus()
+
+		# movimiento (Modifica 'nextaction' del personaje principal.)
+			# [.] Hay que optimizar el control del personaje.
+		if teclado[pygame.K_UP]:
+			self.grupoelementos.elements[personaje].calc_nextaction('camina_N')
+			self.sonido_start('paso')
+		if teclado[pygame.K_DOWN]:
+			self.grupoelementos.elements[personaje].calc_nextaction('camina_S')
+			self.sonido_start('paso')
+		if teclado[pygame.K_RIGHT]:
+			self.grupoelementos.elements[personaje].calc_nextaction('camina_E')
+			self.sonido_start('paso')
+		if teclado[pygame.K_LEFT]:
+			self.grupoelementos.elements[personaje].calc_nextaction('camina_O')
+			self.sonido_start('paso')
+
+		# añadir pausa
+			'''
+			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.P_ESCAPE:
+					self.parent.popstate(menustate.MenuState(self.parent)) '''
+
+	def colisiones(self, colisiones=False):
+		''' Gestiona las colsiones que tienen evento. '''
+
+		# {elemento1.nombre:[(elemento2.nombre, elemento2.tipo), ...}
 		if colisiones:
-			self.colisiones(colisiones)
-		else:
-			self.test[0]=[]
 
-		# Actualiza scroll y posición de personajes.
-		self.scroll, self.scrollpos = self.scrolling.actualizar_scroll(self._personajes)  
+			# test:
+			self.test[0] = []
+			for k,v in colisiones.items():
+				for col in v:
+					self.test[0].append('%s con %s'%(k,col))
+			self.test[0].append('!COLISIONES:')
 
-		for k,v in self._personajes.items(): 
-			self._personajes[k].update_pos(self.scroll, self.scrollpos)
 
 	def draw(self):
 		''' Dibuja el juego '''
 
 		self.parent.screen.blit(self.parent.background, (0,0))
-		self.scrolling.dibujar_scroll(self.parent.screen, self._personajes)
+
+		l=0
+		for layer in self._mapa._mapatiles:
+		    for f in range(self.camara.inicial[0], self.camara.lim_bottom[0]+1):
+		        for c in range(self.camara.inicial[1], self.camara.lim_right[1]+1):
+		        	self.parent.screen.blit(self._mapa._mapatiles[l][f][c], self.camara.plot(f, c))
+		    l += 1
+
+		for element in self.grupoelementos.elements.values():
+		    element.dibujar(self.parent.screen)
 
 
 	########################################################
 	#### GESTIÓN DE COLISIONES Y EVENTOS DE LA PANTALLA ####
 	########################################################
+
+
 	def MisionesState (self):
 		''' Gestiona las misiones activas y el estado de la pantalla en general '''
 		None
@@ -159,125 +210,4 @@ class CollaoState(gamestate.GameState):
 
 
 
-	########################################################
-	####       Clase personaje ampliada para State      ####
-	########################################################
 
-
-class PersonajeState(personaje.Personaje):
-	''' Instancia especial de personaje para el State, 
-	añade rectángulos de colisión y coordenadas de pantalla '''
-
-	def __init__(self, nombre, posabs=[0,0], principal=False, actor=False, focus=False):
-		if actor:
-			self.personaje 	= actor
-		else:
-			self.personaje 	= personaje.Personaje(nombre)
-		self.nombre 		= nombre
-		self.tipo			= personaje 	# Para agrupar los diferentes tipos de elementos
-		self.posabs			= posabs		# Posición en el mapa
-		self.pos 			= self.personaje.pos
-		self.altura 		= 0				# Altura en el mapa
-		# [.] cambiar principar por tipo: personaje principal (o objeto o personaje o animal)
-		self.principal 		= principal 	# Variable que indica si el es personaje principal.
-		self.focusscroll 	= focus			# Variable que indica si es el foco en scroll
-		self.visible 		= True			# Indica si se encuentra dentro de la cámara [.] modificar
-		# Control de ordenes. blocked activa un contador para controlar una insturcción dada.
-		self.blocked 		= False			# Si el personaje > 0 no puede nueva orden.
-		self.nextpos	 	= False			# Siguiente posición a moverse
-		self.rectcol 		= pygame.Rect(self.posabs[0], self.posabs[1], self.personaje.rect.w, self.personaje.rect.h)
-
-		self.update_pos()
-
-
-	def borrar_sprite():
-		''' Borra sprite con el fondo del mapa '''
-		visible = None
-
-	def update_pos(self, scroll=[0,0], scrollpos=[0,0]):
-		''' Actualiza posición en scroll y -1 a contador de acciones del personaje'''
-
-		# cuadrado para detectar colisiones en el mapa
-		self.rectcol = pygame.Rect(self.posabs[0], self.posabs[1], self.personaje.rect.w, self.personaje.rect.h)
-
-		# Posición del personaje en cámara.
-		if self.principal:
-			self.personaje.pos = scrollpos
-		else:
-			self.personaje.pos = [self.posabs[0] - scroll[0], self.posabs[1] - scroll[1]]
-		# Contador de bloqueado.
-			if self.blocked > 0: # Contador marcha atrás de acciones.
-				self.blocked -= 1
-
-		if self.visible == None:
-			None
-			borrar_sprite()
-
-	def dibujar():
-		''' dibuja el personaje '''
-
-
-
-
- ##### CLASES PARA INCORPORAR PRÓXIMAMENTE #####
-
-class Grupo():
-	''' Clase que contiene grupos de personajes o objetos'''
-
-	def __init__():
-		self.rectcols = 0 	# Conjunto de rectángulos de colisiones
-
-	def add():
-		''' añade personajes al grupo '''
-		None
-
-	def delete():
-		''' borra personajes al grupo '''
-		None
-
-	def update():
-		''' actualiza parámetrps de los personajes '''
-
-	def intercolision():
-		''' detecta colisiones entre los miembros del grupo '''
-
-	def colisionancon():
-		''' detecta colisiones entre otros elementos o grupos'''
-
-	def dibujar():
-		''' dibuja el grupo de personajes '''
-
-
-class Objeto(pygame.sprite.Sprite):
-	''' Clase para objetos'''
-
-	def __init__():
-		self.nombre 		= nombre
-		self.posabs			= posabs		# Posición en el mapa
-		self.pos 			= self.personaje.pos
-		self.altura 		= 0				# Altura en el mapa
-		self.visible 		= True			# Indica si se encuentra dentro de la cámara [.] modificar
-		self.tipo			= objeto
-		self.cont 			= 0
-
-	def borrar():
-		''' Borra sprite con el fondo del mapa '''
-		visible = None
-
-	def update():
-		''' Actualiza posición en scroll '''
-
-		# Contador de bloqueado.
-		if self.cont > 0: # Contador marcha atrás de acciones.
-			self.cont -= 1
-
-		if visible == None:
-			borrar_sprite()
-
-	def dibujar():
-		''' dibuja el objeto '''
-
-
-class Tile():
-	''' clase que contiene las características de los tiles de los layers '''
-	None

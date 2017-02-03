@@ -54,3 +54,8 @@ def texto(texto, posx, posy, tamaño, color=(255,255,255), fuente=0,):
 	salida_rect.centery = posy
 
 	return salida, salida_rect
+
+
+def sonidos(self, sonido, canal):
+	'''Emite sonidos generales del juego'''
+	

@@ -2,7 +2,6 @@ import json
 import pygame
 from pygame.locals import *
 from utilidades import utils
-# [.] Actualizar json con datos correctos.
 
 class Mapa:
 	''' crea un listado con los tilesets del escenario, se dibuja mediante el módulo scroll. '''
@@ -40,10 +39,10 @@ class Mapa:
 		f.close()
 
 		# Configurando variables del mapa.
-		self._mapaW = data["width"] 		
-		self._mapaH = data["height"]
-		self._tileH = data['tileheight']	
-		self._tileW = data['tilewidth']
+		self._mapaW = data["width"] 		# Anchura en tiles		
+		self._mapaH = data["height"]		# Altura en tiles
+		self._tileW = data['tilewidth'] 	# Anchura del tile
+		self._tileH = data['tileheight']	# Altura del tile	
 		self._mapa_size = (self._tileW*self._mapaW, self._tileH*self._mapaH)
 
 
@@ -80,6 +79,7 @@ class Mapa:
 					for element in layer['objects']: 		# para los objetos de escenario
 						self._objetos_escenario[element['name']] = pygame.Rect(element['x'], element['y'], 
 																	element['width'], element['height'])
+
 
 	def tilesets(self, tileset):
 		''' configura self._list_tiles. '''
@@ -166,6 +166,10 @@ class objetoescena():
 				self._objectpos[0]+self._objectW), (self._objectpos[1]+self._objectH))
 
 
+
+class Tile():
+	''' clase que contiene las características de los tiles de los layers '''
+	None
 
 
 '''

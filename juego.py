@@ -16,7 +16,6 @@ if __name__ == '__main__':
 
 	# Inicio de bucle de juego.
 	while game.running:
-
 		game.handleEvents(pygame.event.get())
 		game.update()
 		game.draw()
@@ -25,33 +24,20 @@ if __name__ == '__main__':
 
 
 '''
-Actual:
-[-] cambiando mundo por objetos de personajes y objetos gestionados desde state
-[-] Dibujado desde state no desde scroll
-[-] Hay que arreglar el error de dibujado de layers hacia abajo.
-
-[.] Configuración del test. (en Juego)
-	[-] Añadir rectángulos de colisiónobjetosnpisablesself.personajes[key]self.personajes[key]
-	[-] añadir modo de configuracion dibujar scroll 1 o 2
-
-[-] Cambiar listas de personajes por diccionarios.
-
 ToDo:
-[.] Añadir sistema de prioridades al mapa para representar suelo y alturas
-[.] Añadir numpy para gestion de matrices
-[.] Test con Pandaself._list_tiles[tile-1]
-[.] Incorporar desplazamiento del personaje con clic del ratón o dirección.
+[-] Acabar state_base de la que heredarán el resto de states.
+[.] Cambiar el tratamiento de los layers del mapa:
+	[.] Convertir los tiles en objetos con prioridades y alturas
+	[.] En el dibujado, incorporar los personajes según su altura 
+
+[.] Comprobar los imports inutiles.
+[.] Incorporar desplazamiento del personaje con clic del ratón o dirección. (pathfinder)
 [.] acabar pantalla inicial
-[.] Hacer pantalla de pausa
-[.] evento u2
-[.] internado con Mastermind y Marta.
-[.] rebaño en el collao
-[.] tumba con susto
-[.] disparar corazones.
-
-
-NOTAS:
-- Aunque el módulo Pygame dispone de varias clases para gestionar sprites y layers
-	voy a crear los míos propios ya que esto no deja de ser una práctica de aprendizaje
-	y además amplio la compatibilidad con otras versiones de Pygame.
+[.] Hacer pantalla de pausa (puede ser un push-state)
+[.] Ideas de eventos en Collao State
+	[.] evento u2
+	[.] internado con Mastermind y Marta.
+	[.] rebaño en el collao
+	[.] tumba con susto
+	[.] disparar corazones.
 '''

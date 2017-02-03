@@ -2,7 +2,7 @@ import pygame, os
 from pygame.locals import *
 from gamemanager.states import gamestate, CollaoState
 from utilidades import utils
-import escenario, personaje, mundo
+import escenario, elementos
 
 class MenuState(gamestate.GameState):
 
