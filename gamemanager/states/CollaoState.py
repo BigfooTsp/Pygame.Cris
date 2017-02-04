@@ -9,14 +9,6 @@ class CollaoState(gamestate.GameState):
 	y que dirige una fase del juego '''
 
 
-	#----------------------------------------------------
-	# Tareas:
-		# [x] Añadir mapa y personajes.
-		# [x] Configurando handle events para cambiar nextaction del personaje.
-		# configurar colisiones.
-		# configurar eventos.
-	#----------------------------------------------------
-
 	def __init__(self, parent):
 		print ('....instanciando pantalla CollaoState...')
 		
@@ -102,7 +94,7 @@ class CollaoState(gamestate.GameState):
 	def update(self):
 		''' Actualiza el juego en función de los eventos.'''
         #------------------------------------------------
-		# -0- Si no está en pausa:
+		# -0- Repasa estado de misiones.
 		# -1- Detecta colisiones y las manda gestionar si las hay
 		# 		- paralelo a handleEvents. (x.nextaction, x.nextpos)
 		# 		- Gestiona nuevo evento por colisión, si se requiere, que deriva en 
@@ -125,6 +117,7 @@ class CollaoState(gamestate.GameState):
 		# -7- [.]?? Cuando finalice la pantalla se actualizará parent.player
         #------------------------------------------------
 
+		self.control_misiones()
 		self.colisiones(self.grupoelementos.intercolision())
 		self.grupoelementos.update()	
 		focus = self.grupoelementos.focus()
@@ -158,19 +151,6 @@ class CollaoState(gamestate.GameState):
 			self.parent.pushState(self.parent._pausa)
 
 
-	def colisiones(self, colisiones=False):
-		''' Gestiona las colsiones que tienen evento. '''
-
-		# {elemento1.nombre:[(elemento2.nombre, elemento2.tipo), ...}
-		if colisiones:
-
-			# test:
-			self.test[0] = []
-			for k,v in colisiones.items():
-				for col in v:
-					self.test[0].append('%s con %s'%(k,col))
-			self.test[0].append('!COLISIONES:')
-
 
 	def draw(self):
 		''' Dibuja el juego '''
@@ -193,13 +173,43 @@ class CollaoState(gamestate.GameState):
 	########################################################
 
 
-	def MisionesState (self):
-		''' Gestiona las misiones activas y el estado de la pantalla en general '''
-		None
+	def colisiones(self, colisiones=False):
+		''' Gestiona las colsiones que tienen evento. '''
 
-	def Mision1 (self):
+		# {elemento1.nombre:[(elemento2.nombre, elemento2.tipo), ...}
+		if colisiones:
+
+			# test:
+			self.test[0] = []
+			for k,v in colisiones.items():
+				for col in v:
+					self.test[0].append('%s con %s'%(k,col))
+			self.test[0].append('!COLISIONES:')
+
+
+	def control_misiones (self):
+		''' Gestiona las misiones activas y el estado de la pantalla en general '''
+		self._misionPiti = True
+
+		if self._misionPiti:
+			self.misionPiti()
+			
+
+
+	def misionPiti (self):
 		''' Misión 1 de la pantalla.'''
-		None
+
+		# El personaje Piti expresa una exclamación. (fase=1)
+		# Cuando Cris colisiona con Piti, se inicia menú para conversar.
+		# conversan y este le manda al internado. (fase=2)
+
+		fase = 1
+
+		if fase == 1:
+			self.grupoelementos.elements['Piti'].expresa(icono='exclamacion')
+
+		elif fase == 2:
+			self.grupoelementos.elements['Piti'].expresa(stop=True)
 
 	# Definir las actuaciones de personajes. es posible que desde update y con un reloj
 

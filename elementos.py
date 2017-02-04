@@ -30,6 +30,12 @@ class Elemento():
         self.nextaction     = False         # Indica la siguiente posición.
         self.nextpos        = self.map_pos
         self.conducta       = Conducta()
+
+        # Expresiones:
+        self.expresion      = False         # Indica si hay una expresión (bocadillo) sobre el elemento.
+        self.exp_exclamacion = pygame.image.load('utilidades/imagenes/exclamacion.png')
+        self.exp_exclamacion.convert_alpha()
+
         self.test           = ['']          # lista con los mensajes para el modo test:
         self.genera_sprite(nombre, rect)          # A partir de su tileset y spriteinfo.
 
@@ -72,11 +78,18 @@ class Elemento():
     ############# - Acciones del elemento#.  ################
     #########################################################
 
-    def expresa(self, texto, icono=False):
-        ''' Bocadillo sobre el sprite que dice algo o 
-        muestra un icono, estado, etc... Puede que esté 
-        acompañado de un sonido.'''
-        None
+    def expresa(self, icono=False, stop=False):
+        ''' Bocadillo sobre el sprite que dice algo o muestra un icono, estado, etc... 
+        Podría estar acompañado de un sonido.'''
+        if stop:
+            self.expresion == False
+            return
+        elif self.expresion == False:
+            self.expresion = True
+        if icono == 'exclamacion':
+            self.expresion_image = self.exp_exclamacion
+        else:
+            print ('... Expresión de elemento %s no encontrada'%(self.nombre))
 
 
     #########################################################
@@ -143,9 +156,12 @@ class Elemento():
         # Dibujamos el tile correspondiente de Cris.
         posicion = (self.scroll_pos[0]-self.offset[0], self.scroll_pos[1]-self.offset[1])
         surface.blit(self.image, posicion)
-        # [.] pintar rectcol
 
-        # añadir expresión
+        # Dibujamos si el elemento está expresando algo.
+        if self.expresion:
+            exp_rect = self.expresion_image.get_rect()
+            exp_rect.midbottom = (posicion[0] + (self.rect.w // 2) , posicion[1] + 7 )
+            surface.blit(self.expresion_image, exp_rect.topleft)
 
 
 
