@@ -30,9 +30,20 @@ class MenuState(gamestate.GameState):
 		pygame.mixer.music.play(loops=-1)
 
 
+	def cleanup(self):
+		# Reactivando modo test
+		if self.testwhait == True:
+			self.parent.test_mode = True
+
+
 	def start(self):
 		print('........GameState menustate started')
-		pass
+		# Descativando modo test temporalmente.
+		if self.parent.test_mode  == True:
+			self.parent.test_mode = False
+			self.testwhait 	= True
+		else:
+			self.testwhait 	= False
 
 
 	def handleEvents(self, event, teclado):

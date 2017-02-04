@@ -73,6 +73,7 @@ class GameManager():
 		print("retomando state")
 
 		if len(self.states) > 0:
+			self.states[-1].cleanup()
 			self.states.pop()
 		self.states[-1].resume()
 

@@ -25,7 +25,6 @@ class CollaoState(gamestate.GameState):
 		self.camara 	= scrolling.Camara(self.parent.screen, self._mapa)
 		self.grupoelementos 	= grupo_state.GrupoState()			# grupo de objetos y personajes.
 		self.crear_elementos()	# configura self.grupoelementos con personajes y objetos del mapa
-		self.sonidos()
 		self.test 		= [[]]	# listado de mensajes para modo test.
 
 
@@ -41,11 +40,14 @@ class CollaoState(gamestate.GameState):
 		for k,v in self._mapa._objetos_escenario.items(): 				
 			map_pos = v.topleft
 			self.grupoelementos.add('k', 'objeto_escenario', map_pos, rect=v) # objeto sin sprite.
+
+			# Notas:
 			# Configurar características individuales de objetos si se requiere.
-			# Nota: Es posible que se puedan añadir atributos en tiledmaps
+			# Es posible que se puedan añadir atributos en tiledmaps
 			# 		y procesarlos aquí luego automáticamente.
-			# Nota2: Para cambiar la velocidad cambiar su variable orientacion.
-			# Nota: Para añadir una conducta, siempre utilizar el metodo add() de elementos.Conducta.
+			# Para cambiar la velocidad cambiar su variable orientacion.
+			# Para añadir una conducta, siempre utilizar el metodo add() de elementos.Conducta.
+		
 		# añadir rectángulos de colisión del mapa:
 		self.grupoelementos.mapanopisable = self._mapa._nopisable
 
@@ -72,20 +74,25 @@ class CollaoState(gamestate.GameState):
 	########################################################
 
 	def start(self):
+		''' Se ejecuta al iniciar la pantalla'''
 		print('........GameState CollaoState started')
-		pass
+		self.sonidos()
 
 	def cleanup(self):
+		''' Se ejecuta al cerrar la pantalla'''
 		print("GameState CollaoState Cleaned")
 		pass
 
 	def pause(self):
+		'''Se ejecuta al iniciar pausa'''
 		print("GameState CollaoState Paused")
-		pass
+		pygame.mixer.music.pause()
 
 	def resume(self):
+		'''Se ejecuta al retomar pantalla'''
 		print("GameState CollaoState Resumed")
-		pass
+		pygame.mixer.music.unpause()
+
 
 	########################################################
 	################ BUCLE DE LA  PANTALLA #################
@@ -150,12 +157,6 @@ class CollaoState(gamestate.GameState):
 		if teclado[pygame.K_p]:
 			self.parent.pushState(self.parent._pausa)
 
-
-		# añadir pausa
-			'''
-			if event.type == pygame.KEYDOWN:
-				if event.key == pygame.P_ESCAPE:
-					self.parent.popstate(menustate.MenuState(self.parent)) '''
 
 	def colisiones(self, colisiones=False):
 		''' Gestiona las colsiones que tienen evento. '''

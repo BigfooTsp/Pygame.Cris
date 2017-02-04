@@ -5,15 +5,20 @@ from gamemanager.gamemanager import GameManager
 from gamemanager.states import CollaoState, menustate, pausastate
 
 # Activar o descativar modo test.
-test_mode = False
+test_mode = True
 
 if __name__ == '__main__':
 
 	#[-] añadir modotest como parámetro pero seguir gestionándolo desde allí.
 	game = GameManager(test_mode) #modo test como parámetro
-	game._pausa = pausastate.PausaState(game)		
-	game.changeState(CollaoState.CollaoState(game))
 
+	# Pantallas iniciales:
+	game._pausa = pausastate.PausaState(game)
+	game._intro = menustate.MenuState(game)
+	CollaoState = CollaoState.CollaoState(game)
+
+	# Envía pantalla al gamemanager
+	game.changeState(game._intro)
 
 	# Inicio de bucle de juego.
 	while game.running:
@@ -34,7 +39,7 @@ ToDo:
 [.] Comprobar los imports inutiles.
 [.] Incorporar desplazamiento del personaje con clic del ratón o dirección. (pathfinder)
 [.] acabar pantalla inicial
-[.] Hacer pantalla de pausa (puede ser un push-state)
+[x] Hacer pantalla de pausa (puede ser un push-state)
 [.] Ideas de eventos en Collao State
 	[.] evento u2
 	[.] internado con Mastermind y Marta.
