@@ -42,18 +42,16 @@ class GameManager():
 		print ('Cleanup del GameManager')
 
 		while len(self.states) > 0:
-			state = self.states.pop()
-			state.cleanUp()
-
-		sys.exit()
+			self.states[-1].cleanup()
+			self.states.pop()
 
 	def changeState(self, gameState):
 		''' cambio de estado sin romper el bucle de juego'''
 		print("..Cambio de state")
 
 		if len(self.states) > 0:
-			state = self.states.pop()
-			state.cleanUp()
+			self.states[-1].cleanup()
+			self.states.pop()
 
 		self.states.append(gameState)
 		self.states[-1].start()
@@ -82,7 +80,7 @@ class GameManager():
 		print ("Quit")
 		self.running = False
 		self.cleanUp()
-
+		sys.exit()
 
     #########################################################
     ################## - BUCLE DEL JUEGO.  ##################
@@ -100,9 +98,6 @@ class GameManager():
 			else:
 				self.states[-1].handleEvents(event, teclado) 	# Control desde el State.
 
-		# Hacer pausa
-		#pygame.time.delay(milliseconds) -> int
-
 
 	def update(self):
 		'''Update del juego'''
@@ -113,6 +108,7 @@ class GameManager():
 
 		# Update de pantalla
 		self.states[-1].update()
+
 
 	def draw(self):
 		'''Manda dibujar la pantalla.'''
