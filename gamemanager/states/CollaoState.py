@@ -17,6 +17,8 @@ class CollaoState(gamestate.GameState):
 		self.camara 	= scrolling.Camara(self.parent.screen, self._mapa)
 		self.grupoelementos 	= grupo_state.GrupoState()			# grupo de objetos y personajes.
 		self.crear_elementos()	# configura self.grupoelementos con personajes y objetos del mapa
+		self.dialog_surface 	= False	# Indica si hay un diálogo en marcha.
+		self._misionPiti 		= False # Variable de misión inicial
 		self.test 		= [[]]	# listado de mensajes para modo test.
 
 
@@ -113,7 +115,8 @@ class CollaoState(gamestate.GameState):
 		# 		+ Actualiza la variable 'scroll_pos' de los elementos (que indicará su pos en pantalla).
 		# -5- Dibuja la pantalla
 		#		+- Layers con sprites teniendo en cuenta alturas y preferencias.
-
+		# -6- Reinicializar las variables que lo necesitan.
+		#
 		# -7- [.]?? Cuando finalice la pantalla se actualizará parent.player
         #------------------------------------------------
 
@@ -125,6 +128,10 @@ class CollaoState(gamestate.GameState):
 		self.scroll, self.scrollpos = self.camara.update_scroll(focus_map_pos)
 		self.grupoelementos.update_scrollpos(self.scroll, self.scrollpos)
 
+		# reinicializar variables.
+		self.mouse_click 	= False
+		#self.dialog_surface = False
+		self.mouse_click 	= (0,0)
 
 	def handleEvents(self, event, teclado):
 		''' gestión de eventos de teclado '''
@@ -146,9 +153,19 @@ class CollaoState(gamestate.GameState):
 			self.grupoelementos.elements[personaje].calc_nextaction('camina_O')
 			self.sonido_start('paso')
 
+		# Clik del ratón
+		if event.type == pygame.MOUSEBUTTONDOWN:
+			self.mouse_click = pygame.mouse.get_pos()
+			# [.] Falta concretar que es el botón derecho
+			print ('  ¡ Mouse click !', self.mouse_click) ###############
+
 		# Pausa
 		if teclado[pygame.K_p]:
 			self.parent.pushState(self.parent._pausa)
+
+
+		# Selección de respuesta en diálogos.
+		#if self.dialog_surface:
 
 
 
@@ -166,6 +183,10 @@ class CollaoState(gamestate.GameState):
 
 		for element in self.grupoelementos.elements.values():
 		    element.dibujar(self.parent.screen)
+
+		if self.dialog_surface:
+			self.parent.screen.blit(self.dialog_surface, self.diagrect.topleft)
+
 
 
 	########################################################
@@ -186,10 +207,18 @@ class CollaoState(gamestate.GameState):
 					self.test[0].append('%s con %s'%(k,col))
 			self.test[0].append('!COLISIONES:')
 
+			# Colisiones de elemento 'Cris'
+			if 'Cris' in colisiones.keys():
+				for element in colisiones['Cris']:
+					if self._misionPiti == 'fase_1': 	# Colisión con Piti para misión 1:
+						if 'Piti' in element:
+							self.dialogs('quiere_hablar')
+
 
 	def control_misiones (self):
 		''' Gestiona las misiones activas y el estado de la pantalla en general '''
-		self._misionPiti = True
+		if self._misionPiti == False:
+			self._misionPiti = 'fase_1'
 
 		if self._misionPiti:
 			self.misionPiti()
@@ -203,15 +232,63 @@ class CollaoState(gamestate.GameState):
 		# Cuando Cris colisiona con Piti, se inicia menú para conversar.
 		# conversan y este le manda al internado. (fase=2)
 
-		fase = 1
 
-		if fase == 1:
+		if self._misionPiti == 'fase_1': 
+			# El personaje muestra una exclamación.
+			# Espera a que el jugador seleccione sí a conversar cuando colisiona con Piti.
 			self.grupoelementos.elements['Piti'].expresa(icono='exclamacion')
 
-		elif fase == 2:
-			self.grupoelementos.elements['Piti'].expresa(stop=True)
+		elif self._misionPiti == 'fase_2': 
+			# Si el ratón hace clik en sí, hablamos, si es que no, seguimos en fase 1.
+			None
 
-	# Definir las actuaciones de personajes. es posible que desde update y con un reloj
+		elif  self._misionPiti == 'fase_3': 
+			# Responde que no...
+			self.misiones.update({misionPiti:fase_2})
+			None
+
+
+
+	def dialogs(self, dialog):
+		'''Menú que aparece en la pantalla preguntando o indicando algo'''
+
+		# Diálogos:
+		def dialog_Piti_quiere_hablar():
+			# En el primer encuentro entre Cris y Piti, este quiere decirle algo.
+			# Se pregunta si quiere hablar y como respuesta si o no.
+			self.dialog_surface = pygame.image.load('utilidades/imagenes/dialogos/Piti1(300x120).png')
+			self.diagrect = self.dialog_surface.get_rect()
+			self.diagrect.midbottom = (self.parent.screen_rect.centerx, self.parent.screen_rect.bottom - 15)
+
+			mask = pygame.image.load('utilidades/imagenes/dialogos/Piti1(300x120)mask.png')
+			dialog_mask = pygame.mask.from_surface(mask)
+			rect_si, rect_no = dialog_mask.get_bounding_rects()
+
+			rect_si.left += self.diagrect.left
+			rect_si.top  += self.diagrect.top
+			rect_no.left += self.diagrect.left
+			rect_no.top  += self.diagrect.top
+
+			if rect_si.collidepoint(self.mouse_click):
+				print ('Dialog:  Si')
+				print ('Iniciando fase 2 de mision Piti')
+				self.dialog_surface = False
+				self._misionPiti = 'fase_2'
+				return
+			elif rect_no.collidepoint(self.mouse_click):
+				print ('Dialog:  No')
+				print ('Iniciando fase 3 de mision Piti')
+				self.dialog_surface = False
+				self._misionPiti = 'fase_3'
+				return
+
+
+
+
+		# Selección de diálogos.
+		if dialog == 'quiere_hablar':
+			dialog_Piti_quiere_hablar()
+
 
 
 
