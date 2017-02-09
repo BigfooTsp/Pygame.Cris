@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 from gamemanager.states import gamestate
-from utilidades import utils, scrolling
+from utilidades import utils, scrolling, a_star
 import escenario, elementos, grupo_state
 
 class CollaoState(gamestate.GameState):
@@ -20,6 +20,7 @@ class CollaoState(gamestate.GameState):
 		self.dialog_surface 	= False	# Indica si hay un diálogo en marcha.
 		self._misionPiti 		= False # Variable de misión inicial
 		self.test 		= [[]]	# listado de mensajes para modo test.
+		self.pathfinding_active = True
 
 
 	def crear_elementos(self):
@@ -129,9 +130,8 @@ class CollaoState(gamestate.GameState):
 		self.grupoelementos.update_scrollpos(self.scroll, self.scrollpos)
 
 		# reinicializar variables.
-		self.mouse_click 	= False
-		#self.dialog_surface = False
-		self.mouse_click 	= (0,0)
+		self.mouse_pos 	= (0,0)
+
 
 	def handleEvents(self, event, teclado):
 		''' gestión de eventos de teclado '''
@@ -153,11 +153,30 @@ class CollaoState(gamestate.GameState):
 			self.grupoelementos.elements[personaje].calc_nextaction('camina_O')
 			self.sonido_start('paso')
 
+		# [] Cambiar imagen de ratón según posición.
 		# Clik del ratón
 		if event.type == pygame.MOUSEBUTTONDOWN:
-			self.mouse_click = pygame.mouse.get_pos()
-			# [.] Falta concretar que es el botón derecho
-			print ('  ¡ Mouse click !', self.mouse_click) ###############
+			self.mouse_click_left = pygame.mouse.get_pressed()[0]
+			self.mouse_click_right = pygame.mouse.get_pressed()[2]
+			self.mouse_pos = pygame.mouse.get_pos()
+
+			# test
+			print ('  ¡ Mouse click !', self.mouse_pos, end = ' ')
+			if self.mouse_click_left:
+				print ('boton izquierdo')
+			elif self.mouse_click_right:
+				print ('botón derecho')
+
+			# [.] ¿ El mousepos es relativo o absoluto? debería ser absoluto...
+			if self.pathfinding_active:
+				focus = self.grupoelementos.focus()
+				camino = Pathfinding(self.grupoelementos[focus].map_pos, self.mouse_pos, self._mapa.matriz_astar, width=22).waypoints
+
+			# Una vez detectado el click. se coprueba si es derecho o izquierdo:
+			# Si derecho:
+				# Se comprueba si hay espera a una respuesta en diálogo 
+				# o unevento activable mediante click.
+				# Si no es así, se deetcta si la posición es pisable para un pathfinding del personaje hacia él.
 
 		# Pausa
 		if teclado[pygame.K_p]:
@@ -222,7 +241,6 @@ class CollaoState(gamestate.GameState):
 
 		if self._misionPiti:
 			self.misionPiti()
-			
 
 
 	def misionPiti (self):
@@ -244,7 +262,6 @@ class CollaoState(gamestate.GameState):
 
 		elif  self._misionPiti == 'fase_3': 
 			# Responde que no...
-			self.misiones.update({misionPiti:fase_2})
 			None
 
 
@@ -256,6 +273,7 @@ class CollaoState(gamestate.GameState):
 		def dialog_Piti_quiere_hablar():
 			# En el primer encuentro entre Cris y Piti, este quiere decirle algo.
 			# Se pregunta si quiere hablar y como respuesta si o no.
+			self.pathfinding_active = False 	# desactivo movimiento del personaje hasta tener respuesta.
 			self.dialog_surface = pygame.image.load('utilidades/imagenes/dialogos/Piti1(300x120).png')
 			self.diagrect = self.dialog_surface.get_rect()
 			self.diagrect.midbottom = (self.parent.screen_rect.centerx, self.parent.screen_rect.bottom - 15)
@@ -269,16 +287,18 @@ class CollaoState(gamestate.GameState):
 			rect_no.left += self.diagrect.left
 			rect_no.top  += self.diagrect.top
 
-			if rect_si.collidepoint(self.mouse_click):
+			if rect_si.collidepoint(self.mouse_pos):
 				print ('Dialog:  Si')
 				print ('Iniciando fase 2 de mision Piti')
 				self.dialog_surface = False
+				self.pathfinding_active = True
 				self._misionPiti = 'fase_2'
 				return
-			elif rect_no.collidepoint(self.mouse_click):
+			elif rect_no.collidepoint(self.mouse_pos):
 				print ('Dialog:  No')
 				print ('Iniciando fase 3 de mision Piti')
 				self.dialog_surface = False
+				self.pathfinding_active = True
 				self._misionPiti = 'fase_3'
 				return
 

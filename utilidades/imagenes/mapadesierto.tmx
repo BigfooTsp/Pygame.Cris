@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" nextobjectid="138">
  <tileset firstgid="1" name="desertmap" tilewidth="32" tileheight="32" tilecount="2500" columns="50">
-  <image source="E:/Mis documentos/Dropbox/Proyectos Phyton/Pygame/Sara1/imagenes/desertmap.png" trans="ffffff" width="1600" height="1600"/>
+  <image source="desertmap.png" trans="ffffff" width="1600" height="1600"/>
  </tileset>
  <layer name="Capa de Patrones 1" width="50" height="50">
   <properties>

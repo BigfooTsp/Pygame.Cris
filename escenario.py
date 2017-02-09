@@ -27,6 +27,7 @@ class Mapa:
 		self.layers() 			# Configuración de layers. (suelo, no pisable, objetos)
 		self.mapear_completo()	# obtiene self._mapasurface con objeto surface del mapa completo.
 		self.map_info()			# Mostrar información del mapa creado
+		self.matriz_astar()
 
 
 	def load_map(self, nivel):
@@ -128,6 +129,31 @@ class Mapa:
 			y=0
 
 		return	mapasurface
+
+
+	def matriz_astar(self, width=22):
+		'''Devuelve una matriz donde 0 es pisable y 1 no'''
+		# el tamaño del mapa será múltiplo de 32 o se saldrá del rango
+		matriz = []
+		fil = 0
+		screen_rect = pygame.Rect(0, 0, self._mapa_size[0], self._mapa_size[0])
+
+		for y in range(0, self._mapa_size[0], width):
+			matriz.append([])
+			for x in range (0, self._mapa_size[1], width):
+				cel = pygame.Rect(x, y, width, width)
+				#if screen_rect.contains(cel):
+				if cel.collidelist(self._nopisable) == -1:
+					matriz[fil].append(0)
+				else:
+					matriz[fil].append(1)
+			fil += 1
+
+		print (matriz)
+		self.matriz_astar = matriz
+
+
+
 
 
 	def map_info(self):

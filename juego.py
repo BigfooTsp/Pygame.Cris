@@ -30,14 +30,19 @@ if __name__ == '__main__':
 
 
 '''
+Errores
+[.] Al cambiar la velocidad del personaje de 2 a 6 las colisiones no funcionan bien
+	Es posible que se solucione al incorporar el movimiento mediante clicks...
+
 ToDo:
 [-] Acabar state_base de la que heredarán el resto de states.
 [.] Cambiar el tratamiento de los layers del mapa:
 	[.] Convertir los tiles en objetos con prioridades y alturas
-	[.] En el dibujado, incorporar los personajes según su altura 
+	[.] En el dibujado, incorporar los personajes según su altura
+[.] Conversaciones con imágenes y audio modificado.
 
 [.] Comprobar los imports inutiles.
-[.] Incorporar desplazamiento del personaje con clic del ratón o dirección. (pathfinder)
+[-] Incorporar desplazamiento del personaje con clic del ratón o dirección. (pathfinder)
 [.] acabar pantalla inicial
 [x] Hacer pantalla de pausa (puede ser un push-state)
 [.] Ideas de eventos en Collao State

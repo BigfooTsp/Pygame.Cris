@@ -12,9 +12,18 @@ class Elemento():
     # contiene los atributos y métodos necesarios para dibujarlo y 
     # moverlo.
 
-    # Variable que indica la dirección del avance y su velocidad.
-    orientacion = {'N':(0, -2), 'S':(0, 2), 'E':(2, 0), 'O':(-2, 0)}
+    # Variables que indican la dirección del avance y su velocidad.
+    velocidad = 6
+    orientacion = {'N':(0, -1), 'NE':(-1, 1), 'E':(1, 0), 'SE':(1, 1), 'S':(0, 1), 'SO':(1, -1), 'O':(-1, 0), 'NO':(-1, -1)}
   
+    '''
+    [.] IMPLEMENTACIÓN DE CONDUCTA:
+        El personaje debería responder a comandos como camina_N. Estos, en caso de seguir una ruta o un movimiento de varios
+        frames, se acumularán en una lista, de las cuales el primero es la siguiente acción a cumplir.
+        Habrá algunos casos en los que se terminará la serie de movimientos eliminándolos todos o selectivamente.
+    '''
+
+
 
     def __init__(self, nombre, tipo, map_pos, focus=False, rect=None):
         print ("....Creando elemento " + nombre + '...')
@@ -107,6 +116,7 @@ class Elemento():
             self.nextpos    =self.map_pos
 
         elif nextaction.startswith('camina'):
+            orientacion = (self.orientacion[nextaction[-1]]) ####### Adaptar al cambio a 8 direcciones.
             avance=self.orientacion[nextaction[-1]]
             self.nextpos = (self.map_pos[0] + avance[0], self.map_pos[1] + avance[1])
             self.nextaction = nextaction
