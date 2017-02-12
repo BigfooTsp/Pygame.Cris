@@ -2,7 +2,7 @@
 
 from pygame.locals import *
 import pygame
-from utilidades import utils, chars_info
+from utilidades import utils, chars_info, a_star
  
 
 class Elemento():
@@ -12,33 +12,52 @@ class Elemento():
     # contiene los atributos y métodos necesarios para dibujarlo y 
     # moverlo.
 
-    # Variables que indican la dirección del avance y su velocidad.
-    velocidad = 6
-    orientacion = {'N':(0, -1), 'NE':(-1, 1), 'E':(1, 0), 'SE':(1, 1), 'S':(0, 1), 'SO':(1, -1), 'O':(-1, 0), 'NO':(-1, -1)}
   
     '''
     [.] IMPLEMENTACIÓN DE CONDUCTA:
-        El personaje debería responder a comandos como camina_N. Estos, en caso de seguir una ruta o un movimiento de varios
-        frames, se acumularán en una lista, de las cuales el primero es la siguiente acción a cumplir.
-        Habrá algunos casos en los que se terminará la serie de movimientos eliminándolos todos o selectivamente.
+
+        La 'conducta' sería una lista de órdenes que influyen en al menos dos atributos del personaje:
+            Su imagen:
+                Determinada por self.image
+            Su posíción:
+                Determinada por self.map_pos
+
+        self.action sería el primer elemento de la lista self.nextaction, si esta fuera camina_
+
+        Si el personaje debiera de moverse, se genera una lista con los puntos hacia los que se dirige (módulo A-Star). 
+            Luego, una lista con los siguientes movimientos desde el último waypoint...
+
+        A cada ciclo,se examina si el personaje está moviéndose y si además desarolla otra acción.
+            Si no hay acción, self.image por defecto es moverse.
+            ... si la hay, se cambia la imagen mientras este se mueve (o se borra la ruta si debiera de estarse quieto.)
+
+        [.] Cambio objeto Conducta por métodos aplicables a las listas de conducta y posición.
+        [.] Nextpos es una posición sin comprobar.. al incluir pathfinding se eliminan las comprobaciones
+            de escenario pero se mantienen las de los personajes.
+
+
     '''
 
-
+    # Variables que indican la dirección del avance y su velocidad.
+    velocidad = 5
+    # La clave del siguiente diccionario determina la imagen del sprite. La de SO y O son el mismo, por eso coincide la letra.
+    orientacion = {(0, -1):'N', (-1, 1):'O', (1, 0):'E', (1, 1):'E', (0, 1):'S', (1, -1):'E', (-1, 0):'O', (-1, -1):'O'}
 
     def __init__(self, nombre, tipo, map_pos, focus=False, rect=None):
         print ("....Creando elemento " + nombre + '...')
 
-        self.map_pos        = map_pos       # Posición en el mapa
-        self.scroll_pos     = [0, 0]        # posición del personaje en la pantalla.
+        self.map_pos        = map_pos       # Posición en el mapa (centro del elemento)
+        self.scroll_pos     = [0, 0]        # posición del elemento en la pantalla.
         self.nombre         = nombre        # Nombre del elemento, se utilizará para genera_srpite()
         self.tipo           = tipo          # Para agrupar los diferentes tipos de elementos
         self.altura         = 0             # Altura en el mapa
         self.focus          = focus         # Variable que indica si es el foco en scroll
         self.visible        = True          # Indica si se encuentra dentro de la cámara [.] modificar
-        self.action         = 'camina_S'    # acción actual
-        self.nextaction     = False         # Indica la siguiente posición.
-        self.nextpos        = self.map_pos
-        self.conducta       = Conducta()
+        self.nextaction     = False         # Lista que indica la siguiente acción.
+        self.action         = 'camina_S'    # acción actual (posición 0 de nextaction)
+        self.ruta           = []
+        self.nextpos        = self.map_pos  # Indica la posición a la que se moverá el elemento en el ciclo actual.
+        self.scroll         = (0,0)         # Pixel superior izquierda de la cámara en el mapa.
 
         # Expresiones:
         self.expresion      = False         # Indica si hay una expresión (bocadillo) sobre el elemento.
@@ -46,16 +65,11 @@ class Elemento():
         self.exp_exclamacion.convert_alpha()
 
         self.test           = ['']          # lista con los mensajes para el modo test:
-        self.genera_sprite(nombre, rect)          # A partir de su tileset y spriteinfo.
+        self.genera_sprite(nombre, rect)    # A partir de su tileset y spriteinfo.
 
 
-    #########################################################
-    ########### - Configuración del elemento.  ##############
-    #########################################################
-
+    # genera el sprite del personaje con el tileset y diccionario 'chars_info._spritesinfo'
     def genera_sprite(self, nombre, rect=None):
-        '''genera el sprite del personaje con el tileset y diccionario de características 
-        coorespondiente a su nombre'''
         global spriteinfo
 
         if rect:	# Si viene con rect desde mapa, es un objeto de mapa, sin sprite.
@@ -75,21 +89,18 @@ class Elemento():
                     charsheet.append(self.tileset[n][l])        
                 self.sprites_accion[spriteinfo['actionlist'][n]] = charsheet
             self.image          = self.sprites_accion['camina_S'][self.contsprite] # sprite actual
-            self.rectcol        = pygame.Rect(self.map_pos[0], self.map_pos[1], 
-                                                self.tileW+spriteinfo['rectval'][2], 
-                                                self.tileH+spriteinfo['rectval'][3])
-            self.rect           = pygame.Rect(self.map_pos[0]-spriteinfo['rectval'][0], 
-                                                self.map_pos[1]-spriteinfo['rectval'][1],
-                                                self.tileW, self.tileH)
+            self.rectcol        = pygame.Rect(0, 0, self.tileW+spriteinfo['rectval'][2], self.tileH+spriteinfo['rectval'][3])
+            self.rect           = pygame.Rect(0,0, self.tileW, self.tileH)
+            self.rectcol.center = self.map_pos
+            self.rect.center    = self.map_pos
 
 
     #########################################################
     ############# - Acciones del elemento#.  ################
     #########################################################
 
+    # Bocadillo sobre el sprite que dice algo o muestra un icono, estado, etc...
     def expresa(self, icono=False, stop=False):
-        ''' Bocadillo sobre el sprite que dice algo o muestra un icono, estado, etc... 
-        Podría estar acompañado de un sonido.'''
         if stop:
             self.expresion == False
             return
@@ -105,44 +116,15 @@ class Elemento():
     ############ - Actualización del elemento.  #############
     #########################################################
 
-    def calc_nextaction(self, nextaction):
-        ''' Configura variables nextaction y nextpos desde acción nueva '''
-
-        # Este método se invoca desde otro módulo por algún evento. Se actualizará la
-        # posición con el update tras comprobar que la nueva posicíón es pisable.
-
-        if nextaction == 0:
-            self.nextaction =False
-            self.nextpos    =self.map_pos
-
-        elif nextaction.startswith('camina'):
-            orientacion = (self.orientacion[nextaction[-1]]) ####### Adaptar al cambio a 8 direcciones.
-            avance=self.orientacion[nextaction[-1]]
-            self.nextpos = (self.map_pos[0] + avance[0], self.map_pos[1] + avance[1])
-            self.nextaction = nextaction
+    # Crea lista para caminar hacia un punto concreto del mapa.
+    def pathfinding(self, pos, mapa):
+        self.ruta = a_star.Pathfinding(self.map_pos, pos, mapa, width=self.rectcol.w).waypoints_pixel
+        print ('Nueva ruta para %s: '%self.nombre, end='')
+        print (self.ruta)
 
 
-    def avance(self):
-        ''' devuelve cuanto avanza el personaje en el siguiente paso programado'''
-        return (self.nextpos[0]-self.map_pos[0], self.nextpos[1]-self.map_pos[1])
-
-
-    def update(self):
-        ''' Actualiza a la siguiente posición programada siempre que el objeto no esté bloqueado
-        por algo que le impida avanzar'''
-
-        # Nota: Debería de desbloquearse si se indica una nueva conducta
-        self.conducta.update()
-        # preparar siguientes acciones.
-        if self.conducta.activa:
-            self.calc_nextaction(self.conducta.nextorden)
-        else:
-            self.calc_nextaction(0)     # reset si no hay conducta programada
-
-
+    # actualiza self.action con self.nextaction y mueve el sprite.
     def actualizar_sprite(self):
-        ''' actualiza self.action con self.nextaction y mueve el sprite. '''
-
         if self.contsprite > (len(self.sprites_accion[self.nextaction])-1) or (
                                         self.nextaction[:4] != self.action[:4]):            
             self.contsprite = 0
@@ -155,15 +137,92 @@ class Elemento():
         self.test[0]=str(' - Acción: ' + self.action)
 
 
+    # Calcula la siguiente posición desde una ruta
+    def calc_nextpos(self):
+
+        # [.] ERROR en movimiento diagonal NE (1,-1) y SO (-1,1). siempre empieza con distancia 6
+        if len(self.ruta)>0:
+            waypoint = self.ruta[0]         # siguiente waypoint
+            pos = self.map_pos
+            #distancia = abs((pos[1] - waypoint[1]) + (pos[0] - waypoint[0]))
+            distancia = abs(waypoint[0] - self.map_pos[0]) + abs(waypoint[1] - self.map_pos[1])
+
+            print ('\nmap_pos  ', self.map_pos)
+            print ('waypoint', waypoint)
+            print ('distancia', distancia) ###########
+
+            # Obtengo la orientación del movimiento:
+            direcc = []
+            for p in [0,1]:
+                if waypoint[p] > pos[p]:
+                    direcc.append(1)
+                elif waypoint[p] == pos[p]:
+                    direcc.append(0)
+                elif waypoint[p] < pos[p]:
+                    direcc.append(-1)
+            print ('dirección',direcc) ##########
+
+            # Determina la acción que le corresponde dibujar.
+            for k,v in self.orientacion.items():
+                if direcc == list(k):
+                    orient = v
+                    self.nextaction = 'camina_'+orient
+                    print ('nextaction- ',self.nextaction)
+
+            # Determina la nueva posición del elemento (Si  dist<vel sin +1, entraría en bucle con else).
+            if distancia < self.velocidad+1:
+                self.nextpos = waypoint
+                del self.ruta[0]
+            else:
+                self.nextpos = (pos[0]+(direcc[0]*self.velocidad), pos[1]+(direcc[1]*self.velocidad))
+
+        elif self.ruta == []:
+            self.nextaction = False
+            self.nextpos    = self.map_pos
+
+
+    # Actualiza posiciones y rectángulos desde nextpos.
     def mover_elemento(self, pisable=False):
-        ''' Actualiza posiciones y rectángulos desde nextpos. '''
-        self.rectcol.move_ip(self.avance())
-        self.rect.move_ip(self.avance())
-        self.map_pos = self.nextpos
+        avance = (self.nextpos[0]-self.map_pos[0], self.nextpos[1]-self.map_pos[1])
+
+        self.rectcol.center = self.nextpos
+        self.rect.center    = self.nextpos
+        self.map_pos        = self.nextpos
+
+
+    def update(self):
+        # Actualizando scroll_pos
+        self.scroll_pos = ((self.map_pos[0]-self.rectcol.w//2) - self.scroll[0], (self.map_pos[1]-self.rectcol.h//2) - self.scroll[1])
+
+
+        # Busca en las listas nextpos y nextaction para generar el próximo movimiento.
+        '''
+        self.nextaction   = False         # Lista que indica la siguiente acción.
+        self.action       = 'camina_S'    # acción actual (posición 0 de nextaction)
+        self.ruta         = False
+        self.nextpos      = self.map_pos  # Indica la posición a la que se moverá el elemento en el ciclo actual.
+        self.sprites_accion               # imagen
+        '''
+
+        # [-] Comprobar en coolaostate las llamadas a calc_nextaction
+         # Calcula nextpos (map_pos)
+
+
+        # genera nextaction desde self.ruta.
+        self.calc_nextpos()
+
+
+        # Calculta action (sprite)
+            # Hay acciones que podrían interrumpir el movimiento o modificar la imagen...
+            # Estos distintos comportamientos se definirían aquí.
 
 
     def dibujar(self, surface):
-        # Dibujamos el tile correspondiente de Cris.
+        # Dibujamos el elemento.
+        screen_rect = surface.get_rect()
+        screen_rect.topleft = screen_rect.left+self.scroll[0], screen_rect.top+self.scroll[1]
+
+        #if screen_rect.contains(self.rect):
         posicion = (self.scroll_pos[0]-self.offset[0], self.scroll_pos[1]-self.offset[1])
         surface.blit(self.image, posicion)
 
@@ -173,64 +232,27 @@ class Elemento():
             exp_rect.midbottom = (posicion[0] + (self.rect.w // 2) , posicion[1] + 7 )
             surface.blit(self.expresion_image, exp_rect.topleft)
 
+        # Dibuja la ruta en caso de camino definido:
+        if self.ruta:
+            color = (133,148,153)
+            closed = False
+            pointlist = [self.rect.center]
+            pointlist.extend(self.ruta)
+
+            for n in range(len(pointlist)):
+                pointlist[n] = (pointlist[n][0]-self.scroll[0], pointlist[n][1]-self.scroll[1])
+
+            if len(pointlist) == 1:
+                pygame.draw.line(surface, color, self.scroll_pos, pointlist[0], 1)
+            elif len(pointlist) > 1:
+                pygame.draw.lines(surface, color, False, pointlist, 1)
+            pygame.draw.circle(surface, color, pointlist[-1], self.rectcol.h//2, 1)
 
 
-class Conducta():
-    ''' clase que contiene las ordenes que se irán cumpliendo a cada paso 
-        en los elementos con conducta programada'''
-    ordenes        = []          # Listado de ordenes
-    nextorden      = False       # Siguiente orden
-    activa         = False       # Indica si hay ordenes pendientes.
-    activa_cont    = 0
-    bloqueado      = False
 
 
-    def add(self, orden, conducta_programada=False, lista=False, reset=False):
-        ''' añade una nueva orden al listado general o un listado de ellas '''
-        self.bloqueado = False      # Si el elemento está bloqueado, lo desbloquea si inicia un nuevo comportamiento.
-        self.activa = True
-
-        if reset:
-            self.ordenes = []
-        if listado:
-            self.ordenes.extend(self.lista)
-        elif conducta_programada:
-            self.ordenes.extend(self.conducta_programada(conducta_programada))
-        elif orden:
-            self.ordenes.append(orden)
-
-        self.activa_cont = len(self.ordenes)
 
 
-    def delete(self, pos=False, todas=False):
-        ''' borra una orden o todas'''
-        if pos:
-            self.ordenes.pop(pos)
-        elif todas:
-            self.ordenes = []
 
-
-    def update (self):
-        ''' Actualiza la clase tras cumplir la última orden. '''
-
-        if self.bloqueado:
-            None
-        else:
-            if self.activa:
-                self.ordenes.pop(0)
-                if len(self.ordenes) > 0:
-                    self.nextorden   = self.ordenes[0]
-                    self.activa_cont = len(self.ordenes)
-                else:
-                    self.activa      = False
-            else:
-                return 'sin conducta planificada'
-
-
-    def conducta_programada (self, conducta_programada):
-        ''' actualizará self.ordenes con un listado de acciones que representa
-            una acción programada. '''
-        conductas_dict = {}     # {conducta_programada:listadoacciones, ...}
-        return conductas_dict[conducta_programada]
 
 

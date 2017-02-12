@@ -1,1 +1,1 @@
-__all__ = ["utils", "scrolling", "chars_info"]
+__all__ = ["utils", "scrolling", "chars_info", "a_star"]

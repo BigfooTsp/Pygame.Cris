@@ -31,8 +31,6 @@ class GameManager():
 		self.background = self.background.convert()
 		self.background.fill((209, 151, 191))
 		self._pausa = 0 # Se completa con un objeto pauseState instanciado en 'juego.py'
-		# instancia de personaje principal
-		self.player 	= elementos.Elemento('Cris', 'personaje_principal', (5,750), focus=True)
 		
 		
     #########################################################

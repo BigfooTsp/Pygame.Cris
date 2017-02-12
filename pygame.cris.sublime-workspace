@@ -1,0 +1,1429 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"map",
+				"map_pos"
+			],
+			[
+				"nex",
+				"nextpos〔variable〕"
+			],
+			[
+				"ne",
+				"nextpos〔variable〕"
+			],
+			[
+				"camin",
+				"camina_"
+			],
+			[
+				"o",
+				"orientacion"
+			],
+			[
+				"mouse",
+				"mouse_pos"
+			],
+			[
+				"mo",
+				"mouse_pos〔variable〕"
+			],
+			[
+				"dialo",
+				"dialog_surface"
+			],
+			[
+				"fase",
+				"fase_2"
+			],
+			[
+				"msi",
+				"misionPiti"
+			],
+			[
+				"mi",
+				"misionPiti"
+			],
+			[
+				"dialog",
+				"dialog_cols"
+			],
+			[
+				"dia",
+				"dialog_rect"
+			],
+			[
+				"self",
+				"self.dialog_surface"
+			],
+			[
+				"quie",
+				"quiere_hablar"
+			],
+			[
+				"misi",
+				"misionPiti〔function〕"
+			],
+			[
+				"elem",
+				"element"
+			],
+			[
+				"bl",
+				"bloqueado"
+			],
+			[
+				"spri",
+				"spriteinfo〔variable〕"
+			],
+			[
+				"rect",
+				"rectval"
+			],
+			[
+				"rec",
+				"rectcol〔variable〕"
+			],
+			[
+				"elemen",
+				"elements"
+			],
+			[
+				"sc",
+				"scrollpos〔variable〕"
+			],
+			[
+				"colli",
+				"collidelist"
+			],
+			[
+				"cam",
+				"camina_S"
+			],
+			[
+				"pos",
+				"posabs〔variable〕"
+			],
+			[
+				"next",
+				"nextpos"
+			],
+			[
+				"eleme",
+				"elementos〔module〕"
+			],
+			[
+				"elemento",
+				"elementos"
+			],
+			[
+				"ele",
+				"elementos"
+			],
+			[
+				"Grupo",
+				"grupo_state"
+			],
+			[
+				"scro",
+				"scrollx"
+			],
+			[
+				"perso",
+				"personaje〔module〕"
+			],
+			[
+				"p",
+				"personajes〔variable〕"
+			],
+			[
+				"per",
+				"pers_rectcols〔variable〕"
+			],
+			[
+				"scroll",
+				"scrollpos"
+			],
+			[
+				"pers",
+				"personaje"
+			],
+			[
+				"re",
+				"rectcol"
+			],
+			[
+				"persona",
+				"personajes"
+			],
+			[
+				"otro",
+				"otrospersonajes"
+			],
+			[
+				"Perso",
+				"Personaje"
+			],
+			[
+				"Personaje",
+				"PersonajeState"
+			],
+			[
+				"mapa",
+				"mapa_sizex〔variable〕"
+			],
+			[
+				"matri",
+				"matrizmapa〔variable〕"
+			],
+			[
+				"peros",
+				"personajes"
+			],
+			[
+				"_ma",
+				"_mapaImagenes"
+			],
+			[
+				"ma",
+				"matrizmapa〔variable〕"
+			],
+			[
+				"_ju",
+				"_jugador〔variable〕"
+			],
+			[
+				"oru",
+				"orientacion〔argument〕"
+			],
+			[
+				"di",
+				"dibujar"
+			],
+			[
+				"or",
+				"orientacion〔argument〕"
+			],
+			[
+				"_",
+				"_char_posabs"
+			],
+			[
+				"_ch",
+				"_charrect"
+			],
+			[
+				"_cha",
+				"_char_posabs"
+			],
+			[
+				"K",
+				"K_ESCAPE"
+			],
+			[
+				"screen",
+				"screenH"
+			],
+			[
+				"scree",
+				"screenW"
+			],
+			[
+				"des",
+				"destino"
+			],
+			[
+				"u",
+				"utils"
+			],
+			[
+				"_c",
+				"_char_pos〔variable〕"
+			],
+			[
+				"po",
+				"posabsY"
+			],
+			[
+				"cama",
+				"camarasizeX"
+			],
+			[
+				"ca",
+				"camarasizeX"
+			],
+			[
+				"camara",
+				"camarasizeX〔variable〕"
+			],
+			[
+				"posre",
+				"posrelY〔variable〕"
+			],
+			[
+				"nueva",
+				"nuevaaccion〔argument〕"
+			],
+			[
+				"sprit",
+				"sprites_accion〔variable〕"
+			],
+			[
+				"T",
+				"TILE_ANCHO"
+			],
+			[
+				"nu",
+				"nuevaaccion〔argument〕"
+			],
+			[
+				"actu",
+				"actualizar_posicion"
+			],
+			[
+				"nuev",
+				"nuevaaccion"
+			],
+			[
+				"Tile",
+				"TILE_ALTO"
+			],
+			[
+				"i",
+				"ifmain\tif __name__ == '__main__'"
+			],
+			[
+				"C",
+				"Cris"
+			],
+			[
+				"Mpo",
+				"MposX"
+			],
+			[
+				"Ini",
+				"Initialize"
+			],
+			[
+				"baja",
+				"bajada"
+			],
+			[
+				"Mp",
+				"MposX"
+			],
+			[
+				"bajada",
+				"bajada_Par"
+			],
+			[
+				"M",
+				"MposY"
+			],
+			[
+				"mario",
+				"mario_inv"
+			],
+			[
+				"Mpos",
+				"MposY"
+			],
+			[
+				"sal",
+				"salto_Par"
+			],
+			[
+				"ba",
+				"bajada_Par"
+			],
+			[
+				"xi",
+				"xixf"
+			],
+			[
+				"R",
+				"Rxixf"
+			],
+			[
+				"K_",
+				"K_LEFT"
+			],
+			[
+				"salto",
+				"salto_Par"
+			],
+			[
+				"fun",
+				"funcionA〔function〕"
+			],
+			[
+				"funci",
+				"funcionB"
+			],
+			[
+				"send",
+				"sendmail〔function〕"
+			],
+			[
+				"MIM",
+				"MIMEText〔module〕"
+			],
+			[
+				"to",
+				"to_path"
+			],
+			[
+				"frp",
+				"from_upload〔argument〕"
+			],
+			[
+				"from_",
+				"from_upload"
+			],
+			[
+				"dbx",
+				"dbxpath"
+			],
+			[
+				"prueb",
+				"pruebasapp"
+			],
+			[
+				"pr",
+				"pruebasapp"
+			],
+			[
+				"for",
+				"from_path"
+			],
+			[
+				"from",
+				"from_path"
+			],
+			[
+				"path",
+				"path_display"
+			],
+			[
+				"pruebas",
+				"pruebasapp"
+			],
+			[
+				"pa",
+				"path_display"
+			],
+			[
+				"drop",
+				"dropbox.files.SearchResult"
+			],
+			[
+				"fil",
+				"filesearch"
+			],
+			[
+				"se",
+				"searchlist"
+			],
+			[
+				"Ro",
+				"RojoLeve"
+			],
+			[
+				"db",
+				"dbxpath〔argument〕"
+			],
+			[
+				"E",
+				"Exception"
+			],
+			[
+				"s",
+				"searchlist〔variable〕"
+			],
+			[
+				"lo",
+				"login"
+			],
+			[
+				"ty",
+				"typepath〔variable〕"
+			],
+			[
+				"dele",
+				"deleted_files"
+			],
+			[
+				"delet",
+				"deleted_files"
+			],
+			[
+				"deleted",
+				"deleted_files〔argument〕"
+			],
+			[
+				"str",
+				"strip"
+			],
+			[
+				"star",
+				"startswith"
+			],
+			[
+				"me",
+				"metadata"
+			],
+			[
+				"quer",
+				"query〔argument〕"
+			],
+			[
+				"qu",
+				"query〔argument〕"
+			],
+			[
+				"b",
+				"buscarArch〔function〕"
+			],
+			[
+				"q",
+				"query"
+			],
+			[
+				"files",
+				"files_search"
+			],
+			[
+				"type",
+				"typepath"
+			],
+			[
+				"sh",
+				"show_scan〔function〕"
+			],
+			[
+				"en",
+				"entries〔variable〕"
+			],
+			[
+				"show",
+				"show_scan"
+			],
+			[
+				"conf",
+				"conf_path"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "juego.py",
+			"settings":
+			{
+				"buffer_size": 730,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "gamemanager/gamemanager.py",
+			"settings":
+			{
+				"buffer_size": 6726,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "gamemanager/states/CollaoState.py",
+			"settings":
+			{
+				"buffer_size": 10835,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "elementos.py",
+			"settings":
+			{
+				"buffer_size": 11057,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "utilidades/a_star.py",
+			"settings":
+			{
+				"buffer_size": 30629,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "conducta.py",
+			"settings":
+			{
+				"buffer_size": 2717,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "grupo_state.py",
+			"settings":
+			{
+				"buffer_size": 3693,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "escenario.py",
+			"settings":
+			{
+				"buffer_size": 7419,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "ToDo.tasks",
+			"settings":
+			{
+				"buffer_size": 2974,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Pedro/AppData/Roaming/Sublime Text 3/Packages/PlainTasks/messages/Tutorial.todo",
+			"settings":
+			{
+				"buffer_size": 7160,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "Packages/Python/Python.sublime-build",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"last_filter": "Package Control: ",
+		"selected_items":
+		[
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control:  ",
+				"Package Control: Install Package"
+			],
+			[
+				"git:re",
+				"Git: Remote"
+			],
+			[
+				"git:stat",
+				"Git: Status"
+			],
+			[
+				"git",
+				"Package Control: Install Package"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"gith",
+				"GitHub Issue: Show Open Issues"
+			],
+			[
+				"virtual",
+				"Virtualenv: Activate"
+			],
+			[
+				"virt",
+				"Build With: Python + Virtualenv"
+			],
+			[
+				"Snippet: ",
+				"Snippet: Function"
+			],
+			[
+				"Package Control: in",
+				"Package Control: Install Package"
+			],
+			[
+				"a",
+				"Package Control: Advanced Install Package"
+			],
+			[
+				"pack",
+				"Preferences: Browse Packages"
+			],
+			[
+				"",
+				"Build: Cancel"
+			]
+		],
+		"width": 338.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by) "
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris/utilidades"
+	],
+	"file_history":
+	[
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris/ToDo_archive.tasks",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris/tips.todo",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris/ToDo_archive_archive.tasks",
+		"/C/Users/Pedro/AppData/Roaming/Sublime Text 3/Packages/PlainTasks/PlainTasks (Windows).sublime-settings",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris/pygame.cris.sublime-project",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris/ToDo.tasks",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris/juego.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Basic. Cadenas, listas, tuplas, diccionarios y conjuntos.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris/utilidades/utils.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris/gamemanager/gamemanager.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris/gamemanager/states/CollaoState.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris/grupo_state.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris/elementos.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris/utilidades/scrolling.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris/#mundo.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris/gamemanager/states/CollaoState - copia.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris/escenario.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris/personaje.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris/mundo.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris/gamemanager/states/gamestate.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris/gamemanager/states/plantillaState.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/CrisGamemanager/juego.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/CrisGamemanager/utilidades/scrolling.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/CrisGamemanager/gamemanager/states/CollaoState.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/CrisGamemanager/mundo.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/CrisGamemanager/personaje.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/CrisGamemanager/escenario.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/CrisGamemanager/utilidades/camararazonartificial.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/CrisGamemanager/utilidades/utils.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/Apuntes/ejemplos/aventurapygame_completo/gamemanager/states/menustate.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/CristinaGame/CrisGamemanager/mundo.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/CristinaGame/CrisGamemanager/personaje.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/CristinaGame/CrisGamemanager/gamemanager/gamemanager.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/CristinaGame/CrisGamemanager/gamemanager/states/CollaoState.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/CristinaGame/CrisGamemanager/utilidades/utils.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/CristinaGame/CrisGamemanager/juego.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/CristinaGame/CrisGamemanager/gamemanager/states/__init__.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/CristinaGame/teclado.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/CristinaGame/CrisGamemanager/escenario.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/CristinaGame/escenario.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/CristinaGame/utils.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/CristinaGame/CrisGamemanager/pruebas.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/CristinaGame/__init__.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/CristinaGame/personaje.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/CristinaGame/CrisGamemanager/teclado.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/Apuntes/ejemplos/ estructura juego razonartificial/director.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/CristinaGame/Juego.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/Apuntes/ejemplos/ estructura juego razonartificial/main.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/Apuntes/ejemplos/ estructura juego razonartificial/scene_home.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/Apuntes/ejemplos/ estructura juego razonartificial/scene.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/CristinaGame/imagenes/mapadesierto.json",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/Apuntes/ejemplos/mover_personaje/sujetos.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/Apuntes/ejemplos/mover_personaje/juego.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/Sara1/Juego.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/Sara1/escenario.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/Sara1/utils/utils.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/Sara1/teclado.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/Sara1/personaje.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/Sara1/utils/tiles.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/Sara1/__init__.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/Sara 1/Sara caminando.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/Sara 1/Imagenes/pixeles de sara caminando.txt",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/juego_mario/Tutorial/pygame_04.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/juego_mario/mario_09.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Medio. Diferfencias entre python 2x y 3x.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/apuntes pygame.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/juego_mario/Tutorial/pygame_07.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/juego_mario/mario_07.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/juego_mario/mario_06.2 3.4.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/juego_mario/Tutorial/pygame_06.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/juego_mario/pygame_06.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame/juego_mario/juego/mario_06. 3.4.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/DropboxRpi/DropboxRPi.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Medio. Accediendo a datos en listas complejas.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Basic. funcion detro de función.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Basic. yield.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/smtlib/Script. Enviar correo con gmail (Módulo smtplib).py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/DropboxRpi/smtlib/Script. Enviar correo con gmail (Módulo smtplib).py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/DropboxRpi/Medio. Python y dropbox.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/DropboxRpi/DropboxRPi V0.3.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/DropboxRpi/Consola v.03.py",
+		"/C/Users/Pedro/AppData/Roaming/Sublime Text 3/Packages/User/SublimeGit.sublime-settings",
+		"/C/Users/Pedro/AppData/Roaming/Sublime Text 3/Packages/SublimeGit/SublimeGit.sublime-settings",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/DropboxRpi/pruebasdropbox.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/DropboxRpi/github/DropboxRPi.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Módulo cmd (Construyendo intérprete de comandos).py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/DropboxRpi/github/Consola.py",
+		"/C/Users/Pedro/AppData/Roaming/Sublime Text 3/Packages/User/github_issue.sublime-settings",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/_Pruebas2.py",
+		"/C/Users/Pedro/AppData/Roaming/Sublime Text 3/Packages/GitHubIssue/github_issue.sublime-settings",
+		"/C/Users/Pedro/AppData/Roaming/Sublime Text 3/Packages/GitHubIssue/Default.sublime-keymap",
+		"/C/Users/Pedro/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/DropboxRpi/usertoken dropbox.txt",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Módulo Datetime, Calendar.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/DropboxRpi/updown.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/_Pruebas.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Basic. Variables en Python.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/! Apuntes breves.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Módulo Inspect. Introspección en Python.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Módulo Inspect. Obtener las funciones de un módulo con un formato concreto.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/DropboxRpi/dropbox-sdk-python.pdf",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/DropboxRpi/Consola.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Script Basic. Eliminar último directorio en direccion.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Módulo Inspect. Obtener función actual y sus llamadas.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Script. Plantilla consola (cmd y colorama).py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Plantilla consola (cmd y colorama).py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Módulo colorama (dar color a la salida en consola).py",
+		"/D/Mis Documentos/Dropbox/Apuntes/Script. Ejemplo de consola con CMD (da_console).py",
+		"/C/Users/Pedro/AppData/Local/Temp/Rar$DRa0.472/python-directadmin/trunk/directadmin/__init__.py",
+		"/C/Users/Pedro/AppData/Local/Temp/Rar$DRa0.720/python-directadmin/trunk/directadmin/api.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/DropboxRpi/Python and dropbox/Medio. Python y dropbox.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/DropboxRpi/medio. Intrspección (o reflexión) de objetos.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/DropboxRpi/pruebasdropbox(copia 1).py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Basic. Decoradores y contextmanager.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Basic. manejando errores.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Medio. Generadores (yield, next).py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Basic. Trabajar con ficheros.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Módulo os.path().py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/lista modulos dropbox.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Módulo Dropbox.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Script Basic. Listar entradas y atributos con os.walk().py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Script Basic. Obtener lista de directorios y subdirectorios del directorio actual.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Módulo os, sys y time.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/_Módulo os.path().py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/DropboxRpi/Python and dropbox/Consola.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Módulo arparse.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Módulo future.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/DropboxRpi/iniciosesion.py"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"self.map_pos",
+			"nextpos",
+			"rectcol",
+			"self.elementos",
+			"scroll_pos",
+			"nextpos",
+			"rectcols",
+			"variablesingleton",
+			"update",
+			"objetosnpisables",
+			"pers_rectcols",
+			"pers_rectnpisables",
+			"jugador",
+			"self.rect_abs",
+			"pos_abs",
+			"self.pos_abs",
+			"pos_abs",
+			"personajesnpisables",
+			"objetosnpisables0",
+			"objetosnpisables",
+			"objetosnpisables0",
+			"_matriz_image",
+			"_mapaImagenes",
+			"_mapatiles",
+			"scree",
+			"mapa",
+			"jugador",
+			"_jugadorRect",
+			"actualizar",
+			"actualizar_ca",
+			"coorde",
+			"_mapa_size",
+			"posx",
+			"tiles",
+			"_char_pos",
+			"_mapa_size",
+			"_coordenadas",
+			"dibujar",
+			"accion",
+			"rlacc",
+			"dy",
+			"dysp",
+			"Iniciali",
+			"dbx=",
+			"[n",
+			"[.",
+			"[.x",
+			"[.]",
+			"self.filel",
+			"[.]",
+			"filelist[0]",
+			"directorio inex",
+			"[.",
+			"apierr",
+			"[.]",
+			"self.searchlist",
+			"filesea",
+			"[.]",
+			"self.metad",
+			"self.filese",
+			"self.dbx",
+			"buscar",
+			"/p",
+			"SearchMat",
+			"mode",
+			"Dx.list(path)\n\tprint (Dx.filelist)\n\tDx.show_scan()",
+			"direco",
+			"direc",
+			"Direco",
+			"direco",
+			"print(self.file",
+			"print (self.file",
+			"datet",
+			"control",
+			"self.resul",
+			"self.file",
+			"self.meta",
+			"self.typ",
+			"self.filelist",
+			"file",
+			"self.flf",
+			"self.flv",
+			"resultado",
+			"result",
+			"show",
+			"showf",
+			"self.re",
+			"control",
+			"raiz",
+			"direcot",
+			"self",
+			"FORDWAR",
+			"Blue",
+			"clea",
+			"sali",
+			"salir",
+			",",
+			"\"",
+			"archlo",
+			"archlo ",
+			"archlo",
+			"[ ]",
+			"f=",
+			"f =",
+			"f=",
+			"fullname",
+			"folder",
+			"list_folder",
+			"setupUi",
+			"setupoUi",
+			"negras",
+			"blancas",
+			"x",
+			"1",
+			"aa",
+			"comb",
+			"tton",
+			"a0",
+			"LABEL_3",
+			"labelcomb",
+			"newpre",
+			"sinaciertos",
+			"/newPrefix",
+			"resulta",
+			"respues",
+			"compara",
+			"valo",
+			"inmue"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			" "
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "juego.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 730,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								208,
+								208
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "gamemanager/gamemanager.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6726,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 122.0,
+						"translation.y": 1935.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "gamemanager/states/CollaoState.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10835,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6649,
+								6649
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2242.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "elementos.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 11057,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1580,
+								1580
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 467.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "utilidades/a_star.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 30629,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								920,
+								920
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 272.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "conducta.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2717,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 271.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "grupo_state.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3693,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "escenario.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7419,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4711,
+								4745
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1738.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 8,
+					"file": "ToDo.tasks",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2974,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1462,
+								1462
+							]
+						],
+						"settings":
+						{
+							"plain_tasks_remain_time_phantoms":
+							[
+							],
+							"spell_check": false,
+							"syntax": "Packages/PlainTasks/PlainTasks.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 1288.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "/C/Users/Pedro/AppData/Roaming/Sublime Text 3/Packages/PlainTasks/messages/Tutorial.todo",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7160,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2637,
+								2649
+							]
+						],
+						"settings":
+						{
+							"plain_tasks_remain_time_phantoms":
+							[
+							],
+							"syntax": "Packages/PlainTasks/PlainTasks.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2058.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 21.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.743339768431,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 176.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "Packages/Python/Python.sublime-build",
+	"project": "pygame.cris.sublime-project",
+	"replace":
+	{
+		"height": 38.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"ToDo_archive.tasks"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": false,
+	"side_bar_width": 309.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+		"max_columns": 1
+	}
+}

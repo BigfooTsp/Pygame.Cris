@@ -1,0 +1,66 @@
+TODO Pygame Cris:
+  PlainTasks:
+    (plugin de Sublime para gestionar tareas)
+    ctrl + enter  - nueva tarea
+    ctrl + i      - convertir linea en tarea
+    ctrl + d      - Done
+    alt  + c      - Cancel
+    
+    type c, press tab key — @critical
+    type h, press tab key — @high
+    type l, press tab key — @low
+    type t, press tab key — @today
+
+    ctrl + space   - tag list
+
+    ctrl + shift + up, down - mover tarea
+    ctrl + R     - Lista de secciones
+
+    ctrl+shift+A - Archiva tarea
+    ctrl+shift+O - Archiva tarea en otro archivo.
+
+--- ✄ -----------------------
+ERRORES:
+
+  _Problema con la colisiones entre elementos tras añadir pathfinding:
+    ☐ DESCRIPCIÓN: No detecta las colisiones cuando el personaje se mueve. Se queda moviéndose junto al elemento con el que colisiona. @critical @error
+    ☐ CAUSA:
+    ☐ SOLUCIÓN:
+
+--- ✄ -----------------------
+TAREAS:
+
+ _CONTROLANDO MOVIMIENTOS Y COLISIONES DEL PERSONAJE:
+   ☐ Si al hacer click no es pisable, cambiar icono de ratón y hacer sonido.
+   ☐ Si se hace click con un elemento sobre el que se puede interactuar. Este devolverá una posición para el pathfinding y al alcanzarla, lanzará un diálogo.
+   ☐ Si el elemento colisiona, sin haber hecho click sobre él, puede iniciarse una acción.
+
+ _LAYERS:
+   ☐ Cambiar el tratamiento de los layers del mapa:
+   ☐ Convertir los tiles en objetos con prioridades y alturas
+   ☐ En el dibujado, incorporar los personajes según su altura
+
+ _DIALOGOS:
+
+ _MENU INICIAL:
+   ☐ Hacer que menu inicio se active con click. @inicio
+
+ _LIMPIEZA DE CÓDIGO:
+   ☐ Comprobar los imports inutiles.
+   ☐ Acabar state_base de la que heredarán el resto de states.
+
+ _PRÓXIMOS AÑADIDOS:
+    Ideas de eventos en Collao State:
+      ☐ evento u2
+      ☐ internado con Mastermind y Marta.
+      ☐ rebaño en el collao
+      ☐ tumba con susto
+      ☐ disparar corazones. 
+
+＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
+Archive:
+ 
+ ✔ Solución: Hacer que la búsqueda incial tras un click se haga en la misma matriz que el pathfinder... @done (17-02-12 09:55) @project(ERRORES / En A-star, cuando se busca un camino no válido (-1), se bloquea programa y error)
+ ✔ invoco este módulo a cada click izquierdo, y si True, entonces llamo a pathfinder. @done (17-02-12 09:51) @project(ERRORES / En A-star, cuando se busca un camino no válido (-1), se bloquea programa y error)
+ ✔ Añado método 'es_pisable' al módulo astar. @done (17-02-12 09:36) @project(ERRORES / En A-star, cuando se busca un camino no válido (-1), se bloquea programa y error)
+ ✔  Causa: Sucede porque al hacer click izquierdo en State, hace una búsqueda de colisiones con collidelist para ver si es pisable, si es sí, llama al pathfinder la cual trabaja con una matriz generada anteriormente en 'escenario' que muestra cuadros no_pisables (1) y pisables (0). Esta última puede no coincidir con el collidelist y causa un error. @done (17-02-12 09:03) @project(ERRORES / En A-star, cuando se busca un camino no válido (-1), se bloquea programa y error)

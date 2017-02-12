@@ -2,6 +2,9 @@ import pygame
 from pygame.locals import *
 import elementos
  
+# [.] Tras pathfindon, eliminar comprobacion método para no pisables de escenario (mantener liksta
+# 		para generar matriz de mapa) pero eliminar comprobación a cada paso del personaje. YA que se
+# 		cokprueba con la creación de la ruta.
 
 class GrupoState():
 	''' Clase que contiene grupos de personajes o objetos. 
@@ -34,10 +37,14 @@ class GrupoState():
 	def update(self):
 		''' Busca elementos con cambios y actualiza sus posiciones
 		y rectángulos tras comprobar que la nueva posición es pisable'''
+
+		# [.] Modificar para movimiento por click de ratón
+
 		for element in self.elements.values():
 			if element.nextaction:
 				element.actualizar_sprite()		
 				if self.es_pisable(element):
+					# [.] Si  no fuera pisable, o tropezara con algo, buscaría una ruta alternativa 2 o tres veces.
 					element.mover_elemento()
 					
 			element.update() 					# prepara el siguiente ciclo.
@@ -47,40 +54,35 @@ class GrupoState():
 		''' Comprueba que las nextpos de los elementos son pisables antes de avanzar.
     	las anula si no es así.'''
 
+    	# [.] Necesario con movimiento por click??
+
 		pos = element.rectcol.inflate(-2,-2)
-		pos.move_ip(element.avance())
+		pos.move_ip(element.nextpos[0]-element.map_pos[0], element.nextpos[1]-element.map_pos[1])
 
 		# Comprobando colisión con mapa:
-		idm = pos.collidelist(self.mapanopisable)
+		#idm = pos.collidelist(self.mapanopisable)
+
+
 		# Comprobando colisión con elementos:
 		for elotro in self.elements.values():
 			if elotro.nombre != element.nombre:
 			    ide = pos.colliderect(elotro.rectcol)
 		# Resultado:
-		if idm != -1 or ide:
+		#if idm != -1 or ide:
+		if ide:
 			self.test[0]=str('! (%s) No pisable'%element.nombre)
-			element.conducta.bloqueado = True
 			return False
 		else:
 			self.test[0]=str(' - Es pisable, %s avanzando'%element.nombre)
-			if element.conducta.bloqueado == True:
-				element.conducta.bloqueado == False
 			return True
-
-
-	def update_scrollpos(self, scroll, scroll_pos):
-		''' Actualiza posición (x.pos) en cámara del personaje'''
-        # Posición del personaje en cámara.
-		for element in self.elements.values():
-		    if element.focus:
-		        element.scroll_pos = scroll_pos
-		    else:
-		        element.scroll_pos = [element.map_pos[0] - scroll[0], element.map_pos[1] - scroll[1]]
 
 
 	def intercolision(self):
 		''' detecta colisiones entre todos los miembros del grupo, devuelve diccionario
 		con las colisiones. {elemento1.nombre:[(elemento2.nombre, elemento2.tipo),(...)...]} '''
+
+    	# [.] Comprobar si funciona bien con el cambio de añadir velocidad a Elementos...??
+
 		colisiones = {}
 		for element in self.elements.values():
 			coltemp = {element.nombre:[]}

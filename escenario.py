@@ -3,6 +3,14 @@ import pygame
 from pygame.locals import *
 from utilidades import utils
 
+'''
+Notas:
+	- Sobre la creación de la matriz para pathfinder: 
+		El cuadro por defecto es de 22x22vp r el cual debe de caber el elemento en movimiento, si este fuera más grande, habría
+		que modificar el cuadro o asegurarse de que no hay espacios demasiado pequeños para este.
+'''
+
+
 class Mapa:
 	''' crea un listado con los tilesets del escenario, se dibuja mediante el módulo scroll. '''
 	
@@ -130,10 +138,10 @@ class Mapa:
 
 		return	mapasurface
 
-
+	# Devuelve una matriz donde 0 es pisable y 1 no.
 	def matriz_astar(self, width=22):
-		'''Devuelve una matriz donde 0 es pisable y 1 no'''
-		# el tamaño del mapa será múltiplo de 32 o se saldrá del rango
+		# Nota: Si hay muchos elementos de diferentes tamamos.. habría que generar una matriz para cada ancho diferente.
+
 		matriz = []
 		fil = 0
 		screen_rect = pygame.Rect(0, 0, self._mapa_size[0], self._mapa_size[0])
@@ -149,11 +157,7 @@ class Mapa:
 					matriz[fil].append(1)
 			fil += 1
 
-		print (matriz)
 		self.matriz_astar = matriz
-
-
-
 
 
 	def map_info(self):

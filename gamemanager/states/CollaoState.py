@@ -21,7 +21,7 @@ class CollaoState(gamestate.GameState):
 		self._misionPiti 		= False # Variable de misión inicial
 		self.test 		= [[]]	# listado de mensajes para modo test.
 		self.pathfinding_active = True
-
+		self.mouse_pos 	= (0,0)
 
 	def crear_elementos(self):
 		''' Creación inicial del grupo de personajes y objetos '''
@@ -29,8 +29,8 @@ class CollaoState(gamestate.GameState):
 		# Mapa
 		self.grupoelementos.mapanopisable = self._mapa._nopisable 	# enviando a 'elementos' rectángulos nopisables del mapa.
 		# Personajes: nombre, tipo, map_pos=[0,0], focus=False
-		self.grupoelementos.add(self.parent.player) 					# Cris, personaje principal
-		self.grupoelementos.add(elementos.Elemento('Piti', 'personaje_secundario',  [16*32, 21*32],))
+		self.grupoelementos.add(elementos.Elemento('Cris', 'personaje_principal', (16,761), focus=True))
+		self.grupoelementos.add(elementos.Elemento('Piti', 'personaje_secundario',  (523, 683),))
 		# Objetos: {nombre:rect, ...}
 		for k,v in self._mapa._objetos_escenario.items(): 				
 			map_pos = v.topleft
@@ -124,10 +124,15 @@ class CollaoState(gamestate.GameState):
 		self.control_misiones()
 		self.colisiones(self.grupoelementos.intercolision())
 		self.grupoelementos.update()	
+
 		focus = self.grupoelementos.focus()
 		focus_map_pos = self.grupoelementos.elements[focus].map_pos
+
+		#[.] El scrollpos se está cambiando a movimiento con flechas, deja de ser relativo al personaje, en principio.
+		
 		self.scroll, self.scrollpos = self.camara.update_scroll(focus_map_pos)
-		self.grupoelementos.update_scrollpos(self.scroll, self.scrollpos)
+		for element in self.grupoelementos.elements.values():
+		    element.scroll = self.scroll
 
 		# reinicializar variables.
 		self.mouse_pos 	= (0,0)
@@ -136,47 +141,50 @@ class CollaoState(gamestate.GameState):
 	def handleEvents(self, event, teclado):
 		''' gestión de eventos de teclado '''
 
-		personaje = self.grupoelementos.focus()
+		personaje = self.grupoelementos.elements[self.grupoelementos.focus()]
+
+		# [.] Cambiar para incorporar movimiento mediante click de ratón.
+		# [.] Las flechas moverán el scroll.
+		# [.] El icono del mouse cambiará con la acción activable por click.
 
 		# movimiento (Modifica 'nextaction' del personaje principal.)
 			# [.] Hay que optimizar el control del personaje.
 		if teclado[pygame.K_UP]:
-			self.grupoelementos.elements[personaje].calc_nextaction('camina_N')
+			personaje.calc_nextaction('camina_N')
 			self.sonido_start('paso')
 		if teclado[pygame.K_DOWN]:
-			self.grupoelementos.elements[personaje].calc_nextaction('camina_S')
+			personaje.calc_nextaction('camina_S')
 			self.sonido_start('paso')
 		if teclado[pygame.K_RIGHT]:
-			self.grupoelementos.elements[personaje].calc_nextaction('camina_E')
+			personaje.calc_nextaction('camina_E')
 			self.sonido_start('paso')
 		if teclado[pygame.K_LEFT]:
-			self.grupoelementos.elements[personaje].calc_nextaction('camina_O')
+			personaje.calc_nextaction('camina_O')
 			self.sonido_start('paso')
 
-		# [] Cambiar imagen de ratón según posición.
 		# Clik del ratón
 		if event.type == pygame.MOUSEBUTTONDOWN:
-			self.mouse_click_left = pygame.mouse.get_pressed()[0]
-			self.mouse_click_right = pygame.mouse.get_pressed()[2]
-			self.mouse_pos = pygame.mouse.get_pos()
+			mouse_click_left = pygame.mouse.get_pressed()[0]
+			mouse_click_right = pygame.mouse.get_pressed()[2]
+			mouse_pos0 = pygame.mouse.get_pos()
+			mouse_pos = [mouse_pos0[0]+self.scroll[0], mouse_pos0[1]+self.scroll[1]]
 
 			# test
-			print ('  ¡ Mouse click !', self.mouse_pos, end = ' ')
-			if self.mouse_click_left:
+			print ('  ¡ Mouse click !', mouse_pos, end = ' ')
+
+			if mouse_click_left:
 				print ('boton izquierdo')
-			elif self.mouse_click_right:
+				if self.dialog_surface == False:
+					if a_star.es_pisable(mouse_pos, self._mapa.matriz_astar, width=22):
+						personaje.pathfinding(mouse_pos, self._mapa.matriz_astar)
+					else:
+						print ('Destino no accesible')
+						
+						# Por defecto la matriz del mapa para pathfinding se crea con cuadros
+						# de 22x22 que es el ancho del personaje... si esto cambia, modificarlo en 'escenario'.
+
+			elif mouse_click_right:
 				print ('botón derecho')
-
-			# [.] ¿ El mousepos es relativo o absoluto? debería ser absoluto...
-			if self.pathfinding_active:
-				focus = self.grupoelementos.focus()
-				camino = Pathfinding(self.grupoelementos[focus].map_pos, self.mouse_pos, self._mapa.matriz_astar, width=22).waypoints
-
-			# Una vez detectado el click. se coprueba si es derecho o izquierdo:
-			# Si derecho:
-				# Se comprueba si hay espera a una respuesta en diálogo 
-				# o unevento activable mediante click.
-				# Si no es así, se deetcta si la posición es pisable para un pathfinding del personaje hacia él.
 
 		# Pausa
 		if teclado[pygame.K_p]:
@@ -273,7 +281,6 @@ class CollaoState(gamestate.GameState):
 		def dialog_Piti_quiere_hablar():
 			# En el primer encuentro entre Cris y Piti, este quiere decirle algo.
 			# Se pregunta si quiere hablar y como respuesta si o no.
-			self.pathfinding_active = False 	# desactivo movimiento del personaje hasta tener respuesta.
 			self.dialog_surface = pygame.image.load('utilidades/imagenes/dialogos/Piti1(300x120).png')
 			self.diagrect = self.dialog_surface.get_rect()
 			self.diagrect.midbottom = (self.parent.screen_rect.centerx, self.parent.screen_rect.bottom - 15)
@@ -291,14 +298,12 @@ class CollaoState(gamestate.GameState):
 				print ('Dialog:  Si')
 				print ('Iniciando fase 2 de mision Piti')
 				self.dialog_surface = False
-				self.pathfinding_active = True
 				self._misionPiti = 'fase_2'
 				return
 			elif rect_no.collidepoint(self.mouse_pos):
 				print ('Dialog:  No')
 				print ('Iniciando fase 3 de mision Piti')
 				self.dialog_surface = False
-				self.pathfinding_active = True
 				self._misionPiti = 'fase_3'
 				return
 
