@@ -19,35 +19,51 @@ TODO Pygame Cris:
     ctrl+shift+A - Archiva tarea
     ctrl+shift+O - Archiva tarea en otro archivo.
 
+    links       - Para el proyecto reciente, activar con alt+o
+                  texto...
+                  [[.\..\\grupo_state.py::def update(self)]]
+             
+
 --- ✄ -----------------------
 ERRORES:
 
-  _Problema con la colisiones entre elementos tras añadir pathfinding:
-    ☐ DESCRIPCIÓN: No detecta las colisiones cuando el personaje se mueve. Se queda moviéndose junto al elemento con el que colisiona. @critical @error
-    ☐ CAUSA:
-    ☐ SOLUCIÓN:
+
 
 --- ✄ -----------------------
 TAREAS:
 
  _CONTROLANDO MOVIMIENTOS Y COLISIONES DEL PERSONAJE:
    ☐ Si al hacer click no es pisable, cambiar icono de ratón y hacer sonido.
+   ☐ El personaje tiene que detenerse al colisionar con algo que le impide pasar. @today
+   ☐ El personaje se detiene si se abre un diálogo. @today
    ☐ Si se hace click con un elemento sobre el que se puede interactuar. Este devolverá una posición para el pathfinding y al alcanzarla, lanzará un diálogo.
-   ☐ Si el elemento colisiona, sin haber hecho click sobre él, puede iniciarse una acción.
+   ☐ Si el elemento colisiona, sin haber hecho click sobre él, puede iniciarse una acción. @today
+
+ _AÑADIR MÓDULO FPS:
+   Necesario el módulo para controlar que los FPS del juego se mantengan como máximo en 25.
+
 
  _LAYERS:
-   ☐ Cambiar el tratamiento de los layers del mapa:
+   Cambiar el tratamiento de los layers del mapa
    ☐ Convertir los tiles en objetos con prioridades y alturas
    ☐ En el dibujado, incorporar los personajes según su altura
+   ☐ Incorporar actualización únicamente al cuadro de los elementos que han cambiado.
+
+ TECLADO_SCROLL:
+   ☐ Hacer posible cambiar el foco del scroll al movimiento del cursor.
 
  _DIALOGOS:
+   ☐ Diálogos con video y audio.
 
  _MENU INICIAL:
-   ☐ Hacer que menu inicio se active con click. @inicio
+   ☐ Hacer que menu inicio se active con click.
 
  _LIMPIEZA DE CÓDIGO:
    ☐ Comprobar los imports inutiles.
    ☐ Acabar state_base de la que heredarán el resto de states.
+   ☐ En los módulos, separar de los objetos los métodos que no necesitan estar dentro.
+
+ _
 
  _PRÓXIMOS AÑADIDOS:
     Ideas de eventos en Collao State:
@@ -59,6 +75,13 @@ TAREAS:
 
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
+ ✔ SOLUCIÓN: Debería, tras comprobarse que no es pisable, quedarse el elemento A en contacto con el elemento B, y no a más distancia. Para esto implemento algoritmo en el que se tiene en cuenta dos puntos: La dirección por la que se acerca el elemento A al elemento B y la distancia correcta para que se mantengan en contacto sin estar uno dentro de otro. Debo crear también un atributo dirección al objeto elemento para indicar hacia donde se mueve y utilizarlo en la fórmula. Añado atributo a cada elemento 'matriz-astar' con el mapa sobre el cual se tiene que mover. Ya que cuando detecta colisión, recalcula su nuevo camino para evadir el elemento con el que colisiona. Aunque esto se puede frenar si un evento a causa de la colisión requiriese que el elemento se detenga. Elimino el atributo 'matriz_astar' del módulo 'escenario' ya que a partir de ahora, cada objeto elemento tendrá el suyo propio adaptado a su tamaño.  SOLUCIÓN (ALGORITMO) Distancia = (Aw//2 + Bw//2 , Ah//2 + Bh//2); si hay colisión: se crea un bucle rectificando la posición del elemento A hasta que se queda a distancia de colisión, sin estar dentro. [[E:\Mis documentos\Dropbox\Proyectos Phyton\Pygame.Cris\grupo_state.py::def es_pisable(self,element)]] @done (17-02-14 13:26) @project(ERRORES / _Problema con la colisiones entre elementos tras añadir pathfinding)
+ ✔ ERROR: No detecta las colisiones cuando el personaje se mueve. @critical @error @today @done (17-02-14 13:26) @project(ERRORES / _Problema con la colisiones entre elementos tras añadir pathfinding)
+ ✔ CAUSA: En el módulo grupo_state. el método es_pisable() llamado por update() comprueba si la posición a la que avanzará el elemento está ocupado por otro. Es ese caso anula el movimiento pero también impide que colisionen si la variable 'velocidad' del obj. <Elemento> (que indica la cantidad en pixeles a la que avanza cada ciclo) es mayor que la distancia a la que se queda. @done (17-02-14 13:26) @project(ERRORES / _Problema con la colisiones entre elementos tras añadir pathfinding)
+ ✔ Al modificar las ubicaciones de las matrices 'matriz_astar' [[E:\Mis documentos\Dropbox\Proyectos Phyton\Pygame.Cris\utilidades\a_star.py::self, origen, destino, mapa, width=22]], hay que asegurarse de que los tamaños de las celdas están bien configurados en todo los módulos afectados. Puede que al generar la matriz junto al elemento (en el state), el atributo 'width' a cada llamada a astar no sea necesario.       [[E:\Mis documentos\Dropbox\Proyectos Phyton\Pygame.Cris\elementos.py::"self.ruta = a_star.Pathfinding(self.map_pos, pos, mapa, width=self.rectcol.w).waypoints_pixel"]] @done (17-02-14 08:40) @project(ERRORES / _Problema con la colisiones entre elementos tras añadir pathfinding)
+ ✔ SOLUCIÓN: añado self. a la variable mouse_pos para que la interprete el método 'dialogs' @done (17-02-13 07:37) @project(ERRORES / _La respuesta al diálogo una vez activado, no funciona)
+ ✔ ERROR: El personaje detecta la colisión y activa el diálogo pero no funcional la respuesta. @done (17-02-13 07:37) @project(ERRORES / _La respuesta al diálogo una vez activado, no funciona)
+ ✔ CAUSA: la variable mouse_pos era local del método handle_events. @done (17-02-13 07:37) @project(ERRORES / _La respuesta al diálogo una vez activado, no funciona)
  
  ✔ Solución: Hacer que la búsqueda incial tras un click se haga en la misma matriz que el pathfinder... @done (17-02-12 09:55) @project(ERRORES / En A-star, cuando se busca un camino no válido (-1), se bloquea programa y error)
  ✔ invoco este módulo a cada click izquierdo, y si True, entonces llamo a pathfinder. @done (17-02-12 09:51) @project(ERRORES / En A-star, cuando se busca un camino no válido (-1), se bloquea programa y error)

@@ -4,6 +4,18 @@
 		"selected_items":
 		[
 			[
+				"ma",
+				"mapapos"
+			],
+			[
+				"elee",
+				"elements"
+			],
+			[
+				"elemen",
+				"element"
+			],
+			[
 				"map",
 				"map_pos"
 			],
@@ -86,10 +98,6 @@
 			[
 				"rec",
 				"rectcol〔variable〕"
-			],
-			[
-				"elemen",
-				"elements"
 			],
 			[
 				"sc",
@@ -186,10 +194,6 @@
 			[
 				"_ma",
 				"_mapaImagenes"
-			],
-			[
-				"ma",
-				"matrizmapa〔variable〕"
 			],
 			[
 				"_ju",
@@ -510,10 +514,6 @@
 			[
 				"show",
 				"show_scan"
-			],
-			[
-				"conf",
-				"conf_path"
 			]
 		]
 	},
@@ -532,7 +532,7 @@
 			"file": "gamemanager/gamemanager.py",
 			"settings":
 			{
-				"buffer_size": 6726,
+				"buffer_size": 6799,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -541,34 +541,7 @@
 			"file": "gamemanager/states/CollaoState.py",
 			"settings":
 			{
-				"buffer_size": 10835,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "elementos.py",
-			"settings":
-			{
-				"buffer_size": 11057,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "utilidades/a_star.py",
-			"settings":
-			{
-				"buffer_size": 30629,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "conducta.py",
-			"settings":
-			{
-				"buffer_size": 2717,
+				"buffer_size": 11094,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -577,7 +550,25 @@
 			"file": "grupo_state.py",
 			"settings":
 			{
-				"buffer_size": 3693,
+				"buffer_size": 3905,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "elementos.py",
+			"settings":
+			{
+				"buffer_size": 11098,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "utilidades/a_star.py",
+			"settings":
+			{
+				"buffer_size": 30578,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -586,7 +577,7 @@
 			"file": "escenario.py",
 			"settings":
 			{
-				"buffer_size": 7419,
+				"buffer_size": 7265,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -595,7 +586,7 @@
 			"file": "ToDo.tasks",
 			"settings":
 			{
-				"buffer_size": 2974,
+				"buffer_size": 6734,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -604,7 +595,7 @@
 			"file": "/C/Users/Pedro/AppData/Roaming/Sublime Text 3/Packages/PlainTasks/messages/Tutorial.todo",
 			"settings":
 			{
-				"buffer_size": 7160,
+				"buffer_size": 7161,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -639,7 +630,7 @@
 		[
 			[
 				"Package Control: ",
-				"Package Control: Install Package"
+				"Package Control: Disable Package"
 			],
 			[
 				"Package Control:  ",
@@ -694,7 +685,7 @@
 				"Build: Cancel"
 			]
 		],
-		"width": 338.0
+		"width": 400.0
 	},
 	"console":
 	{
@@ -715,11 +706,15 @@
 	},
 	"expanded_folders":
 	[
-		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris",
-		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris/utilidades"
+		"/E/Mis documentos/Dropbox/Proyectos Phyton/Pygame.Cris",
+		"/E/Mis documentos/Dropbox/Proyectos Phyton/Pygame.Cris/gamemanager"
 	],
 	"file_history":
 	[
+		"/C/Users/Pedro/AppData/Roaming/Sublime Text 3/Packages/PlainTasks/messages/Tutorial.todo",
+		"/E/Mis documentos/Dropbox/Proyectos Phyton/Pygame.Cris/ToDo.tasks",
+		"/C/Users/Pedro/Dropbox/Notes/hola.note",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris/conducta.py",
 		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris/ToDo_archive.tasks",
 		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris/tips.todo",
 		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris/ToDo_archive_archive.tasks",
@@ -843,11 +838,7 @@
 		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Script Basic. Listar entradas y atributos con os.walk().py",
 		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Script Basic. Obtener lista de directorios y subdirectorios del directorio actual.py",
 		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Módulo os, sys y time.py",
-		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/_Módulo os.path().py",
-		"/D/Mis Documentos/Dropbox/Proyectos Phyton/DropboxRpi/Python and dropbox/Consola.py",
-		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Módulo arparse.py",
-		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Módulo future.py",
-		"/D/Mis Documentos/Dropbox/Proyectos Phyton/DropboxRpi/iniciosesion.py"
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/_Módulo os.path().py"
 	],
 	"find":
 	{
@@ -865,6 +856,17 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"nextpos",
+			"direccion",
+			"mouse_scroll_pos",
+			"mouse_pos",
+			"mouse_pos0",
+			"pos0",
+			"self.pos0",
+			"nextpos",
+			"self.nextpos",
+			"path",
+			"nextpos",
 			"self.map_pos",
 			"nextpos",
 			"rectcol",
@@ -981,18 +983,7 @@
 			"1",
 			"aa",
 			"comb",
-			"tton",
-			"a0",
-			"LABEL_3",
-			"labelcomb",
-			"newpre",
-			"sinaciertos",
-			"/newPrefix",
-			"resulta",
-			"respues",
-			"compara",
-			"valo",
-			"inmue"
+			"tton"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1011,7 +1002,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 3,
 			"sheets":
 			[
 				{
@@ -1027,8 +1018,8 @@
 						"selection":
 						[
 							[
-								208,
-								208
+								730,
+								730
 							]
 						],
 						"settings":
@@ -1037,10 +1028,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 73.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
@@ -1049,15 +1040,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6726,
+						"buffer_size": 6799,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								5114,
+								5114
 							]
 						],
 						"settings":
@@ -1065,11 +1056,11 @@
 							"syntax": "Packages/Python/Python.sublime-syntax",
 							"translate_tabs_to_spaces": false
 						},
-						"translation.x": 122.0,
-						"translation.y": 1935.0,
+						"translation.x": 0.0,
+						"translation.y": 2030.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
@@ -1078,137 +1069,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 10835,
+						"buffer_size": 11094,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								6649,
-								6649
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 2242.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "elementos.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 11057,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1580,
-								1580
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 467.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "utilidades/a_star.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 30629,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								920,
-								920
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 272.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "conducta.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2717,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 271.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "grupo_state.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3693,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
+								131,
+								131
 							]
 						],
 						"settings":
@@ -1221,24 +1090,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
-					"file": "escenario.py",
+					"buffer": 3,
+					"file": "grupo_state.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7419,
+						"buffer_size": 3905,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4711,
-								4745
+								1851,
+								1851
 							]
 						],
 						"settings":
@@ -1248,10 +1117,101 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1738.0,
+						"translation.y": 545.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "elementos.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 11098,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7150,
+								7157
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1685.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "utilidades/a_star.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 30578,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								955,
+								955
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "escenario.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7265,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4718,
+								4718
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1547.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
 					"type": "text"
 				}
 			]
@@ -1261,52 +1221,20 @@
 			"sheets":
 			[
 				{
-					"buffer": 8,
+					"buffer": 7,
 					"file": "ToDo.tasks",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2974,
+						"buffer_size": 6734,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1462,
-								1462
-							]
-						],
-						"settings":
-						{
-							"plain_tasks_remain_time_phantoms":
-							[
-							],
-							"spell_check": false,
-							"syntax": "Packages/PlainTasks/PlainTasks.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 1288.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "/C/Users/Pedro/AppData/Roaming/Sublime Text 3/Packages/PlainTasks/messages/Tutorial.todo",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 7160,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2637,
-								2649
+								755,
+								755
 							]
 						],
 						"settings":
@@ -1319,10 +1247,43 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2058.0,
+						"translation.y": 924.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "/C/Users/Pedro/AppData/Roaming/Sublime Text 3/Packages/PlainTasks/messages/Tutorial.todo",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7161,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2254,
+								2249
+							]
+						],
+						"settings":
+						{
+							"plain_tasks_remain_time_phantoms":
+							[
+							],
+							"syntax": "Packages/PlainTasks/PlainTasks.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 420.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
 					"type": "text"
 				}
 			]
@@ -1356,7 +1317,7 @@
 		"cols":
 		[
 			0.0,
-			0.743339768431,
+			0.542042007542,
 			1.0
 		],
 		"rows":
@@ -1368,7 +1329,7 @@
 	"menu_visible": true,
 	"output.exec":
 	{
-		"height": 176.0
+		"height": 414.0
 	},
 	"output.find_results":
 	{
@@ -1412,15 +1373,15 @@
 		],
 		"width": 0.0
 	},
-	"selected_group": 0,
+	"selected_group": 1,
 	"settings":
 	{
 	},
 	"show_minimap": true,
 	"show_open_files": true,
 	"show_tabs": true,
-	"side_bar_visible": false,
-	"side_bar_width": 309.0,
+	"side_bar_visible": true,
+	"side_bar_width": 146.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

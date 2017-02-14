@@ -43,10 +43,11 @@ class Elemento():
     # La clave del siguiente diccionario determina la imagen del sprite. La de SO y O son el mismo, por eso coincide la letra.
     orientacion = {(0, -1):'N', (-1, 1):'O', (1, 0):'E', (1, 1):'E', (0, 1):'S', (1, -1):'E', (-1, 0):'O', (-1, -1):'O'}
 
-    def __init__(self, nombre, tipo, map_pos, focus=False, rect=None):
+    def __init__(self, nombre, tipo, map_pos, matriz_astar, focus=False, rect=None):
         print ("....Creando elemento " + nombre + '...')
 
         self.map_pos        = map_pos       # Posición en el mapa (centro del elemento)
+        self.matriz_astar   = matriz_astar
         self.scroll_pos     = [0, 0]        # posición del elemento en la pantalla.
         self.nombre         = nombre        # Nombre del elemento, se utilizará para genera_srpite()
         self.tipo           = tipo          # Para agrupar los diferentes tipos de elementos
@@ -56,6 +57,7 @@ class Elemento():
         self.nextaction     = False         # Lista que indica la siguiente acción.
         self.action         = 'camina_S'    # acción actual (posición 0 de nextaction)
         self.ruta           = []
+        self.destino        = self.map_pos  # Indica el destino final hacia el cual se mueve el elemento.
         self.nextpos        = self.map_pos  # Indica la posición a la que se moverá el elemento en el ciclo actual.
         self.scroll         = (0,0)         # Pixel superior izquierda de la cámara en el mapa.
 
@@ -117,10 +119,24 @@ class Elemento():
     #########################################################
 
     # Crea lista para caminar hacia un punto concreto del mapa.
-    def pathfinding(self, pos, mapa):
+    def pathfinding(self, pos=False):
+        # Se crean dos variables mapa y destino por si, en caso de colisión, necesita recalcularse la ruta.
+        if pos:
+            self.destino = pos 
+        else:
+            pos = self.destino
+
+        mapa = self.matriz_astar
+            
         self.ruta = a_star.Pathfinding(self.map_pos, pos, mapa, width=self.rectcol.w).waypoints_pixel
+        # test:
         print ('Nueva ruta para %s: '%self.nombre, end='')
         print (self.ruta)
+
+
+    # Detiene el movimiento del elemento.
+    def detener(self):
+        self.ruta = []
 
 
     # actualiza self.action con self.nextaction y mueve el sprite.
@@ -139,8 +155,6 @@ class Elemento():
 
     # Calcula la siguiente posición desde una ruta
     def calc_nextpos(self):
-
-        # [.] ERROR en movimiento diagonal NE (1,-1) y SO (-1,1). siempre empieza con distancia 6
         if len(self.ruta)>0:
             waypoint = self.ruta[0]         # siguiente waypoint
             pos = self.map_pos
@@ -160,6 +174,7 @@ class Elemento():
                     direcc.append(0)
                 elif waypoint[p] < pos[p]:
                     direcc.append(-1)
+            self.direccion  = direcc
             print ('dirección',direcc) ##########
 
             # Determina la acción que le corresponde dibujar.
@@ -169,21 +184,26 @@ class Elemento():
                     self.nextaction = 'camina_'+orient
                     print ('nextaction- ',self.nextaction)
 
-            # Determina la nueva posición del elemento (Si  dist<vel sin +1, entraría en bucle con else).
+            # Determina la nueva posición del elemento 
+            #(Si  dist<vel sin +1, entraría en bucle con else).
             if distancia < self.velocidad+1:
-                self.nextpos = waypoint
+                self.nextpos = list(waypoint)
                 del self.ruta[0]
             else:
-                self.nextpos = (pos[0]+(direcc[0]*self.velocidad), pos[1]+(direcc[1]*self.velocidad))
+                self.nextpos = [pos[0]+(direcc[0]*self.velocidad), pos[1]+(direcc[1]*self.velocidad)]
+            
 
         elif self.ruta == []:
             self.nextaction = False
             self.nextpos    = self.map_pos
-
+            self.direccion  = (0,0)
+            
 
     # Actualiza posiciones y rectángulos desde nextpos.
-    def mover_elemento(self, pisable=False):
-        avance = (self.nextpos[0]-self.map_pos[0], self.nextpos[1]-self.map_pos[1])
+    def mover_elemento(self):
+        print (' ! nextpos, map_pos',self.nextpos, self.map_pos)
+        print (' ! rectcol', self.rectcol)
+        #avance = (self.nextpos[0]-self.map_pos[0], self.nextpos[1]-self.map_pos[1])
 
         self.rectcol.center = self.nextpos
         self.rect.center    = self.nextpos
@@ -194,23 +214,8 @@ class Elemento():
         # Actualizando scroll_pos
         self.scroll_pos = ((self.map_pos[0]-self.rectcol.w//2) - self.scroll[0], (self.map_pos[1]-self.rectcol.h//2) - self.scroll[1])
 
-
-        # Busca en las listas nextpos y nextaction para generar el próximo movimiento.
-        '''
-        self.nextaction   = False         # Lista que indica la siguiente acción.
-        self.action       = 'camina_S'    # acción actual (posición 0 de nextaction)
-        self.ruta         = False
-        self.nextpos      = self.map_pos  # Indica la posición a la que se moverá el elemento en el ciclo actual.
-        self.sprites_accion               # imagen
-        '''
-
-        # [-] Comprobar en coolaostate las llamadas a calc_nextaction
-         # Calcula nextpos (map_pos)
-
-
         # genera nextaction desde self.ruta.
         self.calc_nextpos()
-
 
         # Calculta action (sprite)
             # Hay acciones que podrían interrumpir el movimiento o modificar la imagen...

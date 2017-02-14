@@ -170,8 +170,10 @@ class GameManager():
 			textoscroll = utils.texto(scrolltext, x, y, 17, color=(242,12,146), fuente = None) # obtiene (objeto texto, rect.)
 			self.screen.blit(textoscroll[0], (x, y))
 
-			# Posición del personaje:
-			pos = ('Personaje en: x %i, Y %i'%(self.states[-1].grupoelementos.elements['Cris'].map_pos))
+			# Posición del foco:
+			foco = self.states[-1].grupoelementos.elements[self.states[-1].grupoelementos.focus()]
+			mapapos = foco.map_pos
+			pos = ('Foco en: x %i, Y %i'%(mapapos[0], mapapos[1]))
 			x=635
 			y=75
 			textopos = utils.texto(pos, x, y, 17, color=(242,12,146), fuente = None) # obtiene (objeto texto, rect.)

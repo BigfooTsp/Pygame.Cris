@@ -14,7 +14,7 @@ from pygame.locals import *
 ###################################
 
 # Devuelve la posición de la celda de una coordenada.
-def buscarPos(pos, mapa, width=22):
+def buscarPos(pos, mapa, width):
 	for f in range(0, len(mapa)):
 		for c in range(0, len(mapa[0])):
 			cel = pygame.Rect(c*width, f*width, width, width)
@@ -26,12 +26,13 @@ def distancia(a, b):
 	return abs(a[0] - b[0]) + abs(a[1] - b[1]) #Valor absoluto.
 
 # Comprueba en la matriz de un mapa si una posición (pixel) es pisable
-def es_pisable(pos, mapa, width=22):
+def accesible(pos, mapa, width):
 	f,c = buscarPos(pos, mapa, width)
 	if mapa[f][c] == 0:
 		return True
 	else:
 		return False
+
 
 
 ###################################
@@ -55,7 +56,7 @@ class Nodo:
 
 
 class Pathfinding:
-	def __init__(self, origen, destino, mapa, width=22): # mapa.matriz_astar
+	def __init__(self, origen, destino, mapa, width): # mapa.matriz_astar
 		global pos_f
 
 		self.width = width
@@ -111,6 +112,7 @@ class Pathfinding:
 						vecinos.append(Nodo(pos=[f,c], padre=nodo))
 		return vecinos
 
+
 	# Pasa el elemento de f menor de la lista abierta a la cerrada. 	
 	def f_menor(self):
 		a = self.abierta[0]
@@ -122,12 +124,14 @@ class Pathfinding:
 		self.cerrada.append(self.abierta[n])
 		del self.abierta[n]
 
+
 	# Comprueba si un nodo está en una lista.	
 	def en_lista(self, nodo, lista):
 		for i in range(len(lista)):
 			if nodo.pos == lista[i].pos:
 				return 1
 		return 0
+
 
 	# Gestiona los vecinos del nodo seleccionado.	
 	def ruta(self):
@@ -151,6 +155,7 @@ class Pathfinding:
 							self.abierta.append(self.nodos[i])
 							break
 
+
 	# Analiza el último elemento de la lista cerrada.
 	def buscar(self):
 		self.f_menor()
@@ -158,12 +163,14 @@ class Pathfinding:
 		self.nodos = self.vecinos(self.select)
 		self.ruta()
 
+
 	# Comprueba si el objetivo objetivo está en la lista abierta.
 	def objetivo(self):
 		for i in range(len(self.abierta)):
 			if self.fin.pos == self.abierta[i].pos:
 				return 0
 		return 1
+
 
 	# Retorna una lista con las posiciones del camino a seguir.
 	def camino(self):
@@ -178,10 +185,9 @@ class Pathfinding:
 		camino.reverse()
 		return camino
 
-    # Genera lista con las coordenadas waypoints.
-	def waypoints(self):
 
-		# Genera lista con el primer paso, destino, y los pasos con distina dirección.
+    # Genera lista con el primer paso, destino, y los pasos con distina dirección.
+	def waypoints(self):
 		self.waypoints = [self.camino[0]]
 		for n in range(0,len(self.camino)-2):
 			if (self.camino[n+1][0] - self.camino[n][0], self.camino[n+1][1] - self.camino[n][1]) == (

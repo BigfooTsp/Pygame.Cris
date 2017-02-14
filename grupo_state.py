@@ -44,37 +44,51 @@ class GrupoState():
 			if element.nextaction:
 				element.actualizar_sprite()		
 				if self.es_pisable(element):
-					# [.] Si  no fuera pisable, o tropezara con algo, buscaría una ruta alternativa 2 o tres veces.
+					print ('es pisable')
 					element.mover_elemento()
-					
+				else:
+					print ('! %s colisiona, detiene ruta...'%element.nombre)
+					element.mover_elemento()
+					element.detener()
+			    	
+			    	# [ ANULADO ]
+			    	# Inicia una nueva búsqueda de camino para continuar, evadiendo a 'elotro'.
+			    	# Nota (es posible que esto genere un bucle entre dos elementos...)
+					#element.pathfinding()
 			element.update() 					# prepara el siguiente ciclo.
 
 
+	# Comprueba que las nextpos de los elementos son pisables antes de avanzar.
 	def es_pisable(self,element):
-		''' Comprueba que las nextpos de los elementos son pisables antes de avanzar.
-    	las anula si no es así.'''
-
-    	# [.] Necesario con movimiento por click??
-
-		pos = element.rectcol.inflate(-2,-2)
+		pos = element.rectcol.inflate(-(element.velocidad-1),-(element.velocidad-1))
 		pos.move_ip(element.nextpos[0]-element.map_pos[0], element.nextpos[1]-element.map_pos[1])
 
-		# Comprobando colisión con mapa:
-		#idm = pos.collidelist(self.mapanopisable)
+		#pos = element.rectcol
+		retroceso = (element.direccion[0] * -1, element.direccion[1] * -1)
 
+		# calculará las distancias necesarias para rectificar la posición del elemento si se traspasan.
+		def calculadistancias():
+			# distancia mínima que debería de haber entre los elementos.
+			dist = (element.rectcol.w//2 + elotro.rectcol.w//2 -1 , element.rectcol.h//2 + elotro.rectcol.h//2 -1)
+			# distancia real.
+			distcol = (abs(element.nextpos[0] - elotro.map_pos[0]), abs(element.nextpos[1] - elotro.map_pos[1]))
+			return dist, distcol
 
 		# Comprobando colisión con elementos:
 		for elotro in self.elements.values():
 			if elotro.nombre != element.nombre:
-			    ide = pos.colliderect(elotro.rectcol)
-		# Resultado:
-		#if idm != -1 or ide:
-		if ide:
-			self.test[0]=str('! (%s) No pisable'%element.nombre)
-			return False
-		else:
-			self.test[0]=str(' - Es pisable, %s avanzando'%element.nombre)
-			return True
+			    if pos.colliderect(elotro.rectcol):
+			    	dist, distcol = calculadistancias()
+
+			    	# Ajustando las posiciones hasta tener la distancia correcta.
+			    	while distcol[0] < dist[0] and distcol[1] < dist[1]:
+			    		for n in 0,1:
+				    		element.nextpos[n] += retroceso[n]
+				    	dist, distcol = calculadistancias()
+
+			    	return False
+			    else:
+			    	return True
 
 
 	def intercolision(self):
@@ -100,29 +114,5 @@ class GrupoState():
 			return colisiones
 		else:
 			return False
-
-
-
-
-#### POSIBLES MÉTODOS A IMPLEMENTAR:
-
-	def buscar(self, nombre):
-		''' Busca un elemento en el grupo y retorna su posicion en mapa si está, None si no está'''
-		None
-
-
-	def informe(self, tipo=None):
-		''' Imprime un informe con todos los elementos y sus caracterísiticas '''
-
-		None
-	def grupotipo(self, tipo):
-		''' Crea diccionario de listas agrupando los elementos según su tipo '''
-		# Los tipos puedes ser: pers_principal, objeto, pers_secundarios, criaturas...
-
-		# return dict
-
-	def distancia (self, elementA, elementB):
-		''' Devuelve la distancia en pixeles entre dos elementos '''
-
 
 

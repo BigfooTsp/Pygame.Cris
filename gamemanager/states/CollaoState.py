@@ -20,8 +20,7 @@ class CollaoState(gamestate.GameState):
 		self.dialog_surface 	= False	# Indica si hay un diálogo en marcha.
 		self._misionPiti 		= False # Variable de misión inicial
 		self.test 		= [[]]	# listado de mensajes para modo test.
-		self.pathfinding_active = True
-		self.mouse_pos 	= (0,0)
+		self.mouse_map_pos 	= (0,0)
 
 	def crear_elementos(self):
 		''' Creación inicial del grupo de personajes y objetos '''
@@ -29,8 +28,8 @@ class CollaoState(gamestate.GameState):
 		# Mapa
 		self.grupoelementos.mapanopisable = self._mapa._nopisable 	# enviando a 'elementos' rectángulos nopisables del mapa.
 		# Personajes: nombre, tipo, map_pos=[0,0], focus=False
-		self.grupoelementos.add(elementos.Elemento('Cris', 'personaje_principal', (16,761), focus=True))
-		self.grupoelementos.add(elementos.Elemento('Piti', 'personaje_secundario',  (523, 683),))
+		self.grupoelementos.add(elementos.Elemento('Cris', 'personaje_principal', (16,761), matriz_astar=self._mapa.matriz_astar(22), focus=True))
+		self.grupoelementos.add(elementos.Elemento('Piti', 'personaje_secundario',  (523, 683), matriz_astar=self._mapa.matriz_astar(22)))
 		# Objetos: {nombre:rect, ...}
 		for k,v in self._mapa._objetos_escenario.items(): 				
 			map_pos = v.topleft
@@ -135,7 +134,7 @@ class CollaoState(gamestate.GameState):
 		    element.scroll = self.scroll
 
 		# reinicializar variables.
-		self.mouse_pos 	= (0,0)
+		self.mouse_map_pos 	= (0,0)
 
 
 	def handleEvents(self, event, teclado):
@@ -166,39 +165,33 @@ class CollaoState(gamestate.GameState):
 		if event.type == pygame.MOUSEBUTTONDOWN:
 			mouse_click_left = pygame.mouse.get_pressed()[0]
 			mouse_click_right = pygame.mouse.get_pressed()[2]
-			mouse_pos0 = pygame.mouse.get_pos()
-			mouse_pos = [mouse_pos0[0]+self.scroll[0], mouse_pos0[1]+self.scroll[1]]
+			self.mouse_scroll_pos = pygame.mouse.get_pos()
+			self.mouse_map_pos = [self.mouse_scroll_pos[0]+self.scroll[0], self.mouse_scroll_pos[1]+self.scroll[1]]
 
 			# test
-			print ('  ¡ Mouse click !', mouse_pos, end = ' ')
+			print ('  - Mouse click (map_pos)', self.mouse_map_pos, end = '; ')
+			print ('(scroll_pos)', self.mouse_scroll_pos)
 
 			if mouse_click_left:
-				print ('boton izquierdo')
+				print (' > botón izquierdo')
 				if self.dialog_surface == False:
-					if a_star.es_pisable(mouse_pos, self._mapa.matriz_astar, width=22):
-						personaje.pathfinding(mouse_pos, self._mapa.matriz_astar)
+					if a_star.accesible(self.mouse_map_pos, personaje.matriz_astar, width=personaje.rectcol.w):
+						personaje.pathfinding(pos=self.mouse_map_pos)
 					else:
 						print ('Destino no accesible')
-						
-						# Por defecto la matriz del mapa para pathfinding se crea con cuadros
-						# de 22x22 que es el ancho del personaje... si esto cambia, modificarlo en 'escenario'.
-
 			elif mouse_click_right:
-				print ('botón derecho')
+				print (' 	> botón derecho')
 
 		# Pausa
 		if teclado[pygame.K_p]:
 			self.parent.pushState(self.parent._pausa)
 
-
 		# Selección de respuesta en diálogos.
 		#if self.dialog_surface:
 
 
-
+	# Dibuja el juego.
 	def draw(self):
-		''' Dibuja el juego '''
-
 		self.parent.screen.blit(self.parent.background, (0,0))
 
 		l=0
@@ -239,6 +232,7 @@ class CollaoState(gamestate.GameState):
 				for element in colisiones['Cris']:
 					if self._misionPiti == 'fase_1': 	# Colisión con Piti para misión 1:
 						if 'Piti' in element:
+							self.grupoelementos.elements['Cris'].detener()
 							self.dialogs('quiere_hablar')
 
 
@@ -294,13 +288,22 @@ class CollaoState(gamestate.GameState):
 			rect_no.left += self.diagrect.left
 			rect_no.top  += self.diagrect.top
 
-			if rect_si.collidepoint(self.mouse_pos):
+			print ('\n ! Esperando respuesta a diálogo')
+			print ('Sí en', rect_si)
+			print ('No en', rect_no)
+
+			if rect_si.collidepoint(self.mouse_scroll_pos):
+
+				# si en 438,970 según self.pos ... necesita el self.pos0??
+
 				print ('Dialog:  Si')
 				print ('Iniciando fase 2 de mision Piti')
 				self.dialog_surface = False
 				self._misionPiti = 'fase_2'
 				return
-			elif rect_no.collidepoint(self.mouse_pos):
+			elif rect_no.collidepoint(self.mouse_scroll_pos):
+
+				# no [565, 969] 
 				print ('Dialog:  No')
 				print ('Iniciando fase 3 de mision Piti')
 				self.dialog_surface = False
