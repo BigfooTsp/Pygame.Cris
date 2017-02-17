@@ -12,32 +12,6 @@ class Elemento():
     # contiene los atributos y métodos necesarios para dibujarlo y 
     # moverlo.
 
-  
-    '''
-    [.] IMPLEMENTACIÓN DE CONDUCTA:
-
-        La 'conducta' sería una lista de órdenes que influyen en al menos dos atributos del personaje:
-            Su imagen:
-                Determinada por self.image
-            Su posíción:
-                Determinada por self.map_pos
-
-        self.action sería el primer elemento de la lista self.nextaction, si esta fuera camina_
-
-        Si el personaje debiera de moverse, se genera una lista con los puntos hacia los que se dirige (módulo A-Star). 
-            Luego, una lista con los siguientes movimientos desde el último waypoint...
-
-        A cada ciclo,se examina si el personaje está moviéndose y si además desarolla otra acción.
-            Si no hay acción, self.image por defecto es moverse.
-            ... si la hay, se cambia la imagen mientras este se mueve (o se borra la ruta si debiera de estarse quieto.)
-
-        [.] Cambio objeto Conducta por métodos aplicables a las listas de conducta y posición.
-        [.] Nextpos es una posición sin comprobar.. al incluir pathfinding se eliminan las comprobaciones
-            de escenario pero se mantienen las de los personajes.
-
-
-    '''
-
     # Variables que indican la dirección del avance y su velocidad.
     velocidad = 5
     # La clave del siguiente diccionario determina la imagen del sprite. La de SO y O son el mismo, por eso coincide la letra.
@@ -56,7 +30,7 @@ class Elemento():
         self.visible        = True          # Indica si se encuentra dentro de la cámara [.] modificar
         self.nextaction     = False         # Lista que indica la siguiente acción.
         self.action         = 'camina_S'    # acción actual (posición 0 de nextaction)
-        self.ruta           = []
+        self.ruta           = []            # ruta de waypoints que irán definiendo self.nextpos a cada ciclo.
         self.destino        = self.map_pos  # Indica el destino final hacia el cual se mueve el elemento.
         self.nextpos        = self.map_pos  # Indica la posición a la que se moverá el elemento en el ciclo actual.
         self.scroll         = (0,0)         # Pixel superior izquierda de la cámara en el mapa.
@@ -118,26 +92,154 @@ class Elemento():
     ############ - Actualización del elemento.  #############
     #########################################################
 
-    # Crea lista para caminar hacia un punto concreto del mapa.
-    def pathfinding(self, pos=False):
-        # Se crean dos variables mapa y destino por si, en caso de colisión, necesita recalcularse la ruta.
-        if pos:
-            self.destino = pos 
-        else:
-            pos = self.destino
+    def update(self):
+        # Actualizando scroll_pos
+        self.scroll_pos = ((self.map_pos[0]-self.rectcol.w//2) - self.scroll[0], (self.map_pos[1]-self.rectcol.h//2) - self.scroll[1])
+        # genera nextaction desde self.ruta.
+        self.calc_nextpos()
 
+
+    ################################################################
+    ############### - Desplazamiento del elemento.  ################
+    ################################################################
+
+    # Crea lista para caminar hacia un punto concreto del mapa.
+    def pathfinding(self, orig=False, dest=False):
+        # Se crean dos variables mapa y destino por si, en caso de colisión, necesita recalcularse la ruta.
+        if orig == False: 
+            orig = self.map_pos
+        if dest: 
+            self.destino = dest 
+        else:    
+            dest = self.destino
         mapa = self.matriz_astar
             
-        self.ruta = a_star.Pathfinding(self.map_pos, pos, mapa, width=self.rectcol.w).waypoints_pixel
+        self.ruta = a_star.Pathfinding(orig, dest, mapa, width=self.rectcol.w).waypoints_pixel
         # test:
         print ('Nueva ruta para %s: '%self.nombre, end='')
         print (self.ruta)
 
 
+    # Calcula la siguiente posición desde una ruta
+    def calc_nextpos(self):
+        if len(self.ruta)>0:
+            waypoint = self.ruta[0]         # siguiente waypoint
+            pos = self.map_pos
+            #distancia = abs((pos[1] - waypoint[1]) + (pos[0] - waypoint[0]))
+            distancia = abs(waypoint[0] - self.map_pos[0]) + abs(waypoint[1] - self.map_pos[1])
+
+            # Obtengo la orientación del movimiento:
+            direcc = []
+            for p in [0,1]:
+                if waypoint[p] > pos[p]:
+                    direcc.append(1)
+                elif waypoint[p] == pos[p]:
+                    direcc.append(0)
+                elif waypoint[p] < pos[p]:
+                    direcc.append(-1)
+            self.direccion  = direcc
+
+            # Determina la acción que le corresponde dibujar.
+            for k,v in self.orientacion.items():
+                if direcc == list(k):
+                    orient = v
+                    self.nextaction = 'camina_'+orient
+
+            # Determina la nueva posición del elemento 
+            #(Si  dist<vel sin +1, entraría en bucle con else).
+            if distancia < self.velocidad+1:
+                self.nextpos = list(waypoint)
+                del self.ruta[0]
+            else:
+                self.nextpos = [pos[0]+(direcc[0]*self.velocidad), pos[1]+(direcc[1]*self.velocidad)]
+
+        elif self.ruta == []:
+            self.nextaction = False
+            self.nextpos    = self.map_pos
+            self.direccion  = (0,0)
+            
+
     # Detiene el movimiento del elemento.
     def detener(self):
+        print (self.nombre + ' > Se detiene')
+        self.ruta_pausa = self.ruta
         self.ruta = []
 
+    # Continúa una ruta cuando se había detenido.
+    def continuar_ruta(self):
+        self.ruta = self.ruta_pausa
+        self.ruta_pausa = []
+
+    # Rodea un elemento con el que colisiona y recalcula ruta. Lo detiene si no puede.
+    def esquivar(self): 
+        # devuelve True si la ruta es accesible.
+        def comprueba_ruta(paso1, paso2, paso3): #______________________________________________
+            # calcula la nueva posición en un paso. 'paso' debe de ser 'adelante', 'izquierda', ...
+            def pasos(pos, paso):#__________________________________________
+                posx = pos[0]                                              #
+                posy = pos[1]                                              #
+                dirx = self.direccion[0]
+                diry = self.direccion[1]
+                # direcciones relativas a self.dirección actual, no a la orientación del personaje mientras esquiva.
+                if paso == 'adelante':
+                    return (posx + dirx*100, posy + diry*100)
+                elif paso == 'atras':
+                    return (posx + dirx*-1 *15, posy + diry*-1 *15)    # Paso atrás: (x=x*-1, y=y*-1)
+                elif paso == 'derecha':
+                    return (posx + diry*-1 *50, posy + dirx *50)       # Giro 90º a la derecha: (X=Y*-1, Y=X)
+                elif paso == 'izquierda':
+                    return (posx + diry *50, posy + dirx*-1 *50)       # Giro 90º a la izquierda: (X=Y, Y=X*-1)
+            #_______________________________________________________________#
+
+            paso1 = pasos(self.map_pos, paso1)
+            paso2 = pasos(paso1, paso2)
+            paso3 = pasos(paso2, paso3)
+            mapa = self.matriz_astar
+            width = self.rectcol.h
+
+            for paso in paso1, paso2, paso3:
+                if a_star.accesible(paso, mapa, width) == False:
+                    return False
+                    break
+                else:
+                    return [paso1, paso2, paso3]
+        #________________________________________________________________________________________
+
+        # rutas de evasión:
+        porladerecha    = ['atras', 'derecha', 'adelante']
+        porlaizquierda  = ['atras', 'izquierda', 'adelante']
+        rutas = (porladerecha, porlaizquierda)
+
+        # selecciona una ruta de evasión válida en el orden indicado en var. rutas.
+        cont = 0
+        for ruta in rutas:
+            evasion = comprueba_ruta(ruta[0], ruta[1], ruta[2])
+            if evasion:
+                print ('\n    ¡¡ EVASIÓN ', ruta, evasion) ###############
+                self.pathfinding(orig=evasion[-1], dest=self.destino)
+                evasion.extend(self.ruta)
+                self.ruta = evasion
+                print ('    ruta de evasión: ', self.ruta) #####################3
+                break
+            else:
+                cont +=1
+                if cont == len(rutas):
+                    print (self.nombre + ' parado... no encuentra ruta de evasión. !!')
+                    self.detener()
+                else:
+                    continue
+
+
+    # Actualiza posiciones y rectángulos desde nextpos.
+    def mover_elemento(self):
+        self.rectcol.center = self.nextpos
+        self.rect.center    = self.nextpos
+        self.map_pos        = self.nextpos
+
+
+    #########################################################
+    ############ - Dibujado del elemento.  #############
+    #########################################################
 
     # actualiza self.action con self.nextaction y mueve el sprite.
     def actualizar_sprite(self):
@@ -153,77 +255,8 @@ class Elemento():
         self.test[0]=str(' - Acción: ' + self.action)
 
 
-    # Calcula la siguiente posición desde una ruta
-    def calc_nextpos(self):
-        if len(self.ruta)>0:
-            waypoint = self.ruta[0]         # siguiente waypoint
-            pos = self.map_pos
-            #distancia = abs((pos[1] - waypoint[1]) + (pos[0] - waypoint[0]))
-            distancia = abs(waypoint[0] - self.map_pos[0]) + abs(waypoint[1] - self.map_pos[1])
-
-            print ('\nmap_pos  ', self.map_pos)
-            print ('waypoint', waypoint)
-            print ('distancia', distancia) ###########
-
-            # Obtengo la orientación del movimiento:
-            direcc = []
-            for p in [0,1]:
-                if waypoint[p] > pos[p]:
-                    direcc.append(1)
-                elif waypoint[p] == pos[p]:
-                    direcc.append(0)
-                elif waypoint[p] < pos[p]:
-                    direcc.append(-1)
-            self.direccion  = direcc
-            print ('dirección',direcc) ##########
-
-            # Determina la acción que le corresponde dibujar.
-            for k,v in self.orientacion.items():
-                if direcc == list(k):
-                    orient = v
-                    self.nextaction = 'camina_'+orient
-                    print ('nextaction- ',self.nextaction)
-
-            # Determina la nueva posición del elemento 
-            #(Si  dist<vel sin +1, entraría en bucle con else).
-            if distancia < self.velocidad+1:
-                self.nextpos = list(waypoint)
-                del self.ruta[0]
-            else:
-                self.nextpos = [pos[0]+(direcc[0]*self.velocidad), pos[1]+(direcc[1]*self.velocidad)]
-            
-
-        elif self.ruta == []:
-            self.nextaction = False
-            self.nextpos    = self.map_pos
-            self.direccion  = (0,0)
-            
-
-    # Actualiza posiciones y rectángulos desde nextpos.
-    def mover_elemento(self):
-        print (' ! nextpos, map_pos',self.nextpos, self.map_pos)
-        print (' ! rectcol', self.rectcol)
-        #avance = (self.nextpos[0]-self.map_pos[0], self.nextpos[1]-self.map_pos[1])
-
-        self.rectcol.center = self.nextpos
-        self.rect.center    = self.nextpos
-        self.map_pos        = self.nextpos
-
-
-    def update(self):
-        # Actualizando scroll_pos
-        self.scroll_pos = ((self.map_pos[0]-self.rectcol.w//2) - self.scroll[0], (self.map_pos[1]-self.rectcol.h//2) - self.scroll[1])
-
-        # genera nextaction desde self.ruta.
-        self.calc_nextpos()
-
-        # Calculta action (sprite)
-            # Hay acciones que podrían interrumpir el movimiento o modificar la imagen...
-            # Estos distintos comportamientos se definirían aquí.
-
-
+    # Dibujamos el elemento.
     def dibujar(self, surface):
-        # Dibujamos el elemento.
         screen_rect = surface.get_rect()
         screen_rect.topleft = screen_rect.left+self.scroll[0], screen_rect.top+self.scroll[1]
 

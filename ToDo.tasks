@@ -27,20 +27,45 @@ TODO Pygame Cris:
 --- ✄ -----------------------
 ERRORES:
 
+  ☐ Arreglar fuente en texto de pantalla inicial.
+  ☐ Cuando se clickea una posición inaccesible por no caber, se bloquea y genera error... sucede porque en el modulo astar salta -1 si no hay camino y se vuelve loco... estudiar este tema.
 
+  ERROR en diferentes ocasiones en las que el objeto utiliza esquivar() tras colisionar Se bloquea el programa o me dice que en pathfinding() de 'Elementos' no existe el atributo waypoint_pixel:
 
+    ☐ ERROR:  @today @critical
+
+    ☐ CAUSA:
+
+    ☐ SOLUCIÓN: 
+
+  ERROR. Se crea un bucle si la posición de destino de un elemento está distancia de colisión a un elemento fijo y utiliza su método esquivar para sortearlo:
+
+    ☐  SOLUCIÓN: Si ese elemento con el que colisiona no se va a mover, detener el elemeto en lugar de esquivar.
 --- ✄ -----------------------
 TAREAS:
 
+  ☐  poder maximizar pantalla o cambiar tamaño.
+
+  ✔ Cambiar update ed grupo_state respecto a mover elementos: Mover elementos-comprobar colisiones-reajustar posiciones de elementos colisionados - gestionar eventos. @today @done (17-02-17 12:46)
+
+  ✔ Eliminar de módulo grupo_state función no_pisable(), que reajusta la posición de los elementos cuando colisionan para que no se muestren atravesándose, y se añade esta función al método ya existente intercolisión() @today @done (17-02-17 12:46)
+
+
+
+
  _CONTROLANDO MOVIMIENTOS Y COLISIONES DEL PERSONAJE:
    ☐ Si al hacer click no es pisable, cambiar icono de ratón y hacer sonido.
-   ☐ El personaje tiene que detenerse al colisionar con algo que le impide pasar. @today
-   ☐ El personaje se detiene si se abre un diálogo. @today
    ☐ Si se hace click con un elemento sobre el que se puede interactuar. Este devolverá una posición para el pathfinding y al alcanzarla, lanzará un diálogo.
-   ☐ Si el elemento colisiona, sin haber hecho click sobre él, puede iniciarse una acción. @today
+
+   ✔ Incorporar retroceso para casos en los que colisiones diferentes elementos @today . Incorporo método rerutear() en 'elementos'. PENDIENTE TESTEAR [ ] @done (17-02-15 18:42)
+
+   ✔ Modificar colisiones() en módulo 'State' para que, a no ser que la colisión genere un evento, por defecto los elementos que tienen ruta y colisionan retrocedan y recalculen su ruta. @today PENDIENTE TESTEAR [ ] @done (17-02-15 18:42)
 
  _AÑADIR MÓDULO FPS:
    Necesario el módulo para controlar que los FPS del juego se mantengan como máximo en 25.
+   ☐ Desarrollar proyecto.
+
+   ☐  ser capaz de configurar los fps desde el juego.
 
 
  _LAYERS:
@@ -53,6 +78,10 @@ TAREAS:
    ☐ Hacer posible cambiar el foco del scroll al movimiento del cursor.
 
  _DIALOGOS:
+   ☐ Crear módulo diálogos en el que se contienen preconfigurados diferentes tipos de diálogos. Desde el state se solicitan el tipo correspondiente y se rellena el texto. 
+   ☐ crear tipo de diálogo 'pregunta: si,no'
+   ☐ crear tipo de diálogo: ' solo texto' (con una selección para cerrar o continuar)
+   ☐ crear tipo de diálogo 'conversación, dos respuestas'
    ☐ Diálogos con video y audio.
 
  _MENU INICIAL:
@@ -62,6 +91,9 @@ TAREAS:
    ☐ Comprobar los imports inutiles.
    ☐ Acabar state_base de la que heredarán el resto de states.
    ☐ En los módulos, separar de los objetos los métodos que no necesitan estar dentro.
+     ☐ Sacar método 'genera sprite' de objeto Escenario
+
+   ☐ Para objetos fijos, crear un objeto elementos_lite
 
  _
 
@@ -75,6 +107,9 @@ TAREAS:
 
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
+ ✔ Si el elemento colisiona, sin haber hecho click sobre él, puede iniciarse una acción. @today @done (17-02-14 13:34) @project(TAREAS / _CONTROLANDO MOVIMIENTOS Y COLISIONES DEL PERSONAJE)
+ ✔ El personaje tiene que detenerse al colisionar con algo que le impide pasar. @today @done (17-02-14 13:34) @project(TAREAS / _CONTROLANDO MOVIMIENTOS Y COLISIONES DEL PERSONAJE)
+ ✔ El personaje se detiene si se abre un diálogo. @today @done (17-02-14 13:34) @project(TAREAS / _CONTROLANDO MOVIMIENTOS Y COLISIONES DEL PERSONAJE)
  ✔ SOLUCIÓN: Debería, tras comprobarse que no es pisable, quedarse el elemento A en contacto con el elemento B, y no a más distancia. Para esto implemento algoritmo en el que se tiene en cuenta dos puntos: La dirección por la que se acerca el elemento A al elemento B y la distancia correcta para que se mantengan en contacto sin estar uno dentro de otro. Debo crear también un atributo dirección al objeto elemento para indicar hacia donde se mueve y utilizarlo en la fórmula. Añado atributo a cada elemento 'matriz-astar' con el mapa sobre el cual se tiene que mover. Ya que cuando detecta colisión, recalcula su nuevo camino para evadir el elemento con el que colisiona. Aunque esto se puede frenar si un evento a causa de la colisión requiriese que el elemento se detenga. Elimino el atributo 'matriz_astar' del módulo 'escenario' ya que a partir de ahora, cada objeto elemento tendrá el suyo propio adaptado a su tamaño.  SOLUCIÓN (ALGORITMO) Distancia = (Aw//2 + Bw//2 , Ah//2 + Bh//2); si hay colisión: se crea un bucle rectificando la posición del elemento A hasta que se queda a distancia de colisión, sin estar dentro. [[E:\Mis documentos\Dropbox\Proyectos Phyton\Pygame.Cris\grupo_state.py::def es_pisable(self,element)]] @done (17-02-14 13:26) @project(ERRORES / _Problema con la colisiones entre elementos tras añadir pathfinding)
  ✔ ERROR: No detecta las colisiones cuando el personaje se mueve. @critical @error @today @done (17-02-14 13:26) @project(ERRORES / _Problema con la colisiones entre elementos tras añadir pathfinding)
  ✔ CAUSA: En el módulo grupo_state. el método es_pisable() llamado por update() comprueba si la posición a la que avanzará el elemento está ocupado por otro. Es ese caso anula el movimiento pero también impide que colisionen si la variable 'velocidad' del obj. <Elemento> (que indica la cantidad en pixeles a la que avanza cada ciclo) es mayor que la distancia a la que se queda. @done (17-02-14 13:26) @project(ERRORES / _Problema con la colisiones entre elementos tras añadir pathfinding)
