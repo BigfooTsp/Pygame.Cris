@@ -3,6 +3,7 @@ from pygame.locals import *
 from gamemanager.states import gamestate
 from utilidades import utils, scrolling, a_star
 import escenario, elementos, grupo_state
+import pdb
 
 class CollaoState(gamestate.GameState):
 	''' Clase básica de State de la que heredarán el resto de pantallas
@@ -28,8 +29,8 @@ class CollaoState(gamestate.GameState):
 		# Mapa
 		self.grupoelementos.mapanopisable = self._mapa._nopisable 	# enviando a 'elementos' rectángulos nopisables del mapa.
 		# Personajes: nombre, tipo, map_pos=[0,0], focus=False
-		self.grupoelementos.add(elementos.Elemento('Cris', 'personaje_principal', (16,761), matriz_astar=self._mapa.matriz_astar(22), focus=True))
-		self.grupoelementos.add(elementos.Elemento('Piti', 'personaje_secundario',  (523, 683), matriz_astar=self._mapa.matriz_astar(22)))
+		self.grupoelementos.add(elementos.Elemento('Cris', 'personaje_principal', [16,771], matriz_astar=self._mapa.matriz_astar(22), focus=True))
+		self.grupoelementos.add(elementos.Elemento('Piti', 'personaje_secundario',  [523, 683], matriz_astar=self._mapa.matriz_astar(22)))
 		# Objetos: {nombre:rect, ...}
 		for k,v in self._mapa._objetos_escenario.items(): 				
 			map_pos = v.topleft
@@ -92,62 +93,11 @@ class CollaoState(gamestate.GameState):
 	################ BUCLE DE LA  PANTALLA #################
 	########################################################
 
-
-	def update(self):
-		''' Actualiza el juego en función de los eventos.'''
-        #------------------------------------------------
-		# -0- Repasa estado de misiones.
-		# -1- Detecta colisiones y las manda gestionar si las hay
-		# 		- paralelo a handleEvents. (x.nextaction, x.nextpos)
-		# 		- Gestiona nuevo evento por colisión, si se requiere, que deriva en 
-		#			nueva acción (nexaction) o en una lista de acciones (conducta_programada)
-		# -2- Actualizar elementos
-		# 		+ Comprueba si las nuevas posiciones son pisables.
-		# 		+ selecciona elementos con siguientes acciones.
-		#			+ cambia el sprite.
-		#			+  Emite sonidos de movimiento
-		# 			+ borra nextpos si no es pisable.
-		#		+ Actualiza las posiciones actuales por nextpos y nextaction
-		# 		+ Actualiza sus rectángulos
-		#		+ Actualiza siguientes acciones futuras si hay conducta programada. (element.update())
-		# -3- Actualiza scroll (posiciones antes de dibujar)
-		# 		+ obtiene scroll y scrollpos
-		# 		+ Actualiza la variable 'scroll_pos' de los elementos (que indicará su pos en pantalla).
-		# -5- Dibuja la pantalla
-		#		+- Layers con sprites teniendo en cuenta alturas y preferencias.
-		# -6- Reinicializar las variables que lo necesitan.
-		#
-		# -7- [.]?? Cuando finalice la pantalla se actualizará parent.player
-        #------------------------------------------------
-
-		self.control_misiones()
-		self.colisiones(self.grupoelementos.intercolision())
-		self.grupoelementos.update()	
-
-		focus = self.grupoelementos.focus()
-		focus_map_pos = self.grupoelementos.elements[focus].map_pos
-
-		#[.] El scrollpos se está cambiando a movimiento con flechas, deja de ser relativo al personaje, en principio.
-		
-		self.scroll, self.scrollpos = self.camara.update_scroll(focus_map_pos)
-		for element in self.grupoelementos.elements.values():
-		    element.scroll = self.scroll
-
-		# reinicializar variables.
-		self.mouse_map_pos 	= (0,0)
-
-
+	# Gestiona eventos del teclado y mouse:
 	def handleEvents(self, event, teclado):
-		''' gestión de eventos de teclado '''
-
 		personaje = self.grupoelementos.elements[self.grupoelementos.focus()]
 
-		# [.] Cambiar para incorporar movimiento mediante click de ratón.
-		# [.] Las flechas moverán el scroll.
-		# [.] El icono del mouse cambiará con la acción activable por click.
-
 		# movimiento (Modifica 'nextaction' del personaje principal.)
-			# [.] Hay que optimizar el control del personaje.
 		if teclado[pygame.K_UP]:
 			personaje.calc_nextaction('camina_N')
 			self.sonido_start('paso')
@@ -176,7 +126,7 @@ class CollaoState(gamestate.GameState):
 				print (' > botón izquierdo')
 				if self.dialog_surface == False:
 					if a_star.accesible(self.mouse_map_pos, personaje.matriz_astar, width=personaje.rectcol.w):
-						personaje.pathfinding(pos=self.mouse_map_pos)
+						personaje.pathfinding(dest=self.mouse_map_pos)
 					else:
 						print ('Destino no accesible')
 			elif mouse_click_right:
@@ -186,8 +136,47 @@ class CollaoState(gamestate.GameState):
 		if teclado[pygame.K_p]:
 			self.parent.pushState(self.parent._pausa)
 
-		# Selección de respuesta en diálogos.
-		#if self.dialog_surface:
+
+	# Actualiza el juego en función de los eventos.
+	def update(self):
+        #------------------------------------------------
+		# -0- Repasa estado de misiones.
+		# -1- Detecta colisiones y las manda gestionar si las hay
+		# 		- paralelo a handleEvents. (x.nextaction, x.nextpos)
+		# 		- Gestiona nuevo evento por colisión, si se requiere, que deriva en 
+		#			nueva acción (nexaction) o en una lista de acciones (conducta_programada)
+		# -2- Actualizar elementos
+		# 		+ Comprueba si las nuevas posiciones son pisables.
+		# 		+ selecciona elementos con siguientes acciones.
+		#			+ cambia el sprite.
+		#			+  Emite sonidos de movimiento
+		# 			+ borra nextpos si no es pisable.
+		#		+ Actualiza las posiciones actuales por nextpos y nextaction
+		# 		+ Actualiza sus rectángulos
+		#		+ Actualiza siguientes acciones futuras si hay conducta programada. (element.update())
+		# -3- Actualiza scroll (posiciones antes de dibujar)
+		# 		+ obtiene scroll y scrollpos
+		# 		+ Actualiza la variable 'scroll_pos' de los elementos (que indicará su pos en pantalla).
+		# -5- Dibuja la pantalla
+		#		+- Layers con sprites teniendo en cuenta alturas y preferencias.
+		# -6- Reinicializar las variables que lo necesitan.
+		#
+		# -7- [.]?? Cuando finalice la pantalla se actualizará parent.player
+        #------------------------------------------------
+
+        # Gestion de colisiones y misiones.
+		self.control_misiones()
+		self.colisiones(self.grupoelementos.update())
+
+		#[.] El scrollpos se está cambiando a movimiento con flechas, deja de ser relativo al personaje, en principio.
+		focus = self.grupoelementos.focus()
+		focus_map_pos = self.grupoelementos.elements[focus].map_pos
+		self.scroll, self.scrollpos = self.camara.update_scroll(focus_map_pos)
+		for element in self.grupoelementos.elements.values():
+		    element.scroll = self.scroll
+
+		# reinicializar variables.
+		self.mouse_map_pos 	= (0,0)
 
 
 	# Dibuja el juego.
@@ -214,12 +203,11 @@ class CollaoState(gamestate.GameState):
 	########################################################
 
 
-	def colisiones(self, colisiones=False):
+	def colisiones(self, colisiones):
 		''' Gestiona las colsiones que tienen evento. '''
 
 		# {elemento1.nombre:[(elemento2.nombre, elemento2.tipo), ...}
 		if colisiones:
-
 			# test:
 			self.test[0] = []
 			for k,v in colisiones.items():
@@ -227,13 +215,20 @@ class CollaoState(gamestate.GameState):
 					self.test[0].append('%s con %s'%(k,col))
 			self.test[0].append('!COLISIONES:')
 
-			# Colisiones de elemento 'Cris'
-			if 'Cris' in colisiones.keys():
-				for element in colisiones['Cris']:
-					if self._misionPiti == 'fase_1': 	# Colisión con Piti para misión 1:
-						if 'Piti' in element:
-							self.grupoelementos.elements['Cris'].detener()
-							self.dialogs('quiere_hablar')
+			for element in colisiones.keys():
+			# Colisiones con eventos. (Nta: Recordar indicar al elemento si frena o sigue ruta)
+				# Colisiones de elemento 'Cris'
+				if element == 'Cris':
+					for element in colisiones['Cris']:
+						if self._misionPiti == 'fase_1': 	# Colisión con Piti para misión 1:
+							if 'Piti' in element:
+								self.grupoelementos.elements['Cris'].esquivar()
+								#self.grupoelementos.elements['Cris'].detener()
+								#self.dialogs('quiere_hablar')
+			# Elementos colisionados con ruta que se rodean para seguir su camino.
+				else:
+					if self.grupoelementos.elements[element].ruta != []:
+						self.grupoelementos.elements[element].esquivar()
 
 
 	def control_misiones (self):
@@ -265,7 +260,6 @@ class CollaoState(gamestate.GameState):
 		elif  self._misionPiti == 'fase_3': 
 			# Responde que no...
 			None
-
 
 
 	def dialogs(self, dialog):

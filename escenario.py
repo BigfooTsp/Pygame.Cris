@@ -164,11 +164,9 @@ class Mapa:
 		print("         Tamaño de los tiles %i x %i"%(data["tilewidth"], data["tileheight"]))
 		print('         Tamaño del mapa en pixeles= %s x %s' %(data["tilesets"][0]["imagewidth"], data["tilesets"][0]['imageheight']))
 		print('         Tamaño del mapa en tiles = filas(%i) columnas(%i)'%(data["width"], data["height"]))
-
 		print('         capas:')
 		for layer in data['layers']:
 			print('             ', layer["name"])
-
 		print('         objetos:')
 		for key, value in self._objetos_escenario:
 			print('              %s - %s'%(key, value))
@@ -187,7 +185,6 @@ class objetoescena():
 		self._objecttype = obj["type"]
 		self._visible = obj["visible"]
 		self._objectpos = (obj["x"], obj["y"])
-		#[.] solucionar problema al sumar negativos
 		self._objrect = pygame.Rect(
 			self._objectpos[0], self._objectpos[1], (
 				self._objectpos[0]+self._objectW), (self._objectpos[1]+self._objectH))

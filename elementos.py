@@ -3,6 +3,7 @@
 from pygame.locals import *
 import pygame
 from utilidades import utils, chars_info, a_star
+import pdb
  
 
 class Elemento():
@@ -33,6 +34,8 @@ class Elemento():
         self.ruta           = []            # ruta de waypoints que irán definiendo self.nextpos a cada ciclo.
         self.destino        = self.map_pos  # Indica el destino final hacia el cual se mueve el elemento.
         self.nextpos        = self.map_pos  # Indica la posición a la que se moverá el elemento en el ciclo actual.
+        self.direccion  = (0,0)
+
         self.scroll         = (0,0)         # Pixel superior izquierda de la cámara en el mapa.
 
         # Expresiones:
@@ -106,19 +109,21 @@ class Elemento():
     # Crea lista para caminar hacia un punto concreto del mapa.
     def pathfinding(self, orig=False, dest=False):
         # Se crean dos variables mapa y destino por si, en caso de colisión, necesita recalcularse la ruta.
-        if orig == False: 
+        if not orig: 
             orig = self.map_pos
-        if dest: 
-            self.destino = dest 
-        else:    
+        if not dest: 
             dest = self.destino
-        mapa = self.matriz_astar
-            
-        self.ruta = a_star.Pathfinding(orig, dest, mapa, width=self.rectcol.w).waypoints_pixel
-        # test:
-        print ('Nueva ruta para %s: '%self.nombre, end='')
-        print (self.ruta)
 
+        self.destino = dest
+        mapa = self.matriz_astar
+
+        astar = a_star.Pathfinding(orig, dest, mapa, self.rectcol.w)
+        if astar.camino != -1:
+            self.ruta = astar.waypoints_pixel
+            return True
+        else:
+            return False
+        
 
     # Calcula la siguiente posición desde una ruta
     def calc_nextpos(self):
@@ -156,7 +161,7 @@ class Elemento():
         elif self.ruta == []:
             self.nextaction = False
             self.nextpos    = self.map_pos
-            self.direccion  = (0,0)
+            #self.direccion  = (0,0)
             
 
     # Detiene el movimiento del elemento.
@@ -172,56 +177,52 @@ class Elemento():
 
     # Rodea un elemento con el que colisiona y recalcula ruta. Lo detiene si no puede.
     def esquivar(self): 
-        # devuelve True si la ruta es accesible.
-        def comprueba_ruta(paso1, paso2, paso3): #______________________________________________
-            # calcula la nueva posición en un paso. 'paso' debe de ser 'adelante', 'izquierda', ...
-            def pasos(pos, paso):#__________________________________________
-                posx = pos[0]                                              #
-                posy = pos[1]                                              #
-                dirx = self.direccion[0]
-                diry = self.direccion[1]
-                # direcciones relativas a self.dirección actual, no a la orientación del personaje mientras esquiva.
-                if paso == 'adelante':
-                    return (posx + dirx*100, posy + diry*100)
-                elif paso == 'atras':
-                    return (posx + dirx*-1 *15, posy + diry*-1 *15)    # Paso atrás: (x=x*-1, y=y*-1)
-                elif paso == 'derecha':
-                    return (posx + diry*-1 *50, posy + dirx *50)       # Giro 90º a la derecha: (X=Y*-1, Y=X)
-                elif paso == 'izquierda':
-                    return (posx + diry *50, posy + dirx*-1 *50)       # Giro 90º a la izquierda: (X=Y, Y=X*-1)
-            #_______________________________________________________________#
+        # calcula la nueva posición en un paso. 'paso' debe de ser 'adelante', 'izquierda', ...
+        def pasos(pos, paso):
+            posx = pos[0]
+            posy = pos[1]
+            dirx = self.direccion[0]
+            diry = self.direccion[1]
 
+            # direcciones relativas a self.dirección actual, no a la orientación del personaje mientras esquiva.
+            if paso == 'adelante':
+                return (posx + dirx*100, posy + diry*100)
+            elif paso == 'atras':
+                return (posx + dirx*-1 *15, posy + diry*-1 *15)    # Paso atrás: (x=x*-1, y=y*-1)
+            elif paso == 'derecha':
+                return (posx + diry*-1 *50, posy + dirx *50)       # Giro 90º a la derecha: (X=Y*-1, Y=X)
+            elif paso == 'izquierda':
+                return (posx + diry *50, posy + dirx*-1 *50)       # Giro 90º a la izquierda: (X=Y, Y=X*-1)
+
+        # devuelve True si la ruta es accesible.
+        def comprueba_ruta(paso1, paso2, paso3): 
             paso1 = pasos(self.map_pos, paso1)
             paso2 = pasos(paso1, paso2)
             paso3 = pasos(paso2, paso3)
             mapa = self.matriz_astar
             width = self.rectcol.h
 
+            ruta = [paso1, paso2, paso3]
             for paso in paso1, paso2, paso3:
                 if a_star.accesible(paso, mapa, width) == False:
-                    return False
-                    break
-                else:
-                    return [paso1, paso2, paso3]
+                    ruta = False
+            return ruta
         #________________________________________________________________________________________
-
         # rutas de evasión:
         porladerecha    = ['atras', 'derecha', 'adelante']
         porlaizquierda  = ['atras', 'izquierda', 'adelante']
         rutas = (porladerecha, porlaizquierda)
-
         # selecciona una ruta de evasión válida en el orden indicado en var. rutas.
         cont = 0
         for ruta in rutas:
             evasion = comprueba_ruta(ruta[0], ruta[1], ruta[2])
+            
             if evasion:
-                print ('\n    ¡¡ EVASIÓN ', ruta, evasion) ###############
-                self.pathfinding(orig=evasion[-1], dest=self.destino)
-                evasion.extend(self.ruta)
-                self.ruta = evasion
-                print ('    ruta de evasión: ', self.ruta) #####################3
-                break
-            else:
+                if self.pathfinding(evasion[-1], self.destino):   # si camino encontrado...
+                    evasion.extend(self.ruta)
+                    self.ruta = evasion
+                    break
+            else: # Prueba con otra ruta de rutas (mientras haya)
                 cont +=1
                 if cont == len(rutas):
                     print (self.nombre + ' parado... no encuentra ruta de evasión. !!')
@@ -273,7 +274,6 @@ class Elemento():
         # Dibuja la ruta en caso de camino definido:
         if self.ruta:
             color = (133,148,153)
-            closed = False
             pointlist = [self.rect.center]
             pointlist.extend(self.ruta)
 

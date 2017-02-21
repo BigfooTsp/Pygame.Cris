@@ -541,19 +541,16 @@
 			"file": "gamemanager/states/CollaoState.py",
 			"settings":
 			{
-				"buffer_size": 11158,
+				"buffer_size": 11168,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"contents": "import pygame\nfrom pygame.locals import *\nimport elementos\n \n# [.] Tras pathfinding, eliminar comprobacion método para no pisables de escenario (mantener liksta\n# \t\tpara generar matriz de mapa) pero eliminar comprobación a cada paso del personaje. YA que se\n# \t\tcokprueba con la creación de la ruta.\n\nclass GrupoState():\n\t''' Clase que contiene grupos de personajes o objetos. \n\tComprueba colisiones y ordena dibujarlos'''\n\n\telements \t\t= {}\t\n\tmapanopisable \t= False\n\ttest \t\t\t= ['']\t\t\t\t\t\t\t\t# listado de mensajes para modo test.\n\n\tdef add(self, elemento):\n\t\t''' añade personajes al grupo '''\n\t\tself.elements.update({elemento.nombre:elemento})\n\n\n\tdef delete(self, nombre):\n\t\t''' borra personajes al grupo '''\n\t\ttry:\n\t\t\tself.elements.pop(nombre)\n\t\texcept:\n\t\t\tprint ('Error: No se encuentra el elemento a borrar.')\n\n\n\tdef focus(self):\n\t\t''' devuelve el nombre del elemento que está como foco '''\n\t\tfor element in self.elements.values():\n\t\t\tif element.focus:\n\t\t\t\treturn element.nombre\n\n\n\tdef update(self):\n\t\t''' Busca elementos con cambios y actualiza sus posiciones\n\t\ty rectángulos tras comprobar que la nueva posición es pisable'''\n\n\t\t# [.] Modificar para movimiento por click de ratón\n\n\t\tfor element in self.elements.values():\n\t\t\tif element.nextaction:\n\t\t\t\telement.actualizar_sprite()\n\t\t\telement.mover_elemento()\n\t\t\telement.update()\n\t\tcolisiones = self.intercolision()\n\n\t\treturn colisiones\n\n\n\t# Detecta colisiones y reajusta la posición de los elementos para que no se atraviesen.\n\t# Devuelve lista con las colisiones detectadas.\n\tdef intercolision(self):\n\t\t# calculará las distancias necesarias para rectificar la posición del elemento si se traspasan.\n\t\tdef calculadistancias(element):\n\t\t\t# distancia mínima que debería de haber entre los elementos.\n\t\t\tdist = (element.rectcol.w//2 + elotro.rectcol.w//2 +1 , element.rectcol.h//2 + elotro.rectcol.h//2 +1)\n\t\t\t# distancia real.\n\t\t\tdistcol = (abs(element.nextpos[0] - elotro.map_pos[0]), abs(element.nextpos[1] - elotro.map_pos[1]))\n\t\t\treturn dist, distcol\n\n\t\tcolisiones = {}\n\t\tfor element in self.elements.values():\n\t\t\tretroceso = (element.direccion[0] * -1, element.direccion[1] * -1)\n\t\t\tcoltemp = {element.nombre:[]}\n\t\t\tcols = False\n\t\t\tfor elotro in self.elements.values():\n\t\t\t\tif elotro.nombre != element.nombre:\n\t\t\t\t\t# Detecta si hay colisión.\n\t\t\t\t    if element.rectcol.colliderect(elotro.rectcol):\n\t\t\t\t    \tcols = True\n\t\t\t\t    \tcoltemp[element.nombre].append((elotro.nombre,elotro.tipo))\n\n\t\t\t\t    \t# Ajustando las posiciones hasta tener la distancia correcta.\n\t\t\t\t    \tdist, distcol = calculadistancias(element)\n\t\t\t\t    \twhile distcol[0] < dist[0] and distcol[1] < dist[1]:\n\t\t\t\t    \t\tfor n in 0,1:\n\t\t\t\t\t    \t\telement.nextpos[n] += retroceso[n]\n\t\t\t\t\t    \tdist, distcol = calculadistancias(element)\n\t\t\t\t\t    \telement.mover_elemento()\n\t\t\t# Si el elemento ha tenido alguna colisión:\n\t\t\tif cols: \n\t\t\t\tcolisiones.update(coltemp)\n\t\t# Si ha habido colisiones, devuelve diccionario: {elemento1.nombre:[(elemento2.nombre, elemento2.tipo), ...}\n\t\tif len(colisiones) > 0:\n\t\t\treturn colisiones\n\t\telse:\n\t\t\treturn False\n\n\n",
 			"file": "grupo_state.py",
-			"file_size": 5428,
-			"file_write_time": 131318051321295954,
 			"settings":
 			{
-				"buffer_size": 3061,
+				"buffer_size": 3543,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -562,7 +559,7 @@
 			"file": "elementos.py",
 			"settings":
 			{
-				"buffer_size": 12996,
+				"buffer_size": 12913,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -571,7 +568,7 @@
 			"file": "utilidades/a_star.py",
 			"settings":
 			{
-				"buffer_size": 30578,
+				"buffer_size": 23342,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -580,7 +577,16 @@
 			"file": "escenario.py",
 			"settings":
 			{
-				"buffer_size": 7265,
+				"buffer_size": 7217,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/E/Mis documentos/Dropbox/Proyectos Phyton/Apuntes_python/Módulo Pdb (debug python).py",
+			"settings":
+			{
+				"buffer_size": 1882,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -589,7 +595,16 @@
 			"file": "ToDo.tasks",
 			"settings":
 			{
-				"buffer_size": 9255,
+				"buffer_size": 10640,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "pruebas.py",
+			"settings":
+			{
+				"buffer_size": 40,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -601,16 +616,6 @@
 				"buffer_size": 8577,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
-			}
-		},
-		{
-			"contents": "Python 3.4.4 (v3.4.4:737efcadf5a6, Dec 20 2015, 19:28:18) [MSC v.1600 32 bit (Intel)] on win32\nType \"help\", \"copyright\", \"credits\" or \"license\" for more information.\n>>> porderecha = ('derecha', 'adelante')\n>>> porizquierda = ('izquierda', 'adelante')\n>>> for paso in porderecha, porizquierda:\n... print paso\n  File \"<stdin>\", line 2\n    print paso\n        ^\nIndentationError: Missing parentheses in call to 'print'\n>>> print (paso)\nTraceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\nNameError: name 'paso' is not defined\n>>> for paso in porderecha, porizquierda:\n... print (paso)\n  File \"<stdin>\", line 2\n    print (paso)\n        ^\nIndentationError: expected an indented block\n>>> for paso in porderecha, porizquierda:\n... \tprint(paso)\n... \n('derecha', 'adelante')\n('izquierda', 'adelante')\n>>> len(porderecha)\n2\n>>> ",
-			"settings":
-			{
-				"buffer_size": 840,
-				"line_ending": "Windows",
-				"name": "*REPL* [python]",
-				"scratch": true
 			}
 		}
 	],
@@ -719,12 +724,13 @@
 	},
 	"expanded_folders":
 	[
-		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes_python",
 		"/E/Mis documentos/Dropbox/Proyectos Phyton/Pygame.Cris",
 		"/E/Mis documentos/Dropbox/Proyectos Phyton/Pygame.Cris/gamemanager"
 	],
 	"file_history":
 	[
+		"/C/Users/Pedro/AppData/Roaming/Sublime Text 3/Packages/Plugin Debugger/README.rst",
+		"/C/Users/Pedro/AppData/Roaming/Sublime Text 3/Packages/Plugin Debugger/debug_example.py",
 		"/C/Users/Pedro/AppData/Roaming/Sublime Text 3/Packages/PlainTasks/messages/Tutorial.todo",
 		"/E/Mis documentos/Dropbox/Proyectos Phyton/Pygame.Cris/ToDo.tasks",
 		"/C/Users/Pedro/Dropbox/Notes/hola.note",
@@ -850,9 +856,7 @@
 		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/lista modulos dropbox.py",
 		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Módulo Dropbox.py",
 		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Script Basic. Listar entradas y atributos con os.walk().py",
-		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Script Basic. Obtener lista de directorios y subdirectorios del directorio actual.py",
-		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Módulo os, sys y time.py",
-		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/_Módulo os.path().py"
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Script Basic. Obtener lista de directorios y subdirectorios del directorio actual.py"
 	],
 	"find":
 	{
@@ -870,6 +874,9 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"self.direccion",
+			"nueva ruta",
+			"waypoints",
 			"colisiones",
 			"self.map_pos",
 			"self.nextpos",
@@ -994,10 +1001,7 @@
 			"f=",
 			"f =",
 			"f=",
-			"fullname",
-			"folder",
-			"list_folder",
-			"setupUi"
+			"fullname"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1032,8 +1036,8 @@
 						"selection":
 						[
 							[
-								730,
-								730
+								729,
+								729
 							]
 						],
 						"settings":
@@ -1045,7 +1049,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
@@ -1071,10 +1075,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1123.0,
+						"translation.y": 1203.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
@@ -1083,15 +1087,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 11158,
+						"buffer_size": 11168,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								8364,
-								8364
+								6454,
+								6454
 							]
 						],
 						"settings":
@@ -1101,7 +1105,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2733.0,
+						"translation.y": 2025.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 4,
@@ -1113,15 +1117,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3061,
+						"buffer_size": 3543,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								489,
-								491
+								2266,
+								2266
 							]
 						],
 						"settings":
@@ -1131,7 +1135,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 855.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -1143,15 +1147,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 12996,
+						"buffer_size": 12913,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5736,
-								5736
+								7635,
+								7649
 							]
 						],
 						"settings":
@@ -1162,10 +1166,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2187.0,
+						"translation.y": 2336.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
@@ -1174,15 +1178,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 30578,
+						"buffer_size": 23342,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2268,
-								2268
+								4184,
+								4188
 							]
 						],
 						"settings":
@@ -1192,10 +1196,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 689.0,
+						"translation.y": 1691.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
@@ -1204,15 +1208,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7265,
+						"buffer_size": 7217,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4718,
-								4718
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1222,33 +1226,61 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1547.0,
+						"translation.y": 1657.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 7,
 					"type": "text"
 				}
 			]
 		},
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 7,
-					"file": "ToDo.tasks",
+					"file": "/E/Mis documentos/Dropbox/Proyectos Phyton/Apuntes_python/Módulo Pdb (debug python).py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 9255,
+						"buffer_size": 1882,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1526,
-								1526
+								1881,
+								1864
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 315.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "ToDo.tasks",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10640,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1918,
+								1918
 							]
 						],
 						"settings":
@@ -1261,14 +1293,42 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 434.0,
+						"translation.y": 182.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 9,
+					"file": "pruebas.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 40,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								18,
+								18
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
 					"file": "/E/Mis documentos/Dropbox/Proyectos Phyton/Apuntes_python/Basic. Cadenas, listas, tuplas, diccionarios y conjuntos.py",
 					"semi_transient": false,
 					"settings":
@@ -1293,67 +1353,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 840,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								840,
-								840
-							]
-						],
-						"settings":
-						{
-							"auto_complete": true,
-							"auto_indent": false,
-							"default_dir": "D:\\Mis Documentos\\Dropbox\\Proyectos Phyton\\Apuntes_python",
-							"detect_indentation": false,
-							"gutter": false,
-							"history_arrows": true,
-							"indent_subsequent_lines": false,
-							"line_numbers": false,
-							"repl": true,
-							"repl_external_id": "python",
-							"repl_id": "2705b9734c9241c987f785b75cf4803b",
-							"repl_restart_args":
-							{
-								"cmd":
-								[
-									"python",
-									"-i",
-									"-u"
-								],
-								"cwd": "$file_path",
-								"encoding": "utf8",
-								"extend_env":
-								{
-									"PYTHONIOENCODING": "utf-8"
-								},
-								"external_id": "python",
-								"syntax": "Packages/Python/Python.tmLanguage",
-								"type": "subprocess"
-							},
-							"repl_sublime2": false,
-							"smart_indent": false,
-							"spell_check": false,
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
+					"stack_index": 10,
 					"type": "text"
 				}
 			]
@@ -1361,7 +1361,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 21.0
+		"height": 23.0
 	},
 	"input":
 	{
@@ -1387,7 +1387,7 @@
 		"cols":
 		[
 			0.0,
-			0.6783625731,
+			0.702474489796,
 			1.0
 		],
 		"rows":
@@ -1399,17 +1399,17 @@
 	"menu_visible": true,
 	"output.exec":
 	{
-		"height": 226.0
+		"height": 41.0
 	},
 	"output.find_results":
 	{
 		"height": 0.0
 	},
-	"pinned_build_system": "Packages/Python/Python.sublime-build",
+	"pinned_build_system": "Packages/User/Python34-build.sublime-build",
 	"project": "pygame.cris.sublime-project",
 	"replace":
 	{
-		"height": 38.0
+		"height": 42.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -1450,7 +1450,7 @@
 	"show_minimap": true,
 	"show_open_files": true,
 	"show_tabs": true,
-	"side_bar_visible": true,
+	"side_bar_visible": false,
 	"side_bar_width": 232.0,
 	"status_bar_visible": true,
 	"template_settings":
