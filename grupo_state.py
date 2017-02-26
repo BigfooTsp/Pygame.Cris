@@ -92,7 +92,9 @@ class GrupoState():
 		    dest = element.destino
 
 		element.destino = dest
-		mapa = self.matriz_mapa
+
+		# obtengo matriz de mapa y elementos.
+		mapa = self.matrizar_minimapa(element)
 
 		astar = a_star.Pathfinding(orig, dest, mapa, element.rectcol.w)
 		if astar.camino != -1:
@@ -120,14 +122,15 @@ class GrupoState():
 		self.matriz_mapa = matrizm
 
 
-	# Crea una matriz con el mapa.
-	def matrizar_minimapa(self):
+	# Crea una matriz con el mapa y la posición de los elementos.
+	def matrizar_minimapa(self, elementoastar=False):
 		matriz = [l[:] for l in self.matriz_mapa]
-		
-		for element in self.elements.values():
-			f,c = self.buscarPos(element.map_pos)
-			matriz[f][c] = 2
 
+		for element in self.elements.values():
+			# elementoastar desde pathfinding() para matriz sin uno mismo.
+			if element != elementoastar: 
+				f,c = self.buscarPos(element.map_pos)
+				matriz[f][c] = 2
 		return matriz
 
 
@@ -166,39 +169,9 @@ class GrupoState():
 	################ GESTIÓN DE EVENTOS ####################
 	########################################################
 
-	# Detecta colisiones y reajusta la posición de los elementos para que no se atraviesen.
 	# Devuelve lista con las colisiones detectadas.
 	def intercolision(self):
-		# calculará las distancias necesarias para rectificar la posición del elemento si se traspasan.
 
-		# Ajustando las posiciones hasta tener la distancia correcta.
-		def reajustar_pos(element, elotro):
-			# distancia mínima que debería de haber entre los elementos.
-			dist = (element.rectcol.w//2 + elotro.rectcol.w//2, element.rectcol.h//2 + elotro.rectcol.h//2)
-			# distancia real.
-			distcol = (abs(element.nextpos[0] - elotro.map_pos[0]), abs(element.nextpos[1] - elotro.map_pos[1]))
-
-			retroceso = [0,0]
-			for n in 0,1:
-				if element.nextpos[n] > elotro.map_pos[n]:
-					retroceso[n] = +1
-				elif element.nextpos[n] < elotro.map_pos[n]:
-					retroceso[n] = -1
-				elif element.nextpos[n] == elotro.map_pos[n]:
-					retroceso[n] = 0
-
-			distancia = [0,0]
-			for n in 0,1: distancia[n] = (distcol[n]-dist[n])
-			if abs(distancia[0]) > abs(distancia[1]):
-				distancia = abs(distancia[0])
-			else:
-				distancia = abs(distancia[1])
-
-			nextpos = [0,0]
-			for n in 0,1: nextpos[n] = element.nextpos[n]+distancia*retroceso[n]
-			element.nextpos = nextpos
-			element.mover_elemento()
-		#______________________________________________________________________
 		colisiones = {}
 		for element in self.elements.values():
 			coltemp = {element.nombre:[]}
@@ -206,10 +179,10 @@ class GrupoState():
 			for elotro in self.elements.values():
 				if elotro.nombre != element.nombre:
 					# Detecta si hay colisión.
-				    if element.rectcol.colliderect(elotro.rectcol):
+				    if element.rect.colliderect(elotro.rect):
 				    	cols = True
 				    	coltemp[element.nombre].append((elotro.nombre,elotro.tipo))
-				    	reajustar_pos(element,elotro)
+				    	#reajustar_pos(element,elotro)
 			# Si el elemento ha tenido alguna colisión:
 			if cols: 
 				colisiones.update(coltemp)

@@ -157,60 +157,6 @@ class Elemento():
         self.ruta = self.ruta_pausa
         self.ruta_pausa = []
 
-    # Rodea un elemento con el que colisiona y recalcula ruta. Lo detiene si no puede.
-    def esquivar(self): 
-        # calcula la nueva posición en un paso. 'paso' debe de ser 'adelante', 'izquierda', ...
-        def pasos(pos, paso):
-            posx = pos[0]
-            posy = pos[1]
-            dirx = self.direccion[0]
-            diry = self.direccion[1]
-
-            # direcciones relativas a self.dirección actual, no a la orientación del personaje mientras esquiva.
-            if paso == 'adelante':
-                return (posx + dirx*100, posy + diry*100)
-            elif paso == 'atras':
-                return (posx + dirx*-1 *15, posy + diry*-1 *15)    # Paso atrás: (x=x*-1, y=y*-1)
-            elif paso == 'derecha':
-                return (posx + diry*-1 *50, posy + dirx *50)       # Giro 90º a la derecha: (X=Y*-1, Y=X)
-            elif paso == 'izquierda':
-                return (posx + diry *50, posy + dirx*-1 *50)       # Giro 90º a la izquierda: (X=Y, Y=X*-1)
-
-        # devuelve True si la ruta es accesible.
-        def comprueba_ruta(paso1, paso2, paso3): 
-            paso1 = pasos(self.map_pos, paso1)
-            paso2 = pasos(paso1, paso2)
-            paso3 = pasos(paso2, paso3)
-            mapa = self.matriz_astar
-            width = self.rectcol.h
-
-            ruta = [paso1, paso2, paso3]
-            for paso in paso1, paso2, paso3:
-                if a_star.accesible(paso, mapa, width) == False:
-                    ruta = False
-            return ruta
-        #________________________________________________________________________________________
-        # rutas de evasión:
-        porladerecha    = ['atras', 'derecha', 'adelante']
-        porlaizquierda  = ['atras', 'izquierda', 'adelante']
-        rutas = (porladerecha, porlaizquierda)
-        # selecciona una ruta de evasión válida en el orden indicado en var. rutas.
-        cont = 0
-        for ruta in rutas:
-            evasion = comprueba_ruta(ruta[0], ruta[1], ruta[2])
-            
-            if evasion:
-                if self.pathfinding(evasion[-1], self.destino):   # si camino encontrado...
-                    evasion.extend(self.ruta)
-                    self.ruta = evasion
-                    break
-            else: # Prueba con otra ruta de rutas (mientras haya)
-                cont +=1
-                if cont == len(rutas):
-                    print (self.nombre + ' parado... no encuentra ruta de evasión. !!')
-                    self.detener()
-                else:
-                    continue
 
 
     # Actualiza posiciones y rectángulos desde nextpos.

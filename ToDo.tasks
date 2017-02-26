@@ -35,18 +35,10 @@ ERRORES:
 
 --- ✄ -----------------------
 CAMBIOS:
-  EN LA SIGUIENTE VERSIÓN IMPLANTO LOS SIGUIENTES CAMBIOS...
-  ☐ modifico las colisiones para que en lugar del rectángulo reducido rectcol, utilice el original de 36x36 pixeles
 
-  ✔ Gestionar en el módulo grupo_state el pathfinding. para ello crearé una única matriz del mapa con los rectángulos accesibles desde la cual los elementos buscarán el camino correcto. @today @done (17-02-23 21:32)
-    ✔ Crer matriz_mapa y matriz_elementos desde grupo_state. @done (17-02-23 08:05)
-    ✔ Gestion de pathfinding desde grupo_state @today @done (17-02-23 21:32)
 
-  ✔ crearé otra matriz del mismo tamaño que el mapa en el que estarán situados todos los elementos del mapa, se utilizará para que los elementos evadan también a los otros elementos sin dejar de actuar cuando estén próximos, determinada esta vez por su rectángulo de 36x36, que es mayor que el de las celdas de la matriz del mapa (22x22). Esta matriz de los elementos se actualizará con cada update. @done (17-02-23 21:33)
 
-  ☐  eliminar evasión del método intercolisión() del módulo grupo_elementos, ya que desde que estén implantados los cambios anteriores, esto será gestionado con el pathfinding y las dos matrices de celdas accesibles. por defecto los personajes evadirán a los otros elementos a no ser que la colisión los detenga.
 
-  ☐ crear minimapa
 
 
 TAREAS:
@@ -112,6 +104,13 @@ TAREAS:
 
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
+ ✔ modifico las colisiones para que en lugar del rectángulo reducido rectcol, utilice el original de 36x36 pixeles @done (17-02-26 09:02) @project(CAMBIOS)
+ ✔  eliminar evasión del método intercolisión() del módulo grupo_elementos, ya que desde que estén implantados los cambios anteriores, esto será gestionado con el pathfinding y las dos matrices de celdas accesibles. por defecto los personajes evadirán a los otros elementos a no ser que la colisión los detenga. @done (17-02-26 09:02) @project(CAMBIOS)
+ ✔ crear minimapa @done (17-02-26 08:29) @project(CAMBIOS)
+ ✔ crearé otra matriz del mismo tamaño que el mapa en el que estarán situados todos los elementos del mapa, se utilizará para que los elementos evadan también a los otros elementos sin dejar de actuar cuando estén próximos, determinada esta vez por su rectángulo de 36x36, que es mayor que el de las celdas de la matriz del mapa (22x22). Esta matriz de los elementos se actualizará con cada update. @done (17-02-23 21:33) @project(CAMBIOS)
+ ✔ Gestionar en el módulo grupo_state el pathfinding. para ello crearé una única matriz del mapa con los rectángulos accesibles desde la cual los elementos buscarán el camino correcto. @today @done (17-02-23 21:32) @project(CAMBIOS)
+ ✔ Gestion de pathfinding desde grupo_state @today @done (17-02-23 21:32) @project(CAMBIOS)
+ ✔ Crer matriz_mapa y matriz_elementos desde grupo_state. @done (17-02-23 08:05) @project(CAMBIOS)
  ✔ Cuando se clickea una posición inaccesible por no caber, se bloquea y genera error... sucede porque en el modulo astar salta -1 si no hay camino y se vuelve loco... estudiar este tema. @done (17-02-22 07:05) @project(ERRORES)
  ✔ Error 2. El juego se bloquea sin más. CAUSA: Buscando el problema. tras colisionar se bloquea en el  método intercolisión() de grupo_state. En este método hay un bucle while... Es lo que se bloquea cuando el elemento A colisiona con B en diagonal... Resulta que lariable direccion de elementos en ocasiones está en (0,0) y el retroceso para reajustar la posición tras una colisión es inválido, no modifica nada. @done (17-02-22 07:04) @project(ERRORES / ERROR al combinar el pathfinding con las colisiones en el cual pasan dos cosas)
  ✔  SOLUCIÓN: Si ese elemento con el que colisiona no se va a mover, detener el elemeto en lugar de esquivar. @done (17-02-21 20:04) @project(ERRORES / ERROR. Se crea un bucle si la posición de destino de un elemento está distancia de colisión a un elemento fijo y utiliza su método esquivar para sortearlo)

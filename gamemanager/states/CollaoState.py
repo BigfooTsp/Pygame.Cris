@@ -206,13 +206,8 @@ class CollaoState(gamestate.GameState):
 					for element in colisiones['Cris']:
 						if self._misionPiti == 'fase_1': 	# Colisión con Piti para misión 1:
 							if 'Piti' in element:
-								self.grupoelementos.elements['Cris'].esquivar()
-								#self.grupoelementos.elements['Cris'].detener()
-								#self.dialogs('quiere_hablar')
-			# Elementos colisionados con ruta que se rodean para seguir su camino.
-				else:
-					if self.grupoelementos.elements[element].ruta != []:
-						self.grupoelementos.elements[element].esquivar()
+								self.grupoelementos.elements['Cris'].detener()
+								self.dialogs('quiere_hablar')
 
 
 	def control_misiones (self):
@@ -253,11 +248,11 @@ class CollaoState(gamestate.GameState):
 		def dialog_Piti_quiere_hablar():
 			# En el primer encuentro entre Cris y Piti, este quiere decirle algo.
 			# Se pregunta si quiere hablar y como respuesta si o no.
-			self.dialog_surface = pygame.image.load('dialogos/Piti1(300x120).png')
+			self.dialog_surface = pygame.image.load('utilidades/imagenes/dialogos/Piti1(300x120).png')
 			self.diagrect = self.dialog_surface.get_rect()
 			self.diagrect.midbottom = (self.parent.screen_rect.centerx, self.parent.screen_rect.bottom - 15)
 
-			mask = pygame.image.load('dialogos/Piti1(300x120)mask.png')
+			mask = pygame.image.load('utilidades/imagenes/dialogos/Piti1(300x120)mask.png')
 			dialog_mask = pygame.mask.from_surface(mask)
 			rect_si, rect_no = dialog_mask.get_bounding_rects()
 
