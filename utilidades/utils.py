@@ -1,6 +1,11 @@
 import pygame
 import os
 
+
+	########################################################
+	################# GESTIÓN DE IMÁGENES ##################
+	########################################################
+
 def cargar_imagen(path, TILE_ANCHO, TILE_ALTO, transparent=True, pixel = (0,0)):
 	global rect, col, fil, image
 
@@ -37,6 +42,9 @@ def cortar_charset(path, TILE_ANCHO, TILE_ALTO):
 
 	return sprite
 
+	########################################################
+	################# GESTIÓN DE TEXTO #####################
+	########################################################
 
 def texto(texto, posx, posy, tamaño, color=(255,255,255), fuente=0,):
 	''' Control de impresión de texto, las fuentes en una lista
@@ -54,4 +62,24 @@ def texto(texto, posx, posy, tamaño, color=(255,255,255), fuente=0,):
 	salida_rect.centery = posy
 
 	return salida, salida_rect
+
+	########################################################
+	################# GESTIÓN DE MATRICES ##################
+	########################################################
+
+# devuelve lista de tuplas con las posiciones de una matriz que tienen un valor dado
+def buscar_en_matriz(matriz, valor):
+	lista = []
+	for f in range(len(matriz)):
+		for c in range(len(matriz[0])):
+			if self.matriz_elementos[f][c] == valor:
+				lista.append (f,c)
+	return lista
+
+# cambia el valor de las posiciones de una matriz por uno dado.
+def cambiar_valor_en_matriz(matriz, lista, valor):
+	for tupla in lista:
+		for f,c in tupla:
+			matriz[f,c] = valor
+	return matriz
 

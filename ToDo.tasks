@@ -28,34 +28,8 @@ TODO Pygame Cris:
 ERRORES:
 
   ☐ Arreglar fuente en texto de pantalla inicial.
-  ☐ Cuando se clickea una posición inaccesible por no caber, se bloquea y genera error... sucede porque en el modulo astar salta -1 si no hay camino y se vuelve loco... estudiar este tema.
 
 
-  ERROR al combinar el pathfinding con las colisiones en el cual pasan dos cosas:
-
-    ☐ Error 2. El juego se bloquea sin más. CAUSA: Buscando el problema. tras colisionar se bloquea en el  método intercolisión() de grupo_state. En este método hay un bucle while... Es lo que se bloquea cuando el elemento A colisiona con B en diagonal... Resulta que lariable direccion de elementos en ocasiones está en (0,0) y el retroceso para reajustar la posición tras una colisión es inválido, no modifica nada.
-
-
-  El problema tiene que ver cuando la posición del personaje está en la lista cerrada.
-
- Buscando camino
-Generando waypoints
-Creado self.waypoints_pixel
-    Nueva ruta para Cris: [(517, 671), (561, 671)]
-
-ESQUIVANDO OBJETO........
-    orig, dest (635, 653) [563, 678]
- Buscando camino
-lista abierta vacía
-Camino no encontrado
-Camino no encontrado (desde Elemento.pathfinding()
- Buscando camino
-lista abierta vacía
-Camino no encontrado
-    Nueva ruta para Cris: []
-    ruta de evasión:  [(485, 703), (535, 753), (635, 653)]
-
-error en intercolision
 
 
 
@@ -64,9 +38,11 @@ CAMBIOS:
   EN LA SIGUIENTE VERSIÓN IMPLANTO LOS SIGUIENTES CAMBIOS...
   ☐ modifico las colisiones para que en lugar del rectángulo reducido rectcol, utilice el original de 36x36 pixeles
 
-  ☐ Gestionar en el módulo grupo_state el pathfinding. para ello crearé una única matriz del mapa con los rectángulos accesibles desde la cual los elementos buscarán el camino correcto.
+  ✔ Gestionar en el módulo grupo_state el pathfinding. para ello crearé una única matriz del mapa con los rectángulos accesibles desde la cual los elementos buscarán el camino correcto. @today @done (17-02-23 21:32)
+    ✔ Crer matriz_mapa y matriz_elementos desde grupo_state. @done (17-02-23 08:05)
+    ✔ Gestion de pathfinding desde grupo_state @today @done (17-02-23 21:32)
 
-  ☐ crearé otra matriz del mismo tamaño que el mapa en el que estarán situados todos los elementos del mapa, se utilizará para que los elementos evadan también a los otros elementos sin dejar de actuar cuando estén próximos, determinada esta vez por su rectángulo de 36x36, que es mayor que el de las celdas de la matriz del mapa (22x22). Esta matriz de los elementos se actualizará con cada update.
+  ✔ crearé otra matriz del mismo tamaño que el mapa en el que estarán situados todos los elementos del mapa, se utilizará para que los elementos evadan también a los otros elementos sin dejar de actuar cuando estén próximos, determinada esta vez por su rectángulo de 36x36, que es mayor que el de las celdas de la matriz del mapa (22x22). Esta matriz de los elementos se actualizará con cada update. @done (17-02-23 21:33)
 
   ☐  eliminar evasión del método intercolisión() del módulo grupo_elementos, ya que desde que estén implantados los cambios anteriores, esto será gestionado con el pathfinding y las dos matrices de celdas accesibles. por defecto los personajes evadirán a los otros elementos a no ser que la colisión los detenga.
 
@@ -136,6 +112,8 @@ TAREAS:
 
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
+ ✔ Cuando se clickea una posición inaccesible por no caber, se bloquea y genera error... sucede porque en el modulo astar salta -1 si no hay camino y se vuelve loco... estudiar este tema. @done (17-02-22 07:05) @project(ERRORES)
+ ✔ Error 2. El juego se bloquea sin más. CAUSA: Buscando el problema. tras colisionar se bloquea en el  método intercolisión() de grupo_state. En este método hay un bucle while... Es lo que se bloquea cuando el elemento A colisiona con B en diagonal... Resulta que lariable direccion de elementos en ocasiones está en (0,0) y el retroceso para reajustar la posición tras una colisión es inválido, no modifica nada. @done (17-02-22 07:04) @project(ERRORES / ERROR al combinar el pathfinding con las colisiones en el cual pasan dos cosas)
  ✔  SOLUCIÓN: Si ese elemento con el que colisiona no se va a mover, detener el elemeto en lugar de esquivar. @done (17-02-21 20:04) @project(ERRORES / ERROR. Se crea un bucle si la posición de destino de un elemento está distancia de colisión a un elemento fijo y utiliza su método esquivar para sortearlo)
  ✔ Error 1. Me indica que no existe el parámetro waypoints_pixel en el objeto astar (el cual contiene las coordenadar para trazar el camino). CAUSA. Veo que el módulo Astar no encuentra el camino y devuelve una lista vacía que el módulo Elementos no interpretaba bien.       SOLUCIÓN:   Modifico el método esquivar() para que si recibe una lista vacía después de pathfinding(), pare el elemento. @done (17-02-20 21:53) @project(ERRORES / ERROR al combinar el pathfinding con las colisiones en el cual pasan dos cosas)
  ✔ Eliminar de módulo grupo_state función no_pisable(), que reajusta la posición de los elementos cuando colisionan para que no se muestren atravesándose, y se añade esta función al método ya existente intercolisión() @today @done (17-02-17 12:46) @project(TAREAS)

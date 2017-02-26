@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+import pdb
 
 from gamemanager.gamemanager import GameManager
 from gamemanager.states import CollaoState, menustate, pausastate
@@ -25,6 +26,7 @@ if __name__ == '__main__':
 		game.handleEvents(pygame.event.get())
 		game.update()
 		game.draw()
+
 
 	game.cleanUp()
 

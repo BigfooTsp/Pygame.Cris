@@ -137,25 +137,6 @@ class Mapa:
 
 		return	mapasurface
 
-	# Devuelve una matriz donde 0 es pisable y 1 no.
-	def matriz_astar(self, width):
-		matriz = []
-		fil = 0
-		screen_rect = pygame.Rect(0, 0, self._mapa_size[0], self._mapa_size[0])
-
-		for y in range(0, self._mapa_size[0], width):
-			matriz.append([])
-			for x in range (0, self._mapa_size[1], width):
-				cel = pygame.Rect(x, y, width, width)
-				#if screen_rect.contains(cel):
-				if cel.collidelist(self._nopisable) == -1:
-					matriz[fil].append(0)
-				else:
-					matriz[fil].append(1)
-			fil += 1
-
-		return matriz
-
 
 	def map_info(self):
 		''' Muestra en consola las características del mapa creado.'''
@@ -206,14 +187,11 @@ Configuración de tiledmap:
 	-capa de objetos 'nopisable'
 	-exportado en JSON
 	-Hacer una capa 'nopisable'
-
 	[.] desplazamiento del mapa
 		 En el json pongo una posición de inicio al personaje.
 		 esta posición debe de estar centrada en la pantalla (800x600)
 		 Los rectángulos de colisión y la pantalla deben de adaptarse a la posición
 		 del personaje.
-
 	[.] COnvertir la ruta de la imagen del json en relativo.
 	[.] Optimizar los rectángulos del mapa de colisión.
-
 '''

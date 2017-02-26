@@ -4,8 +4,28 @@
 		"selected_items":
 		[
 			[
+				"grupo",
+				"grupoelementos"
+			],
+			[
+				"matr",
+				"matriz_elementos"
+			],
+			[
 				"ma",
-				"mapapos"
+				"matriz_mapa〔variable〕"
+			],
+			[
+				"s",
+				"set_trace〔function〕"
+			],
+			[
+				"ruta",
+				"ruta_pausa〔variable〕"
+			],
+			[
+				"res",
+				"retroceso〔variable〕"
 			],
 			[
 				"elee",
@@ -444,10 +464,6 @@
 				"Exception"
 			],
 			[
-				"s",
-				"searchlist〔variable〕"
-			],
-			[
 				"lo",
 				"login"
 			],
@@ -498,22 +514,6 @@
 			[
 				"files",
 				"files_search"
-			],
-			[
-				"type",
-				"typepath"
-			],
-			[
-				"sh",
-				"show_scan〔function〕"
-			],
-			[
-				"en",
-				"entries〔variable〕"
-			],
-			[
-				"show",
-				"show_scan"
 			]
 		]
 	},
@@ -523,7 +523,7 @@
 			"file": "juego.py",
 			"settings":
 			{
-				"buffer_size": 730,
+				"buffer_size": 742,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -541,7 +541,7 @@
 			"file": "gamemanager/states/CollaoState.py",
 			"settings":
 			{
-				"buffer_size": 11168,
+				"buffer_size": 10065,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -550,7 +550,7 @@
 			"file": "grupo_state.py",
 			"settings":
 			{
-				"buffer_size": 3543,
+				"buffer_size": 6637,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -559,43 +559,7 @@
 			"file": "elementos.py",
 			"settings":
 			{
-				"buffer_size": 12913,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "utilidades/a_star.py",
-			"settings":
-			{
-				"buffer_size": 23342,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "escenario.py",
-			"settings":
-			{
-				"buffer_size": 7217,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/E/Mis documentos/Dropbox/Proyectos Phyton/Apuntes_python/Módulo Pdb (debug python).py",
-			"settings":
-			{
-				"buffer_size": 1882,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "ToDo.tasks",
-			"settings":
-			{
-				"buffer_size": 10640,
+				"buffer_size": 11915,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -604,16 +568,61 @@
 			"file": "pruebas.py",
 			"settings":
 			{
-				"buffer_size": 40,
+				"buffer_size": 131,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "/E/Mis documentos/Dropbox/Proyectos Phyton/Apuntes_python/Basic. Cadenas, listas, tuplas, diccionarios y conjuntos.py",
+			"file": "utilidades/a_star.py",
+			"settings":
+			{
+				"buffer_size": 23094,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "escenario.py",
+			"settings":
+			{
+				"buffer_size": 6695,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "ToDo.tasks",
+			"settings":
+			{
+				"buffer_size": 11626,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes_python/Módulo Pdb (debug python).py",
+			"settings":
+			{
+				"buffer_size": 1882,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes_python/Basic. Cadenas, listas, tuplas, diccionarios y conjuntos.py",
 			"settings":
 			{
 				"buffer_size": 8577,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes_python/Basic. manejando errores.py",
+			"settings":
+			{
+				"buffer_size": 811,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -703,7 +712,7 @@
 				"Build: Cancel"
 			]
 		],
-		"width": 400.0
+		"width": 504.0
 	},
 	"console":
 	{
@@ -724,16 +733,12 @@
 	},
 	"expanded_folders":
 	[
-		"/E/Mis documentos/Dropbox/Proyectos Phyton/Pygame.Cris",
-		"/E/Mis documentos/Dropbox/Proyectos Phyton/Pygame.Cris/gamemanager"
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris"
 	],
 	"file_history":
 	[
-		"/C/Users/Pedro/AppData/Roaming/Sublime Text 3/Packages/Plugin Debugger/README.rst",
-		"/C/Users/Pedro/AppData/Roaming/Sublime Text 3/Packages/Plugin Debugger/debug_example.py",
 		"/C/Users/Pedro/AppData/Roaming/Sublime Text 3/Packages/PlainTasks/messages/Tutorial.todo",
-		"/E/Mis documentos/Dropbox/Proyectos Phyton/Pygame.Cris/ToDo.tasks",
-		"/C/Users/Pedro/Dropbox/Notes/hola.note",
+		"/C/Users/Pedro/AppData/Roaming/Sublime Text 3/Packages/User/python34 + cmd.sublime-build",
 		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris/conducta.py",
 		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris/ToDo_archive.tasks",
 		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Pygame.Cris/tips.todo",
@@ -856,7 +861,10 @@
 		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/lista modulos dropbox.py",
 		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Módulo Dropbox.py",
 		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Script Basic. Listar entradas y atributos con os.walk().py",
-		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Script Basic. Obtener lista de directorios y subdirectorios del directorio actual.py"
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Script Basic. Obtener lista de directorios y subdirectorios del directorio actual.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/Módulo os, sys y time.py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes/_Módulo os.path().py",
+		"/D/Mis Documentos/Dropbox/Proyectos Phyton/DropboxRpi/Python and dropbox/Consola.py"
 	],
 	"find":
 	{
@@ -874,28 +882,18 @@
 		"case_sensitive": false,
 		"find_history":
 		[
-			"self.direccion",
+			"matriz",
+			"buscarPos",
+			"size",
 			"nueva ruta",
-			"waypoints",
-			"colisiones",
-			"self.map_pos",
-			"self.nextpos",
-			"es_pisable",
+			"pdb",
+			"nueva ruta",
+			"comprueba_ruta",
+			"pdb",
 			"pathfinding",
-			"accesible",
-			"self.direccion",
-			"direccion",
-			"nextpos",
-			"direccion",
-			"mouse_scroll_pos",
-			"mouse_pos",
-			"mouse_pos0",
-			"pos0",
-			"self.pos0",
-			"nextpos",
-			"self.nextpos",
-			"path",
-			"nextpos",
+			"pdb",
+			"nueva ruta",
+			"objetoescena",
 			"self.map_pos",
 			"nextpos",
 			"rectcol",
@@ -1001,9 +999,19 @@
 			"f=",
 			"f =",
 			"f=",
-			"fullname"
+			"fullname",
+			"folder",
+			"list_folder",
+			"setupUi",
+			"setupoUi",
+			"negras",
+			"blancas",
+			"x",
+			"1",
+			"aa",
+			"comb"
 		],
-		"highlight": true,
+		"highlight": false,
 		"in_selection": false,
 		"preserve_case": false,
 		"regex": false,
@@ -1029,19 +1037,20 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 730,
+						"buffer_size": 742,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								729,
-								729
+								157,
+								157
 							]
 						],
 						"settings":
 						{
+							"auto_complete": false,
 							"syntax": "Packages/Python/Python.sublime-syntax",
 							"translate_tabs_to_spaces": false
 						},
@@ -1049,7 +1058,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
@@ -1065,8 +1074,8 @@
 						"selection":
 						[
 							[
-								3139,
-								3139
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1075,10 +1084,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1203.0,
+						"translation.y": 177.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 11,
 					"type": "text"
 				},
 				{
@@ -1087,15 +1096,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 11168,
+						"buffer_size": 10065,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								6454,
-								6454
+								1342,
+								1342
 							]
 						],
 						"settings":
@@ -1104,11 +1113,11 @@
 							"syntax": "Packages/Python/Python.sublime-syntax",
 							"translate_tabs_to_spaces": false
 						},
-						"translation.x": 0.0,
-						"translation.y": 2025.0,
+						"translation.x": 162.0,
+						"translation.y": 299.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
@@ -1117,15 +1126,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3543,
+						"buffer_size": 6637,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2266,
-								2266
+								3024,
+								3024
 							]
 						],
 						"settings":
@@ -1135,7 +1144,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 855.0,
+						"translation.y": 1300.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -1147,15 +1156,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 12913,
+						"buffer_size": 11915,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								7635,
-								7649
+								728,
+								728
 							]
 						],
 						"settings":
@@ -1166,49 +1175,19 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2336.0,
+						"translation.y": 85.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
 					"buffer": 5,
-					"file": "utilidades/a_star.py",
+					"file": "pruebas.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 23342,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4184,
-								4188
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1691.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "escenario.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 7217,
+						"buffer_size": 131,
 						"regions":
 						{
 						},
@@ -1222,102 +1201,6 @@
 						"settings":
 						{
 							"auto_complete": false,
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1657.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				}
-			]
-		},
-		{
-			"selected": 1,
-			"sheets":
-			[
-				{
-					"buffer": 7,
-					"file": "/E/Mis documentos/Dropbox/Proyectos Phyton/Apuntes_python/Módulo Pdb (debug python).py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1882,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1881,
-								1864
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 315.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "ToDo.tasks",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 10640,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1918,
-								1918
-							]
-						],
-						"settings":
-						{
-							"plain_tasks_remain_time_phantoms":
-							[
-							],
-							"syntax": "Packages/PlainTasks/PlainTasks.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 182.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "pruebas.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 40,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								18,
-								18
-							]
-						],
-						"settings":
-						{
 							"syntax": "Packages/Python/Python.sublime-syntax"
 						},
 						"translation.x": 0.0,
@@ -1328,8 +1211,136 @@
 					"type": "text"
 				},
 				{
+					"buffer": 6,
+					"file": "utilidades/a_star.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 23094,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								447,
+								479
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 5.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "escenario.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6695,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1924,
+								1914
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1285.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 8,
+					"file": "ToDo.tasks",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 11626,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								840,
+								849
+							]
+						],
+						"settings":
+						{
+							"plain_tasks_remain_time_phantoms":
+							[
+							],
+							"spell_check": false,
+							"syntax": "Packages/PlainTasks/PlainTasks.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 3021.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes_python/Módulo Pdb (debug python).py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1882,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								99,
+								55
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"auto_name": "",
+							"syntax": "Packages/Python/Python.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 126.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
 					"buffer": 10,
-					"file": "/E/Mis documentos/Dropbox/Proyectos Phyton/Apuntes_python/Basic. Cadenas, listas, tuplas, diccionarios y conjuntos.py",
+					"file": "/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes_python/Basic. Cadenas, listas, tuplas, diccionarios y conjuntos.py",
 					"semi_transient": false,
 					"settings":
 					{
@@ -1350,10 +1361,39 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 406.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 10,
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "/D/Mis Documentos/Dropbox/Proyectos Phyton/Apuntes_python/Basic. manejando errores.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 811,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								66,
+								66
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 63.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
 					"type": "text"
 				}
 			]
@@ -1361,7 +1401,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 23.0
+		"height": 21.0
 	},
 	"input":
 	{
@@ -1387,7 +1427,7 @@
 		"cols":
 		[
 			0.0,
-			0.702474489796,
+			0.889347648229,
 			1.0
 		],
 		"rows":
@@ -1399,17 +1439,17 @@
 	"menu_visible": true,
 	"output.exec":
 	{
-		"height": 41.0
+		"height": 24.0
 	},
 	"output.find_results":
 	{
 		"height": 0.0
 	},
-	"pinned_build_system": "Packages/User/Python34-build.sublime-build",
+	"pinned_build_system": "Packages/Python/Python.sublime-build",
 	"project": "pygame.cris.sublime-project",
 	"replace":
 	{
-		"height": 42.0
+		"height": 38.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -1451,7 +1491,7 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": false,
-	"side_bar_width": 232.0,
+	"side_bar_width": 189.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

@@ -2,7 +2,7 @@
 
 from pygame.locals import *
 import pygame
-from utilidades import utils, chars_info, a_star
+from utilidades import utils, chars_info
 import pdb
  
 
@@ -18,11 +18,10 @@ class Elemento():
     # La clave del siguiente diccionario determina la imagen del sprite. La de SO y O son el mismo, por eso coincide la letra.
     orientacion = {(0, -1):'N', (-1, 1):'O', (1, 0):'E', (1, 1):'E', (0, 1):'S', (1, -1):'E', (-1, 0):'O', (-1, -1):'O'}
 
-    def __init__(self, nombre, tipo, map_pos, matriz_astar, focus=False, rect=None):
+    def __init__(self, nombre, tipo, map_pos, focus=False, rect=None):
         print ("....Creando elemento " + nombre + '...')
 
         self.map_pos        = map_pos       # Posición en el mapa (centro del elemento)
-        self.matriz_astar   = matriz_astar
         self.scroll_pos     = [0, 0]        # posición del elemento en la pantalla.
         self.nombre         = nombre        # Nombre del elemento, se utilizará para genera_srpite()
         self.tipo           = tipo          # Para agrupar los diferentes tipos de elementos
@@ -106,23 +105,6 @@ class Elemento():
     ############### - Desplazamiento del elemento.  ################
     ################################################################
 
-    # Crea lista para caminar hacia un punto concreto del mapa.
-    def pathfinding(self, orig=False, dest=False):
-        # Se crean dos variables mapa y destino por si, en caso de colisión, necesita recalcularse la ruta.
-        if not orig: 
-            orig = self.map_pos
-        if not dest: 
-            dest = self.destino
-
-        self.destino = dest
-        mapa = self.matriz_astar
-
-        astar = a_star.Pathfinding(orig, dest, mapa, self.rectcol.w)
-        if astar.camino != -1:
-            self.ruta = astar.waypoints_pixel
-            return True
-        else:
-            return False
         
 
     # Calcula la siguiente posición desde una ruta

@@ -1,8 +1,8 @@
 import pygame
 from pygame.locals import *
 from gamemanager.states import gamestate
-from utilidades import utils, scrolling, a_star
-import escenario, elementos, grupo_state
+from utilidades import utils
+import escenario, elementos, grupo_state, scrolling
 import pdb
 
 class CollaoState(gamestate.GameState):
@@ -22,27 +22,21 @@ class CollaoState(gamestate.GameState):
 		self._misionPiti 		= False # Variable de misión inicial
 		self.test 		= [[]]	# listado de mensajes para modo test.
 		self.mouse_map_pos 	= (0,0)
+		self.mostrar_minimapa = False
 
+	#Creación inicial del grupo de personajes y objetos
 	def crear_elementos(self):
-		''' Creación inicial del grupo de personajes y objetos '''
-
-		# Mapa
-		self.grupoelementos.mapanopisable = self._mapa._nopisable 	# enviando a 'elementos' rectángulos nopisables del mapa.
 		# Personajes: nombre, tipo, map_pos=[0,0], focus=False
-		self.grupoelementos.add(elementos.Elemento('Cris', 'personaje_principal', [16,771], matriz_astar=self._mapa.matriz_astar(22), focus=True))
-		self.grupoelementos.add(elementos.Elemento('Piti', 'personaje_secundario',  [523, 683], matriz_astar=self._mapa.matriz_astar(22)))
+		self.grupoelementos.add(elementos.Elemento('Cris', 'personaje_principal', [16,771], focus=True))
+		self.grupoelementos.add(elementos.Elemento('Piti', 'personaje_secundario',  [523, 683]))
 		# Objetos: {nombre:rect, ...}
 		for k,v in self._mapa._objetos_escenario.items(): 				
 			map_pos = v.topleft
 			self.grupoelementos.add('k', 'objeto_escenario', map_pos, rect=v) # objeto sin sprite.
 
-			# Notas:
-			# Configurar características individuales de objetos si se requiere.
-			# Es posible que se puedan añadir atributos en tiledmaps
-			# 		y procesarlos aquí luego automáticamente.
-			# Para cambiar la velocidad cambiar su variable orientacion.
-			# Para añadir una conducta, siempre utilizar el metodo add() de elementos.Conducta.
-		
+		# Generarndo matrices del mapa para pathfinding y minimapa.
+		self.grupoelementos.matrizar_mapa(self._mapa._nopisable, self._mapa._mapa_size) 	# enviando a 'elementos' rectángulos nopisables del mapa.
+
 		# añadir rectángulos de colisión del mapa:
 		self.grupoelementos.mapanopisable = self._mapa._nopisable
 
@@ -125,8 +119,8 @@ class CollaoState(gamestate.GameState):
 			if mouse_click_left:
 				print (' > botón izquierdo')
 				if self.dialog_surface == False:
-					if a_star.accesible(self.mouse_map_pos, personaje.matriz_astar, width=personaje.rectcol.w):
-						personaje.pathfinding(dest=self.mouse_map_pos)
+					if self.grupoelementos.accesible(self.mouse_map_pos):
+						self.grupoelementos.pathfinding(personaje, dest=self.mouse_map_pos)
 					else:
 						print ('Destino no accesible')
 			elif mouse_click_right:
@@ -136,35 +130,16 @@ class CollaoState(gamestate.GameState):
 		if teclado[pygame.K_p]:
 			self.parent.pushState(self.parent._pausa)
 
+		# Minimapa
+		if teclado[pygame.K_m]:
+			if self.mostrar_minimapa:
+				self.mostrar_minimapa = False
+			else:
+				self.mostrar_minimapa = True
+
 
 	# Actualiza el juego en función de los eventos.
 	def update(self):
-        #------------------------------------------------
-		# -0- Repasa estado de misiones.
-		# -1- Detecta colisiones y las manda gestionar si las hay
-		# 		- paralelo a handleEvents. (x.nextaction, x.nextpos)
-		# 		- Gestiona nuevo evento por colisión, si se requiere, que deriva en 
-		#			nueva acción (nexaction) o en una lista de acciones (conducta_programada)
-		# -2- Actualizar elementos
-		# 		+ Comprueba si las nuevas posiciones son pisables.
-		# 		+ selecciona elementos con siguientes acciones.
-		#			+ cambia el sprite.
-		#			+  Emite sonidos de movimiento
-		# 			+ borra nextpos si no es pisable.
-		#		+ Actualiza las posiciones actuales por nextpos y nextaction
-		# 		+ Actualiza sus rectángulos
-		#		+ Actualiza siguientes acciones futuras si hay conducta programada. (element.update())
-		# -3- Actualiza scroll (posiciones antes de dibujar)
-		# 		+ obtiene scroll y scrollpos
-		# 		+ Actualiza la variable 'scroll_pos' de los elementos (que indicará su pos en pantalla).
-		# -5- Dibuja la pantalla
-		#		+- Layers con sprites teniendo en cuenta alturas y preferencias.
-		# -6- Reinicializar las variables que lo necesitan.
-		#
-		# -7- [.]?? Cuando finalice la pantalla se actualizará parent.player
-        #------------------------------------------------
-
-        # Gestion de colisiones y misiones.
 		self.control_misiones()
 		self.colisiones(self.grupoelementos.update())
 
@@ -183,6 +158,7 @@ class CollaoState(gamestate.GameState):
 	def draw(self):
 		self.parent.screen.blit(self.parent.background, (0,0))
 
+		# dibuja mapa
 		l=0
 		for layer in self._mapa._mapatiles:
 		    for f in range(self.camara.inicial[0], self.camara.lim_bottom[0]+1):
@@ -190,13 +166,21 @@ class CollaoState(gamestate.GameState):
 		        	self.parent.screen.blit(self._mapa._mapatiles[l][f][c], self.camara.plot(f, c))
 		    l += 1
 
+		# dibuja elementos
 		for element in self.grupoelementos.elements.values():
 		    element.dibujar(self.parent.screen)
 
+		# dibuja diálogos
 		if self.dialog_surface:
 			self.parent.screen.blit(self.dialog_surface, self.diagrect.topleft)
 
-
+		# dibuja minimapa
+		if self.mostrar_minimapa:
+			minimapa_surface = self.grupoelementos.get_minimapa()
+			minimap_size = minimapa_surface.get_size()
+			screen_center = self.parent.screen.get_rect().center
+			pos = (screen_center[0]-minimap_size[0]//2, screen_center[1]-minimap_size[1]//2)
+			self.parent.screen.blit(minimapa_surface, pos)
 
 	########################################################
 	#### GESTIÓN DE COLISIONES Y EVENTOS DE LA PANTALLA ####
@@ -269,11 +253,11 @@ class CollaoState(gamestate.GameState):
 		def dialog_Piti_quiere_hablar():
 			# En el primer encuentro entre Cris y Piti, este quiere decirle algo.
 			# Se pregunta si quiere hablar y como respuesta si o no.
-			self.dialog_surface = pygame.image.load('utilidades/imagenes/dialogos/Piti1(300x120).png')
+			self.dialog_surface = pygame.image.load('dialogos/Piti1(300x120).png')
 			self.diagrect = self.dialog_surface.get_rect()
 			self.diagrect.midbottom = (self.parent.screen_rect.centerx, self.parent.screen_rect.bottom - 15)
 
-			mask = pygame.image.load('utilidades/imagenes/dialogos/Piti1(300x120)mask.png')
+			mask = pygame.image.load('dialogos/Piti1(300x120)mask.png')
 			dialog_mask = pygame.mask.from_surface(mask)
 			rect_si, rect_no = dialog_mask.get_bounding_rects()
 
@@ -303,9 +287,7 @@ class CollaoState(gamestate.GameState):
 				self.dialog_surface = False
 				self._misionPiti = 'fase_3'
 				return
-
-
-
+#______________________________________________________________________
 
 		# Selección de diálogos.
 		if dialog == 'quiere_hablar':
