@@ -15,7 +15,7 @@ class CollaoState(gamestate.GameState):
 		
 		self.parent 	= parent 							# parent es el gameManager
 		self._mapa 		= escenario.Mapa('mapadesierto') 			# Creando mapa.
-		self.camara 	= scrolling.Camara(self.parent.screen, self._mapa)
+		self.camara 	= scrolling.Camara(self.parent.screen.get_size(), self._mapa)
 		self.grupoelementos 	= grupo_state.GrupoState()			# grupo de objetos y personajes.
 		self.crear_elementos()	# configura self.grupoelementos con personajes y objetos del mapa
 		self.dialog_surface 	= False	# Indica si hay un diálogo en marcha.
@@ -114,7 +114,6 @@ class CollaoState(gamestate.GameState):
 
 			# test
 			print ('  - Mouse click (map_pos)', self.mouse_map_pos, end = '; ')
-			print ('(scroll_pos)', self.mouse_scroll_pos)
 
 			if mouse_click_left:
 				print (' > botón izquierdo')

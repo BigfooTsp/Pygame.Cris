@@ -21,8 +21,8 @@ class Camara:
     de la pantalla. También dibuja los objetos y personajes.'''
 
 
-    def __init__(self, screen, mapa):
-        global screen_w, screen_h, mapa_sizex, mapa_sizey
+    def __init__(self, screen_size, mapa):
+        global mapa_sizex, mapa_sizey, screen_w, screen_h
         print ('....Creando objeto camara para scroll.')
 
         # Mapa
@@ -32,8 +32,6 @@ class Camara:
         mapa_size = (mapa_sizex, mapa_sizey)
         
         # Pantalla
-        self.screen = screen
-        screen_size = self.screen.get_size()
         screen_w = screen_size[0]
         screen_h = screen_size[1]
 

@@ -16,23 +16,23 @@ class GameManager():
 		# Load content:
 		self.states 	= [] 					# contenedor de states
 		self.running 	= True 					# Activación de bucle de juego.
-		pygame.init()
+		pygame.init() 							# Inicio módulo pygame (obligatorio)
 		self.clock 		= pygame.time.Clock() 	# Creación de objeto reloj.
 		pygame.key.set_repeat(25, 25) 			# Activa repetición de teclas pulsadas.(delay, interval)
-		self.screen 	= pygame.display.set_mode (size, 0, 32)
-		self.screen_surface = pygame.display.get_surface()
-		self.screen_rect 	= self.screen_surface.get_rect()
+
+		# Pantalla:
+		window 	= pygame.display.set_mode (size)
+		self.screen = pygame.display.get_surface()
 		pygame.display.set_caption('Cris en El Collao')
-		self.test_mode 	= test_mode 			# Estableciendo variable para modo test.
-		self.mouse_pos 	= (0,0)
 
 		# pygame.display.setimage
 		self.background = pygame.Surface(self.screen.get_size())
 		self.background = self.background.convert()
 		self.background.fill((209, 151, 191))
-		self._pausa = 0 # Se completa con un objeto pauseState instanciado en 'juego.py'
 		
-		
+		# Variables de uso
+		self.test_mode 	= test_mode 			# Estableciendo variable para modo test.
+		self.mouse_pos 	= (0,0)
     #########################################################
     ############ - CONTROL DEL ESTADO DEL JUEGO.  ###########
     #########################################################

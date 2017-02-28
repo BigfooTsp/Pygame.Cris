@@ -64,7 +64,8 @@ class PausaState(gamestate.GameState):
 		if event.type == pygame.KEYDOWN:
 			if event.key:
 				self.parent.popState()
-
+		if event.type == pygame.MOUSEBUTTONDOWN:
+			self.parent.popState()
 		return
 
 

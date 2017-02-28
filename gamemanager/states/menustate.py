@@ -49,11 +49,13 @@ class MenuState(gamestate.GameState):
 	def handleEvents(self, event, teclado):
 		''' gestión de eventos de teclado '''
 
-		# añadir otros eventos
 		if event.type == pygame.KEYDOWN:
 			if event.key:
 				pygame.mixer.music.stop()
 				self.parent.changeState(CollaoState.CollaoState(self.parent))
+		if event.type == pygame.MOUSEBUTTONDOWN:
+			pygame.mixer.music.stop()
+			self.parent.changeState(CollaoState.CollaoState(self.parent))
 
 		return
 
